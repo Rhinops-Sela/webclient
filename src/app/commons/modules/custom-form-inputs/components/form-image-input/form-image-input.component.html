@@ -1,0 +1,21 @@
+<div>
+  <label><h6>{{ label }}</h6></label>
+  <div class="col-sm-2 imgUp">
+    <img class="imagePreview" [src]="url" />
+    <label class="btn btn-primary">
+      Upload Photo<input
+        (change)="onPhotoChanged($event)"
+        type="file"
+        class="uploadFile img"
+        value="Upload Photo"
+        style="width: 0px;height: 0px;overflow: hidden;"
+        accept="image/*"
+        (change)="onSelectFile($event)"
+        (blur)="onModelTouched()"
+        (input)="onPhotoChanged($event)"
+      />
+    </label>
+  </div>
+</div>
+
+<br />

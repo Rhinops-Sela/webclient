@@ -1,0 +1,7 @@
+<span *ngIf="errors?.required" [style.color]="'red'">*</span>
+<span *ngIf="errors?.minlength" [style.color]="'red'"
+  >min {{ errors?.minlength.requiredLength }} letters!</span
+>
+<span *ngIf="errors?.maxlength" [style.color]="'red'"
+  >max {{ errors?.maxlength.requiredLength }} letters!
+</span>

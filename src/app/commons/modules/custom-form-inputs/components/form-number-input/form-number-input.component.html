@@ -1,0 +1,14 @@
+<span>
+  <label><h6>{{ label }}</h6></label>
+  <div>
+    <input
+      (change)="onModelChange($event.target.value)"
+      type="number"
+      class="form-control"
+      (blur)="onModelTouched()"
+      [value]="value"
+      placeholder="{{ placeholder }}"
+      [disabled]="disable"
+    />
+  </div>
+</span>

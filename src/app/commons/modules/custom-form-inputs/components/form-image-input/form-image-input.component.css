@@ -1,0 +1,39 @@
+body {
+  background-color: #f5f5f5;
+}
+.imagePreview {
+  width: 150px;
+  height: 150px;
+  background-position: center center;
+  background: url(https://icons.iconarchive.com/icons/ccard3dev/dynamic-yosemite/1024/Preview-icon.png);
+  background-color: #fff;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-top: -5px;
+  margin-left: 30px;
+
+  box-shadow: 0px -3px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  width: 150px;
+  display: block;
+  border-radius: 0px;
+  box-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.2);
+  margin-top: -5px;
+  margin-left: 30px;
+}
+.imgUp {
+  margin-bottom: 15px;
+}
+.del {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}

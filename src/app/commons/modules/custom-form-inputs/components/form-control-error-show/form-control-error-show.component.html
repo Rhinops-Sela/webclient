@@ -1,0 +1,13 @@
+<span *ngIf="errors?.required" class="error">*</span>
+<span *ngIf="errors?.minlength" [class]="error"
+  >min {{ errors?.minlength.requiredLength }} letters</span
+>
+<span *ngIf="errors?.maxlength" [class]="error"
+  >max {{ errors?.maxlength.requiredLength }} letters</span
+>
+
+<span *ngIf="errors?.max" [class]="error">max {{ errors?.max.max }}</span>
+<span *ngIf="errors?.min" [class]="error">min {{ errors?.min.min }}</span>
+
+
+

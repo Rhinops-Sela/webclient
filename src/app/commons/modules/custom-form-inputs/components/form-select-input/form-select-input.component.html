@@ -1,0 +1,21 @@
+<span>
+  <label><h6>{{ label }}</h6></label>
+  <div class="form-group">
+    <select class="form-control" (change)="onSelect($event)" [multiple]="isMultiple">
+      <option
+        *ngFor="let i of options; let index = index"
+        [value]="
+          defaultSelectedOption().length
+            ? defaultSelectedOption().includes(index)
+            : index === defaultSelectedOption()
+        "
+        [selected]="
+          defaultSelectedOption().length
+            ? defaultSelectedOption().includes(index)
+            : index === defaultSelectedOption()
+        "
+        >{{ i }}</option
+      >
+    </select>
+  </div>
+</span>

@@ -1,0 +1,39 @@
+<label *ngIf="!showWizardPages" class="btn btn-primary">
+  upload json:
+  <input
+    type="file"
+    value="Upload json"
+    accept="json/*"
+    (change)="onSelectFile($event)"
+  />
+</label>
+
+<div
+  class="container"
+  style="margin-top: 20px; background-color: gray;"
+  *ngIf="showWizardPages"
+>
+  <div class="row">
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="previous()"
+      [disabled]="0 >= this.inputIndexShow"
+    >
+      previous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="next()"
+      [disabled]="this.inputIndexShow >= this.inputsShowArrLength - 1"
+    >
+      next
+    </button>
+  </div>
+  <div *ngFor="let i of inputs; let index = index">
+    <div *ngIf="inputsShowArr && inputsShowArr[index]">
+      <app-wizard-page-layout [wizardPage]="i"> </app-wizard-page-layout>
+    </div>
+  </div>
+</div>
