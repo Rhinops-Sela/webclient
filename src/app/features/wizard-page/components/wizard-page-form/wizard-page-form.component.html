@@ -19,7 +19,7 @@
     </div>
 
     <div *ngFor="let input of inputs['STRING']; let i = index">
-      <app-form-text-input
+      <app-form-text-input class="input"
         formControlName="STRING{{ i }}"
         placeholder="{{ input.userInput.placeholder }}"
         label="{{ input.userInput.displayName }}"

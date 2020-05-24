@@ -1,6 +1,7 @@
 form{
     border: 1px solid black;
     border-radius: 10px;
+    
 }
 
 button{
@@ -10,9 +11,14 @@ button{
 
 div{
     margin: 5px;
+   
+}
+
+.input{
+    background-color: black;
+    color: cadetblue;
 }
 
 .center-components{
 width: 50%;
-left: 30%;
 }

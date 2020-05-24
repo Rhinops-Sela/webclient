@@ -2,6 +2,7 @@
   <label><h6>{{ label }}</h6></label>
   <div>
     <input
+    class="input"
       (change)="onChange($event.target.checked)"
       type="checkbox"
       [checked]="defaultChecked()"
