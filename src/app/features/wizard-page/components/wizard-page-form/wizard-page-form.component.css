@@ -11,3 +11,8 @@ button{
 div{
     margin: 5px;
 }
+
+.center-components{
+width: 50%;
+left: 30%;
+}

@@ -1,71 +1,77 @@
-  <div *ngIf="enabler" class="custom-control custom-switch">
-    <input type="checkbox" class="custom-control-input" (change)="showForm = $event.target.checked" id="switch1" />
-      <label class="custom-control-label" for="switch1"><h6>show form?</h6>
-   </label>
-  </div>
+<div *ngIf="enabler" class="custom-control custom-switch">
+  <input
+    type="checkbox"
+    class="custom-control-input"
+    (change)="showForm = $event.target.checked"
+    id="switch1"
+  />
+  <label class="custom-control-label" for="switch1"><h6>show form?</h6> </label>
+</div>
 
-<form  *ngIf="showForm" [formGroup]="wizardPageForm" (ngSubmit)="submit()">
-  <div  *ngFor="let input of inputs['PASSWORD']; let i = index">
-    <app-form-password-input 
-      formControlName="PASSWORD{{ i }}"
-      placeholder="{{ input.userInput.placeholder }}"
-      label="{{ input.userInput.displayName }}"
-    ></app-form-password-input>
-  </div>
+<form *ngIf="showForm" [formGroup]="wizardPageForm" (ngSubmit)="submit()">
+  <div class="center-components">
+    <div *ngFor="let input of inputs['PASSWORD']; let i = index">
+      <app-form-password-input
+        formControlName="PASSWORD{{ i }}"
+        placeholder="{{ input.userInput.placeholder }}"
+        label="{{ input.userInput.displayName }}"
+      ></app-form-password-input>
+    </div>
 
-  <div *ngFor="let input of inputs['STRING']; let i = index">
-    <app-form-text-input 
-      formControlName="STRING{{ i }}"
-      placeholder="{{ input.userInput.placeholder }}"
-      label="{{ input.userInput.displayName }}"
-    ></app-form-text-input>
-  </div>
+    <div *ngFor="let input of inputs['STRING']; let i = index">
+      <app-form-text-input
+        formControlName="STRING{{ i }}"
+        placeholder="{{ input.userInput.placeholder }}"
+        label="{{ input.userInput.displayName }}"
+      ></app-form-text-input>
+    </div>
 
-  <div *ngFor="let input of inputs['NUMBER']; let i = index">
-    <app-form-number-input 
-      formControlName="NUMBER{{ i }}"
-      label="{{ input.userInput.displayName }}"
-      placeholder="{{ input.userInput.placeholder }}"
-    ></app-form-number-input>
-  </div>
+    <div *ngFor="let input of inputs['NUMBER']; let i = index">
+      <app-form-number-input
+        formControlName="NUMBER{{ i }}"
+        label="{{ input.userInput.displayName }}"
+        placeholder="{{ input.userInput.placeholder }}"
+      ></app-form-number-input>
+    </div>
 
-  <div *ngFor="let input of inputs['SELECT']; let i = index">
-    <app-form-select-input 
-      label="{{ input.userInput.displayName }}"
-      formControlName="SELECT{{ i }}"
-      [options]="input.userInput.userValueTypeValues"
-    ></app-form-select-input>
-  </div>
+    <div *ngFor="let input of inputs['SELECT']; let i = index">
+      <app-form-select-input
+        label="{{ input.userInput.displayName }}"
+        formControlName="SELECT{{ i }}"
+        [options]="input.userInput.userValueTypeValues"
+      ></app-form-select-input>
+    </div>
 
-  <div *ngFor="let input of inputs['MULTI_SELECT']; let i = index">
-    <app-form-select-input 
-      label="{{ input.userInput.displayName }}"
-      formControlName="MULTI_SELECT{{ i }}"
-      isMultiple="true"
-      [options]="input.userInput.userValueTypeValues"
-    ></app-form-select-input>
-  </div>
+    <div *ngFor="let input of inputs['MULTI_SELECT']; let i = index">
+      <app-form-select-input
+        label="{{ input.userInput.displayName }}"
+        formControlName="MULTI_SELECT{{ i }}"
+        isMultiple="true"
+        [options]="input.userInput.userValueTypeValues"
+      ></app-form-select-input>
+    </div>
 
-  <div *ngFor="let input of inputs['CHECKBOX']; let i = index">
-    <app-form-checkbox-input  
-      label="{{ input.userInput.displayName }}"
-      formControlName="CHECKBOX{{ i }}"
-    ></app-form-checkbox-input>
-  </div>
+    <div *ngFor="let input of inputs['CHECKBOX']; let i = index">
+      <app-form-checkbox-input
+        label="{{ input.userInput.displayName }}"
+        formControlName="CHECKBOX{{ i }}"
+      ></app-form-checkbox-input>
+    </div>
 
-  <div *ngFor="let input of inputs['STRING_ARR']; let i = index">
-    <app-form-text-area-input
-      formControlName="STRING_ARR{{ i }}"
-      placeholder="{{ input.userInput.placeholder }}"
-      label="{{ input.userInput.displayName }}"
-    >
-    </app-form-text-area-input>
+    <div *ngFor="let input of inputs['STRING_ARR']; let i = index">
+      <app-form-text-area-input
+        formControlName="STRING_ARR{{ i }}"
+        placeholder="{{ input.userInput.placeholder }}"
+        label="{{ input.userInput.displayName }}"
+      >
+      </app-form-text-area-input>
+    </div>
   </div>
 </form>
 
-  <button type="submit" class="btn btn-success btn-block">
-    submit
-  </button>
+<button type="submit" class="btn btn-success btn-block">
+  submit
+</button>
 
 <alert *ngIf="errors?.length > 0" type="danger">
   <div *ngFor="let error of errors">

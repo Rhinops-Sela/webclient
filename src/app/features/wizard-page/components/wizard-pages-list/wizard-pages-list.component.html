@@ -31,7 +31,7 @@
       next
     </button>
   </div>
-  <div *ngFor="let i of inputs; let index = index">
+  <div class="center-components" *ngFor="let i of inputs; let index = index">
     <div *ngIf="inputsShowArr && inputsShowArr[index]">
       <app-wizard-page-layout [wizardPage]="i"> </app-wizard-page-layout>
     </div>
