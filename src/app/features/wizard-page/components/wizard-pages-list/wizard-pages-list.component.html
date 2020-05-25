@@ -19,6 +19,7 @@
       class="btn btn-primary btn-sm"
       (click)="previous()"
       [disabled]="0 >= this.inputIndexShow"
+      *ngIf="this.inputIndexShow > 0"
     >
       previous
     </button>
@@ -26,14 +27,28 @@
       type="button"
       class="btn btn-primary btn-sm"
       (click)="next()"
-      [disabled]="this.inputIndexShow >= this.inputsShowArrLength - 1"
+      [disabled]="!allowNext"
+      *ngIf="this.inputsShowArrLength - 1 > this.inputIndexShow"
     >
       next
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="next()"
+      *ngIf="this.inputsShowArrLength - 1 === this.inputIndexShow"
+    >
+      finish
     </button>
   </div>
   <div class="center-components" *ngFor="let i of inputs; let index = index">
     <div *ngIf="inputsShowArr && inputsShowArr[index]">
-      <app-wizard-page-layout [wizardPage]="i"> </app-wizard-page-layout>
+      <app-wizard-page-layout
+        [wizardPage]="i"
+        (onChange)="updateWizardPages($event)"
+      >
+      </app-wizard-page-layout>
     </div>
   </div>
 </div>

@@ -1,4 +1,12 @@
-
-    <app-wizard-page-header class="header" [wizardPageHeader]="wizardPage.header"></app-wizard-page-header>
-    <app-wizard-page-info class="info" [wizardPageInfo]="wizardPage.info"></app-wizard-page-info>
-    <app-wizard-page-form [wizardPageUserInputs]="wizardPage.userValueType"></app-wizard-page-form>
+<app-wizard-page-header
+  class="header"
+  [wizardPageHeader]="wizardPage.header"
+></app-wizard-page-header>
+<app-wizard-page-info
+  class="info"
+  [wizardPageInfo]="wizardPage.info"
+></app-wizard-page-info>
+<app-wizard-page-form
+  [wizardPageUserInputs]="wizardPage.userValueType"
+  (onSubmit)="updateWizardPage($event)"
+></app-wizard-page-form>

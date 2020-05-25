@@ -16,4 +16,5 @@ export interface IUserInput {
   toolTip?: string;
   value?: any;
   values?: any[];
+  userInputs?: IUserInput[];
 }

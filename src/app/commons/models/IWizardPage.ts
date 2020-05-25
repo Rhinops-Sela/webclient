@@ -1,9 +1,8 @@
-import { IUserInput } from './IUserInput';
+import { IUserInput } from "./IUserInput";
 
 export interface IWizardPage {
   header: string;
   info: string;
-  userValueType:IUserInput[];
+  image: string;
+  userValueType: IUserInput[];
 }
-
-

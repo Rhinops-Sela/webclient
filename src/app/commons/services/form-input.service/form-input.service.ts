@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { IFormInputService } from "./form-input.service.interface";
 import { FormControl, Validators } from "@angular/forms";
 import { IUserInput } from "../../models/IUserInput";
+import { FormService } from '../form.service/form.service';
+import { IFormService } from '../form.service/form.service.interface';
 @Injectable({
   providedIn: "root",
 })
@@ -22,6 +24,11 @@ export class FormInputService implements IFormInputService {
 
     if (userInput.value && userInput.value.length) {
       userInput.values = userInput.value;
+    }
+
+    if (userInput.userInputs) {
+      // userInput.userInputs.forEach((userInput) => this.createInput(userInput));
+
     }
 
     const formControl = new FormControl(

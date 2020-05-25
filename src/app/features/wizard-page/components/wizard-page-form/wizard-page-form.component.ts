@@ -6,7 +6,8 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { IFormInputService } from "src/app/commons/services/form-input.service/form-input.service.interface";
 import { FormInputService } from "src/app/commons/services/form-input.service/form-input.service";
 import { IInput } from "src/app/commons/models/IInput";
-import { log } from "util";
+import { IWizardPagesService } from "src/app/commons/services/wizard-pages.service/IWizardPagesService.interface";
+import { WizardPagesService } from "src/app/commons/services/wizard-pages.service/wizard-pages.service";
 
 @Component({
   selector: "app-wizard-page-form",
@@ -15,8 +16,10 @@ import { log } from "util";
 })
 export class WizardPageFormComponent implements OnInit {
   @Input() wizardPageUserInputs: IUserInput[];
+  @Output() onSubmit = new EventEmitter<IUserInput[]>();
   formService: IFormService;
   formInputService: IFormInputService;
+  wizardPagesService: IWizardPagesService;
   wizardPageForm: FormGroup;
   inputs: IInput = {};
   inputsKeys: string[] = [];
@@ -24,40 +27,56 @@ export class WizardPageFormComponent implements OnInit {
   repeatable: boolean = false;
   showForm: boolean = true;
   errors: any = [];
+  subGroupEnabler = {};
+  enablerInputs: IInput = {};
+  subGroupEnablerKeys: string[];
 
-  constructor(formService: FormService, formInputService: FormInputService) {
+  constructor(
+    formService: FormService,
+    formInputService: FormInputService,
+    wizardPagesService: WizardPagesService
+  ) {
     this.formService = formService;
     this.formInputService = formInputService;
+    this.wizardPagesService = wizardPagesService;
   }
 
   ngOnInit() {
     this.initializeInputs();
     this.initializeForm();
+    console.log(this.subGroupEnabler);
+    console.log(this.inputs);
+    this.subGroupEnablerKeys = Object.keys(this.subGroupEnabler);
   }
 
   initializeInputs() {
     this.wizardPageUserInputs.forEach((input) => {
-      if (input.subGroupEnabler) {
-        this.enabler = input.subGroupEnabler;
-        this.showForm = false;
-      }
-      if (input.subGroupRepeatable) {
-        this.repeatable = input.subGroupRepeatable;
-      }
+      const { subGroup } = input;
+
+      if (input.subGroupRepeatable) this.repeatable = input.subGroupRepeatable;
+
       if (input.userValueType !== "BOOLEAN") {
         if (input.userValueType === "STRING[]") {
           input.userValueType = "STRING_ARR";
         }
+
         const inputRes: FormControl = this.formInputService.createInput(input);
-        if (this.inputs[input.userValueType]) {
-          this.inputs[input.userValueType] = [
-            ...this.inputs[input.userValueType],
-            { formControl: inputRes, userInput: input },
-          ];
+
+        const tmp = { formControl: inputRes, userInput: input };
+
+        if (input.subGroupEnabler) {
+          this.subGroupEnabler[subGroup] = true;
         } else {
-          this.inputs[input.userValueType] = [
-            { formControl: inputRes, userInput: input },
-          ];
+          if (!this.subGroupEnabler[subGroup])
+            this.subGroupEnabler[subGroup] = false;
+          if (this.inputs[input.userValueType]) {
+            this.inputs[input.userValueType] = [
+              ...this.inputs[input.userValueType],
+              tmp,
+            ];
+          } else {
+            this.inputs[input.userValueType] = [tmp];
+          }
         }
       }
     });
@@ -83,8 +102,8 @@ export class WizardPageFormComponent implements OnInit {
 
   submit() {
     this.errors = [];
-    const keys = Object.keys(this.inputs);
-    keys.forEach((key) => {
+    // const keys = Object.keys(this.inputs);
+    this.inputsKeys.forEach((key) => {
       this.inputs[key].forEach((input) => {
         let err: string = input.userInput.displayName;
         const errKeys = input.formControl.errors
@@ -99,8 +118,16 @@ export class WizardPageFormComponent implements OnInit {
     });
 
     if (this.errors.length === 0) {
-      //do something
-      alert("good");
+      this.inputsKeys.forEach((key) => {
+        let i = 0;
+        const length = this.inputs[key].length;
+        for (i; i < length; i++) {
+          this.inputs[key][i].userInput.value = this.inputs[key][
+            i
+          ].formControl.value;
+        }
+      });
+      this.onSubmit.emit(this.wizardPageUserInputs);
     }
   }
 }

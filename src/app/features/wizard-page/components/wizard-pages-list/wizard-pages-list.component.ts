@@ -19,12 +19,14 @@ export class WizardPagesListComponent implements OnInit {
   inputsShowArrLength: number;
   inputIndexShow: number;
   showWizardPages: boolean;
+  allowNext: boolean = false;
 
   next(): void {
     if (this.inputIndexShow < this.inputsShowArrLength - 1) {
       this.inputIndexShow++;
       this.inputsShowArr[this.inputIndexShow - 1] = false;
       this.inputsShowArr[this.inputIndexShow] = true;
+      this.allowNext = false;
     }
   }
 
@@ -47,9 +49,9 @@ export class WizardPagesListComponent implements OnInit {
     this.route.queryParams.subscribe(
       (res) => {
         let { toImport } = res;
+        this.toImport = res.toImport;
         toImport = JSON.parse(toImport);
         if (typeof toImport === "boolean") {
-          console.log(toImport);
           if (!toImport) {
             this.showWizardPages = true;
             this.getPages();
@@ -61,24 +63,32 @@ export class WizardPagesListComponent implements OnInit {
       (err) => {},
       () => {}
     );
-    this.getPages();
   }
+
   getPages() {
-    this.wizardPagesService.getPages().subscribe(
-      (res) => {
-        this.inputs = res;
-        let i = 1;
-        this.inputsShowArrLength = this.inputs.length;
-        this.inputIndexShow = 0;
-        this.inputsShowArr[this.inputIndexShow] = true;
-        for (i; i < this.inputsShowArrLength; i++) {
-          this.inputsShowArr[i] = false;
+    this.wizardPagesService.getPages2();
+    this.wizardPagesService.wizardPages$.subscribe(
+      (res: IWizardPage[]) => {
+        if (res) {
+          this.inputs = res;
+          this.initializePagination();
         }
       },
-      (err) => {},
+      (err) => {
+        console.log(err);
+      },
       () => {}
     );
-    this.route.queryParams.subscribe((res) => (this.toImport = res.toImport));
+    // this.wizardPagesService.getPages().subscribe(
+    //   (res) => {
+    //     this.inputs = res;
+    //     this.initializePagination();
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //   },
+    //   () => {}
+    // );
   }
 
   onSelectFile(event) {
@@ -92,9 +102,42 @@ export class WizardPagesListComponent implements OnInit {
       console.log(error);
     };
   }
-
   getPagesLocal(pages) {
-    this.inputs = this.wizardPagesService.dataParser(pages);
-    this.showWizardPages = true;
+    this.wizardPagesService.dataParser2(pages);
+    this.wizardPagesService.wizardPages$.subscribe(
+      (res: IWizardPage[]) => {
+        if (res) {
+          this.inputs = res;
+          this.showWizardPages = true;
+          this.initializePagination();
+        }
+      },
+      (err) => {},
+      () => {}
+    );
+    // this.showWizardPages = true;
+    // this.initializePagination();
+    // this.inputs = this.wizardPagesService.dataParser(pages);
+    // this.showWizardPages = true;
+    // this.initializePagination();
+  }
+
+  initializePagination() {
+    let i = 1;
+    this.inputsShowArrLength = this.inputs.length;
+    this.inputIndexShow = 0;
+    this.inputsShowArr[this.inputIndexShow] = true;
+    for (i; i < this.inputsShowArrLength; i++) {
+      this.inputsShowArr[i] = false;
+    }
+  }
+
+  updateWizardPages(event: IWizardPage) {
+    const index = this.inputs.indexOf(event);
+    this.inputs[index] = event;
+    this.allowNext = this.wizardPagesService.updateWizardPages(
+      this.inputs,
+      index
+    );
   }
 }

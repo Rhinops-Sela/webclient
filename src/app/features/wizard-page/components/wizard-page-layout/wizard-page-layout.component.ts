@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
 import { IWizardPage } from "src/app/commons/models/IWizardPage";
+import { IUserInput } from "src/app/commons/models/IUserInput";
 
 @Component({
   selector: "app-wizard-page-layout",
@@ -8,8 +9,13 @@ import { IWizardPage } from "src/app/commons/models/IWizardPage";
 })
 export class WizardPageLayoutComponent implements OnInit {
   @Input() wizardPage: IWizardPage;
-  constructor() {
-  }
+  @Output() onChange = new EventEmitter<IWizardPage>();
+  constructor() {}
 
   ngOnInit() {}
+
+  updateWizardPage(event: IUserInput[]) {
+    this.wizardPage.userValueType = event;
+    this.onChange.emit(this.wizardPage);
+  }
 }
