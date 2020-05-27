@@ -9,13 +9,19 @@ import { IUserInput } from "src/app/commons/models/IUserInput";
 })
 export class WizardPageLayoutComponent implements OnInit {
   @Input() wizardPage: IWizardPage;
-  @Output() onChange = new EventEmitter<IWizardPage>();
+  @Input() isFirstPage: boolean;
+  @Input() isLastPage: boolean;
+  @Input() index: number;
+  @Output() onFormSubmit = new EventEmitter<number>();
+  @Output() onPrevious = new EventEmitter<number>();
   constructor() {}
 
   ngOnInit() {}
 
-  updateWizardPage(event: IUserInput[]) {
-    this.wizardPage.userValueType = event;
-    this.onChange.emit(this.wizardPage);
+  previous(index: number) {
+    this.onPrevious.emit(index);
+  }
+  onSubmit(index: number) {
+    this.onFormSubmit.emit(index);
   }
 }

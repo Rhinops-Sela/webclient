@@ -1,5 +1,6 @@
 import { Observable, BehaviorSubject } from "rxjs";
 import { IWizardPage } from "../../models/IWizardPage";
+import { IUserInput } from '../../models/IUserInput';
 
 export interface IWizardPagesService {
   wizardPages$: BehaviorSubject<IWizardPage[]>;
@@ -7,5 +8,5 @@ export interface IWizardPagesService {
   getPages2(): void;
   dataParser(pages): IWizardPage[];
   dataParser2(pages): void;
-  updateWizardPages(wizardPages: IWizardPage[],index:number): boolean;
+  updateWizardPages(index: number, userInputs: IUserInput[]): void;
 }

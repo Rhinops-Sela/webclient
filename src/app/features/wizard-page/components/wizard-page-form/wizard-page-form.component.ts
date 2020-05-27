@@ -16,21 +16,20 @@ import { WizardPagesService } from "src/app/commons/services/wizard-pages.servic
 })
 export class WizardPageFormComponent implements OnInit {
   @Input() wizardPageUserInputs: IUserInput[];
-  @Output() onSubmit = new EventEmitter<IUserInput[]>();
+  @Input() isFirstPage: boolean;
+  @Input() isLastPage: boolean;
+  @Input() index: number;
+  @Output() onSubmit = new EventEmitter<number>();
+  @Output() onPrevious = new EventEmitter<number>();
   formService: IFormService;
   formInputService: IFormInputService;
   wizardPagesService: IWizardPagesService;
   wizardPageForm: FormGroup;
-  inputs: IInput = {};
+  inputs: any = {};
   inputsKeys: string[] = [];
-  enabler: boolean = false;
-  repeatable: boolean = false;
   showForm: boolean = true;
-  errors: any = [];
-  subGroupEnabler = {};
-  enablerInputs: IInput = {};
-  subGroupEnablerKeys: string[];
-
+  errors: string[] = [];
+  subGroups: any = {};
   constructor(
     formService: FormService,
     formInputService: FormInputService,
@@ -44,46 +43,98 @@ export class WizardPageFormComponent implements OnInit {
   ngOnInit() {
     this.initializeInputs();
     this.initializeForm();
-    console.log(this.subGroupEnabler);
-    console.log(this.inputs);
-    this.subGroupEnablerKeys = Object.keys(this.subGroupEnabler);
+    this.inputsKeys = Object.keys(this.inputs);
+    
   }
 
+  previous() {
+    this.onPrevious.emit(this.index);
+  }
+
+  allowInputShown(type: string, index: number, input: IUserInput): boolean {
+    const key = `${type}${index}`;
+    const isSameType = input.userValueType === type;
+    const keyExists = key in this.wizardPageForm.controls;
+
+    const allow = isSameType && keyExists;
+
+    return allow;
+  }
+
+  subGroup: string = "";
+
   initializeInputs() {
-    this.wizardPageUserInputs.forEach((input) => {
-      const { subGroup } = input;
+    let i = 0;
+    const length = this.wizardPageUserInputs.length;
 
-      if (input.subGroupRepeatable) this.repeatable = input.subGroupRepeatable;
+    for (i; i < length; i++) {
+      const input = this.wizardPageUserInputs[i];
+      this.subGroups[this.subGroup] = true
+      if (input.subGroupEnabler) {
+        this.subGroup = input.subGroup;
+        // this.enablerShowInputs[this.subGroup] = [];
+        this.subGroups[this.subGroup] = false;
+        // console.log(this.subGroups)
+      }
 
-      if (input.userValueType !== "BOOLEAN") {
-        if (input.userValueType === "STRING[]") {
-          input.userValueType = "STRING_ARR";
-        }
+      // if (this.subGroup === input.subGroup) {
+      //   this.enablerShowInputs[this.subGroup].push(input);
+      // }
 
-        const inputRes: FormControl = this.formInputService.createInput(input);
+      if (input.userValueType === "STRING[]") {
+        input.userValueType = "ARR_STRING";
+      }
 
-        const tmp = { formControl: inputRes, userInput: input };
+      const formControl: FormControl = this.formInputService.createInput(input);
 
-        if (input.subGroupEnabler) {
-          this.subGroupEnabler[subGroup] = true;
-        } else {
-          if (!this.subGroupEnabler[subGroup])
-            this.subGroupEnabler[subGroup] = false;
-          if (this.inputs[input.userValueType]) {
-            this.inputs[input.userValueType] = [
-              ...this.inputs[input.userValueType],
-              tmp,
-            ];
-          } else {
-            this.inputs[input.userValueType] = [tmp];
-          }
-        }
+      const tmp = {
+        key: `${input.userValueType}${i}`,
+        value: {
+          formControl: formControl,
+          input: input,
+        },
+      };
+      this.inputs[tmp.key] = tmp.value;
+    }
+  }
+
+  onRepeat(input: IUserInput, index: number) {
+    const formControl: FormControl = this.formInputService.createInput(input);
+    const type = input.userValueType;
+    let relevanceKey: string;
+    this.inputsKeys.forEach((key) => {
+      if (key.startsWith(type)) {
+        relevanceKey = key;
       }
     });
+    console.log(relevanceKey);
+
+    input.subGroupRepeatable = undefined;
+    const i = parseInt(relevanceKey.split(type)[1]);
+    console.log(i);
+    const tmp = {
+      key: `${input.userValueType}${i + 1}`,
+      value: {
+        formControl: formControl,
+        input: { ...input },
+      },
+    };
+    // this.wizardPageUserInputs
+    // console.log(this.wizardPageUserInputs);
+    this.wizardPageUserInputs.splice(i + 1, 0, tmp.value.input);
+    // this.wizardPageUserInputs.push(tmp.value.input);
+    // console.log(this.wizardPageUserInputs);
+
+    this.inputs[tmp.key] = tmp.value;
+
+    this.wizardPageForm.addControl(tmp.key, tmp.value.formControl);
+    this.inputsKeys = Object.keys(this.inputs);
+    // console.log(this.wizardPageForm.controls);
   }
 
   initializeForm() {
-    this.inputsKeys = Object.keys(this.inputs);
+    // console.log(this.enablerShowInputs);
+
     const group = this.formService.createForm(this.inputs);
     this.wizardPageForm = new FormGroup(group);
   }
@@ -101,33 +152,32 @@ export class WizardPageFormComponent implements OnInit {
   }
 
   submit() {
-    this.errors = [];
+    // this.errors = [];
     // const keys = Object.keys(this.inputs);
-    this.inputsKeys.forEach((key) => {
-      this.inputs[key].forEach((input) => {
-        let err: string = input.userInput.displayName;
-        const errKeys = input.formControl.errors
-          ? Object.keys(input.formControl.errors)
-          : [];
-        errKeys.forEach((errKey) => {
-          err += ` ${errKey}`;
-        });
-        if (input.formControl.errors) this.errors = [...this.errors, err];
-        this.wizardPageForm;
-      });
-    });
+    // keys.forEach((key) => {
+    //   const { formControl } = this.inputs[key];
+    //   const { input } = this.inputs[key];
+    //   if (formControl.errors) {
+    //     let err: string = `${input.displayName} `;
+    //     const errKeys = Object.keys(formControl.errors);
+    //     errKeys.forEach((errKey) => {
+    //       err += `${errKey} `;
+    //     });
+    //     this.errors.push(err);
+    //   } else {
+    //     // console.log(formControl.value);
 
-    if (this.errors.length === 0) {
-      this.inputsKeys.forEach((key) => {
-        let i = 0;
-        const length = this.inputs[key].length;
-        for (i; i < length; i++) {
-          this.inputs[key][i].userInput.value = this.inputs[key][
-            i
-          ].formControl.value;
-        }
-      });
-      this.onSubmit.emit(this.wizardPageUserInputs);
-    }
+    //     input.value = formControl.value;
+    //   }
+    // });
+    // if (this.errors.length === 0) {
+    //    console.log(this.wizardPageUserInputs);
+
+    //   // this.wizardPagesService.updateWizardPages(
+    //   //   this.index,
+    //   //   this.wizardPageUserInputs
+    //   // );
+    this.onSubmit.emit(this.index);
+    // }
   }
 }

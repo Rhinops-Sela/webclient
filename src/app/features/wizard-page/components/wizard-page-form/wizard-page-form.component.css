@@ -1,24 +1,23 @@
-form{
-    border: 1px solid black;
-    border-radius: 10px;
-    
+form {
+  border: 1px solid black;
+  border-radius: 10px;
 }
 
-button{
-    margin-top: 20px;
-    margin-bottom: 20px;
+button {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-div{
-    margin: 5px;
-   
+div {
+  margin: 5px;
 }
 
-.input{
-    background-color: black;
-    color: cadetblue;
+.input {
+  background-color: black;
+  color: cadetblue;
 }
 
-.center-components{
-width: 50%;
+.center-components {
+    display: inline-block;
+    content: inline;
 }

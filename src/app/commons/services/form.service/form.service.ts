@@ -14,19 +14,12 @@ export class FormService implements IFormService {
   constructor(formInputService: FormInputService) {
     this.formInputService = formInputService;
   }
-  createForm(inputs: IInput): any {
+  createForm(inputs: any): any {
     let group = {};
-    // for (let index = 0; index < formControls.length; index++) {
-    //   group[index] = formControls[index];
-    // }
     const keys = Object.keys(inputs);
-    const keysLength = keys.length;
-    let i = 0;
+
     keys.forEach((key) => {
-      const inputContainer = inputs[key];
-      for (i = 0; i < inputContainer.length; i++) {
-        group[key + i] = inputContainer[i].formControl;
-      }
+      group[key] = inputs[key].formControl;
     });
     return group;
   }

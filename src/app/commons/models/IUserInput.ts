@@ -15,6 +15,6 @@ export interface IUserInput {
   regexValidation?: string;
   toolTip?: string;
   value?: any;
-  values?: any[];
-  userInputs?: IUserInput[];
+  // values?: any[];
+  // userInputs?: IUserInput[];
 }

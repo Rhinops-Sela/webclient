@@ -21,20 +21,19 @@ export class WizardPagesListComponent implements OnInit {
   showWizardPages: boolean;
   allowNext: boolean = false;
 
-  next(): void {
-    if (this.inputIndexShow < this.inputsShowArrLength - 1) {
-      this.inputIndexShow++;
-      this.inputsShowArr[this.inputIndexShow - 1] = false;
-      this.inputsShowArr[this.inputIndexShow] = true;
-      this.allowNext = false;
+  next(index: number): void {
+    this.inputIndexShow = index;
+    if (index < this.inputsShowArrLength - 1) {
+      this.inputsShowArr[this.inputIndexShow] = false;
+      this.inputsShowArr[this.inputIndexShow + 1] = true;
     }
   }
 
-  previous(): void {
+  previous(index: number): void {
+    this.inputIndexShow = index;
     if (this.inputIndexShow > 0) {
-      this.inputIndexShow--;
-      this.inputsShowArr[this.inputIndexShow + 1] = false;
-      this.inputsShowArr[this.inputIndexShow] = true;
+      this.inputsShowArr[this.inputIndexShow] = false;
+      this.inputsShowArr[this.inputIndexShow - 1] = true;
     }
   }
 
@@ -132,12 +131,12 @@ export class WizardPagesListComponent implements OnInit {
     }
   }
 
-  updateWizardPages(event: IWizardPage) {
-    const index = this.inputs.indexOf(event);
-    this.inputs[index] = event;
-    this.allowNext = this.wizardPagesService.updateWizardPages(
-      this.inputs,
-      index
-    );
-  }
+  // updateWizardPages(event: IWizardPage) {
+  //   const index = this.inputs.indexOf(event);
+  //   this.inputs[index] = event;
+  //   this.allowNext = this.wizardPagesService.updateWizardPages(
+  //     this.inputs,
+  //     index
+  //   );
+  // }
 }

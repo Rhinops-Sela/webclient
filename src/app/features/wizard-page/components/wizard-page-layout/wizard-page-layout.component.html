@@ -8,5 +8,9 @@
 ></app-wizard-page-info>
 <app-wizard-page-form
   [wizardPageUserInputs]="wizardPage.userValueType"
-  (onSubmit)="updateWizardPage($event)"
+  [isFirstPage]="isFirstPage"
+  [isLastPage]="isLastPage"
+  [index]="index"
+  (onSubmit)="onSubmit($event)"
+  (onPrevious)="previous($event)"
 ></app-wizard-page-form>

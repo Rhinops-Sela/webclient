@@ -29,6 +29,7 @@ export class FormSelectInputComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
     this.ngControl = this.inj.get(NgControl);
+    this.onModelChange(this.options[this.options.length - 1]);
   }
 
   writeValue(obj: any): void {}
@@ -46,7 +47,6 @@ export class FormSelectInputComponent implements ControlValueAccessor, OnInit {
         let selectedOptions = [];
         this.ngControl.value.forEach((option) => {
           selectedOptions.push(this.options.indexOf(option));
-          
         });
         return selectedOptions;
       }

@@ -19,11 +19,13 @@ export class WizardPagesService implements IWizardPagesService {
     this.wizardPages$ = new BehaviorSubject<IWizardPage[]>(null);
   }
 
-  updateWizardPages(wizardPages: IWizardPage[], index: number): boolean {
-    console.log(index);
-    this.wizardPages = wizardPages;
+  updateWizardPages(index: number, userInputs: IUserInput[]): void {
+    if (this.wizardPages[index]) {
+      this.wizardPages[index].userValueType = userInputs;
+      this.wizardPages$.next(this.wizardPages);
+    } 
     // this.wizardPages$.next(this.wizardPages);
-    return (this.WizardPagesChangedIndexs[index] = true);
+    ///return (this.WizardPagesChangedIndexs[index] = true);
   }
 
   getPages(): Observable<any> {

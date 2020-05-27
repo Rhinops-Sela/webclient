@@ -1,19 +1,17 @@
 <span>
-  <label><h6>{{ label }}</h6></label>
+  <label
+    ><h6>{{ label }}</h6></label
+  >
   <div class="form-group">
-    <select class="form-control input" (change)="onSelect($event)" [multiple]="isMultiple">
+    <select
+      class="form-control input"
+      (change)="onSelect($event)"
+      [multiple]="isMultiple"
+    >
+      <option [selected]="true">select:</option>
       <option
         *ngFor="let i of options; let index = index"
-        [value]="
-          defaultSelectedOption().length
-            ? defaultSelectedOption().includes(index)
-            : index === defaultSelectedOption()
-        "
-        [selected]="
-          defaultSelectedOption().length
-            ? defaultSelectedOption().includes(index)
-            : index === defaultSelectedOption()
-        "
+        [value]="i"
         >{{ i }}</option
       >
     </select>

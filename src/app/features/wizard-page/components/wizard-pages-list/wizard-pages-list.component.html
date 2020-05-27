@@ -13,7 +13,7 @@
   style="margin-top: 20px; background-color: gray;"
   *ngIf="showWizardPages"
 >
-  <div class="row">
+  <!-- <div class="row">
     <button
       type="button"
       class="btn btn-primary btn-sm"
@@ -40,13 +40,17 @@
       *ngIf="this.inputsShowArrLength - 1 === this.inputIndexShow"
     >
       finish
-    </button>
-  </div>
+    </button> -->
+  <!-- </div> -->
   <div class="center-components" *ngFor="let i of inputs; let index = index">
     <div *ngIf="inputsShowArr && inputsShowArr[index]">
       <app-wizard-page-layout
         [wizardPage]="i"
-        (onChange)="updateWizardPages($event)"
+        [index]="index"
+        [isFirstPage]="index === 0"
+        [isLastPage]="index === inputs.length - 1"
+        (onPrevious)="previous($event)"
+        (onFormSubmit)="next($event)"
       >
       </app-wizard-page-layout>
     </div>

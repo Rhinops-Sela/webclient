@@ -8,7 +8,7 @@
 <label class="custom-control-label" for="switch1"><h6>show form?</h6> </label>
 </div> -->
 
-<form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
+<!-- <form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
   <div *ngFor="let key of subGroupEnablerKeys">
     <div *ngIf="subGroupEnabler[key]" class="custom-control custom-switch">
       <input
@@ -100,6 +100,100 @@
   <button type="submit" class="btn btn-success btn-block">
     submit
   </button>
+</form> -->
+
+<!-- <alert *ngIf="errors?.length > 0" type="danger">
+  <div *ngFor="let error of errors">
+    <strong>{{ error }}</strong>
+  </div>
+</alert> -->
+
+<form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
+  <div *ngFor="let input of wizardPageUserInputs; let i = index">
+    <div class="center-components">
+      <div *ngIf="allowInputShown('PASSWORD', i, input)">
+        <app-form-password-input
+          formControlName="PASSWORD{{ i }}"
+          placeholder=""
+          label="{{ input.displayName }}"
+        ></app-form-password-input>
+      </div>
+
+      <div
+        *ngIf="allowInputShown('NUMBER', i, input)"
+        
+      >
+        <app-form-number-input
+          formControlName="NUMBER{{ i }}"
+          label="{{ input.displayName }}"
+          placeholder=""
+        ></app-form-number-input>
+      </div>
+
+      <div *ngIf="allowInputShown('MULTI_SELECT', i, input)">
+        <app-form-select-input
+          label="{{ input.displayName }}"
+          formControlName="MULTI_SELECT{{ i }}"
+          isMultiple="true"
+          [options]="input.userValueTypeValues"
+        ></app-form-select-input>
+      </div>
+
+      <div *ngIf="allowInputShown('STRING', i, input)">
+        <app-form-text-input
+          class="input"
+          formControlName="STRING{{ i }}"
+          placeholder=""
+          label="{{ input.displayName }}"
+        ></app-form-text-input>
+      </div>
+
+      <div
+        *ngIf="allowInputShown('SELECT', i, input)"
+      >
+        <app-form-select-input
+          label="{{ input.displayName }}"
+          formControlName="SELECT{{ i }}"
+          [options]="input.userValueTypeValues"
+        ></app-form-select-input>
+      </div>
+    </div>
+
+    <div
+      *ngIf="allowInputShown('CHECKBOX', i, input)"
+    >
+      <app-form-checkbox-input
+        label="{{ input.displayName }}"
+        formControlName="CHECKBOX{{ i }}"
+      ></app-form-checkbox-input>
+    </div>
+
+    <div *ngIf="allowInputShown('ARR_STRING', i, input)">
+      <app-form-text-area-input
+        formControlName="ARR_STRING{{ i }}"
+        placeholder=""
+        label="{{ input.displayName }}"
+      >
+      </app-form-text-area-input>
+    </div>
+    <button *ngIf="input.subGroupRepeatable" (click)="onRepeat(input, i)">
+      +
+    </button>
+  </div>
+
+  <div class="actions">
+    <button
+      type="button"
+      class="btn btn-warning"
+      *ngIf="!isFirstPage"
+      (click)="previous()"
+    >
+      Previous
+    </button>
+    <button type="submit" class="btn btn-success">
+      {{ isLastPage ? "Finish" : "Next" }}
+    </button>
+  </div>
 </form>
 
 <alert *ngIf="errors?.length > 0" type="danger">
