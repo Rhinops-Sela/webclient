@@ -21,18 +21,14 @@ steps:
     ng build
   displayName: 'npm install and build'
 
-- script: |
-    pwd
-    ls
-  displayName: 'whats up'
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)\dist'
+    targetPath: '$(Build.SourcesDirectory)/dist'
     artifact: 'dist'
     publishLocation: 'pipeline'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)\node_modules'
+    targetPath: '$(Build.SourcesDirectory)/node_modules'
     artifact: 'node_modules'
     publishLocation: 'pipeline'
