@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/Rhinops-Sela/OSS/_apis/build/status/Rhinops-Sela.webclient?branchName=master)](https://dev.azure.com/Rhinops-Sela/OSS/_build/latest?definitionId=1&branchName=master)
+
 # K8BootstraperClientAngular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
