@@ -1,4 +1,12 @@
-import { Component, OnInit, forwardRef, Input, Injector } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  forwardRef,
+  Input,
+  Injector,
+  Output,
+  EventEmitter,
+} from "@angular/core";
 import {
   NG_VALUE_ACCESSOR,
   ControlValueAccessor,
@@ -22,16 +30,18 @@ export class FormCheckboxInputComponent
   onModelChange: Function = (value: any) => {};
   onModelTouched: Function = () => {};
   @Input() label: string;
+  @Input() subGroup: string;
+  @Input() enabler: boolean;
+  @Output() onChecked = new EventEmitter<any>();
   value = false;
   ngControl: NgControl;
   constructor(private inj: Injector) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   defaultChecked() {
     this.ngControl = this.inj.get(NgControl);
-    this.value = this.ngControl.value? true : false;
+    this.value = this.ngControl.value ? true : false;
     return this.value;
   }
   writeValue(value: string) {
@@ -45,8 +55,14 @@ export class FormCheckboxInputComponent
   registerOnTouched(fn: Function) {
     this.onModelTouched = fn;
   }
+
   onChange(value: any) {
     this.value = value;
     this.onModelChange(this.value);
+    this.onChecked.emit({
+      enabler: this.enabler,
+      subGroup: this.subGroup,
+      value: this.value,
+    });
   }
 }

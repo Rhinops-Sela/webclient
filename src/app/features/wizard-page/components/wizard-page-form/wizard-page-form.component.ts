@@ -44,7 +44,6 @@ export class WizardPageFormComponent implements OnInit {
     this.initializeInputs();
     this.initializeForm();
     this.inputsKeys = Object.keys(this.inputs);
-    
   }
 
   previous() {
@@ -58,10 +57,20 @@ export class WizardPageFormComponent implements OnInit {
 
     const allow = isSameType && keyExists;
 
-    return allow;
+    return allow && input.isVisible;
+    // return input.isVisible;
   }
 
-  subGroup: string = "";
+  handelCheckbox(event) {
+    this.inputsKeys.forEach((key) => {
+      const input = this.inputs[key];
+      if (!input.subGroupEnabler && input.subGroup === event.subGroup) {
+        input.isVisible = event.value;
+      }
+    });
+  }
+
+  // subGroup: string = "";
 
   initializeInputs() {
     let i = 0;
@@ -69,22 +78,17 @@ export class WizardPageFormComponent implements OnInit {
 
     for (i; i < length; i++) {
       const input = this.wizardPageUserInputs[i];
-      this.subGroups[this.subGroup] = true
+      // this.subGroups[this.subGroup] = true;
       if (input.subGroupEnabler) {
-        this.subGroup = input.subGroup;
-        // this.enablerShowInputs[this.subGroup] = [];
-        this.subGroups[this.subGroup] = false;
-        // console.log(this.subGroups)
+        // this.subGroup = input.subGroup;
+        // this.subGroups[this.subGroup] = false;
+        input.value = true;
       }
-
-      // if (this.subGroup === input.subGroup) {
-      //   this.enablerShowInputs[this.subGroup].push(input);
-      // }
 
       if (input.userValueType === "STRING[]") {
         input.userValueType = "ARR_STRING";
       }
-
+      input.isVisible = true;
       const formControl: FormControl = this.formInputService.createInput(input);
 
       const tmp = {
@@ -107,11 +111,9 @@ export class WizardPageFormComponent implements OnInit {
         relevanceKey = key;
       }
     });
-    console.log(relevanceKey);
 
     input.subGroupRepeatable = undefined;
     const i = parseInt(relevanceKey.split(type)[1]);
-    console.log(i);
     const tmp = {
       key: `${input.userValueType}${i + 1}`,
       value: {

@@ -9,6 +9,7 @@ import { FormTextAreaInputComponent } from "./components/form-text-area-input/fo
 import { FormTextInputComponent } from "./components/form-text-input/form-text-input.component";
 import { FormSelectInputComponent } from "./components/form-select-input/form-select-input.component";
 import { FormCheckboxInputComponent } from "./components/form-checkbox-input/form-checkbox-input.component";
+import { FormImageInputComponent } from "./components/form-image-input/form-image-input.component";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FormCheckboxInputComponent } from "./components/form-checkbox-input/for
     FormTextInputComponent,
     FormSelectInputComponent,
     FormCheckboxInputComponent,
+    FormImageInputComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -33,6 +35,7 @@ import { FormCheckboxInputComponent } from "./components/form-checkbox-input/for
     FormTextInputComponent,
     FormSelectInputComponent,
     FormCheckboxInputComponent,
+    FormImageInputComponent,
   ],
 })
 export class CustomFormInputsModule {}

@@ -119,10 +119,7 @@
         ></app-form-password-input>
       </div>
 
-      <div
-        *ngIf="allowInputShown('NUMBER', i, input)"
-        
-      >
+      <div *ngIf="allowInputShown('NUMBER', i, input)">
         <app-form-number-input
           formControlName="NUMBER{{ i }}"
           label="{{ input.displayName }}"
@@ -148,9 +145,7 @@
         ></app-form-text-input>
       </div>
 
-      <div
-        *ngIf="allowInputShown('SELECT', i, input)"
-      >
+      <div *ngIf="allowInputShown('SELECT', i, input)">
         <app-form-select-input
           label="{{ input.displayName }}"
           formControlName="SELECT{{ i }}"
@@ -160,11 +155,24 @@
     </div>
 
     <div
-      *ngIf="allowInputShown('CHECKBOX', i, input)"
+      *ngIf="allowInputShown('CHECKBOX', i, input) && !input.subGroupEnabler"
     >
       <app-form-checkbox-input
         label="{{ input.displayName }}"
         formControlName="CHECKBOX{{ i }}"
+        enabler="false"
+        subGroup="{{ input.subGroup }}"
+        (onChecked)="handelCheckbox($event)"
+      ></app-form-checkbox-input>
+    </div>
+
+    <div *ngIf="input.subGroupEnabler">
+      <app-form-checkbox-input
+        label="{{ input.displayName }}"
+        formControlName="CHECKBOX{{ i }}"
+        subGroup="{{ input.subGroup }}"
+        enabler="true"
+        (onChecked)="handelCheckbox($event)"
       ></app-form-checkbox-input>
     </div>
 
