@@ -23,12 +23,14 @@ steps:
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)\dist'
+    targetPath: '$(Build.SourcesDirectory)/dist'
     artifact: 'dist'
     publishLocation: 'pipeline'
+  displayName: 'Publish dist'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)\node_modules'
+    targetPath: '$(Build.SourcesDirectory)/node_modules'
     artifact: 'node_modules'
     publishLocation: 'pipeline'
+  displayName: 'Publish node_modules'
