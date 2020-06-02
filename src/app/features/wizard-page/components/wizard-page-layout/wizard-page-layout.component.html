@@ -6,11 +6,23 @@
   class="info"
   [wizardPageInfo]="wizardPage.info"
 ></app-wizard-page-info>
+<img
+  *ngIf="wizardPage.image"
+  src="{{ wizardPage.image }}"
+  width="100"
+  height="100"
+  alt="{{ wizardPage.header }} image"
+/>
 <app-wizard-page-form
   [wizardPageUserInputs]="wizardPage.userValueType"
   [isFirstPage]="isFirstPage"
   [isLastPage]="isLastPage"
   [index]="index"
+  [repeatable]="wizardPage.repeatable"
+  [isCondition]="isCondition"
+  [lastIsCondition]="wizardPage.formType ? true : false"
   (onSubmit)="onSubmit($event)"
   (onPrevious)="previous($event)"
+  (onSubmitCondition)="onSubmitCondition($event)"
+  (onSubmitForMore)="onSubmitForMore($event)"
 ></app-wizard-page-form>

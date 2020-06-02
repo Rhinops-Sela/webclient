@@ -20,18 +20,42 @@ export class WizardPagesListComponent implements OnInit {
   inputIndexShow: number;
   showWizardPages: boolean;
   allowNext: boolean = false;
+  firstIndexAfterGetMore: number = 0;
 
   next(index: number): void {
-    this.inputIndexShow = index;
+    console.log(index);
     if (index < this.inputsShowArrLength - 1) {
+      this.inputIndexShow = index;
       this.inputsShowArr[this.inputIndexShow] = false;
+      this.inputsShowArr[0] = false;
+      this.inputsShowArr[this.firstIndexAfterGetMore] = false;
       this.inputsShowArr[this.inputIndexShow + 1] = true;
+      console.log(this.inputsShowArr);
     }
   }
 
+  onFormSubmitForMore(index: number) {
+    this.wizardPagesService.wizardPages$.subscribe(
+      (res: IWizardPage[]) => {
+        if (res) {
+          this.inputs = res;
+          this.initializePagination();
+          this.inputIndexShow = index;
+          this.inputsShowArr[0] = false;
+          this.inputsShowArr[index + 1] = true;
+          this.firstIndexAfterGetMore = index + 1;
+        }
+      },
+      (err) => {
+        console.log(err);
+      },
+      () => {}
+    );
+  }
+
   previous(index: number): void {
-    this.inputIndexShow = index;
     if (this.inputIndexShow > 0) {
+      this.inputIndexShow = index;
       this.inputsShowArr[this.inputIndexShow] = false;
       this.inputsShowArr[this.inputIndexShow - 1] = true;
     }

@@ -1,58 +1,28 @@
-<label *ngIf="!showWizardPages" class="btn btn-primary">
-  upload json:
-  <input
-    type="file"
-    value="Upload json"
-    accept="json/*"
-    (change)="onSelectFile($event)"
-  />
-</label>
+<div class="container" >
+  <label *ngIf="!showWizardPages" class="btn btn-primary">
+    upload json:
+    <input
+      type="file"
+      value="Upload json"
+      accept="json/*"
+      (change)="onSelectFile($event)"
+    />
+  </label>
 
-<div
-  class="container"
-  style="margin-top: 20px; background-color: gray;"
-  *ngIf="showWizardPages"
->
-  <!-- <div class="row">
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      (click)="previous()"
-      [disabled]="0 >= this.inputIndexShow"
-      *ngIf="this.inputIndexShow > 0"
-    >
-      previous
-    </button>
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      (click)="next()"
-      [disabled]="!allowNext"
-      *ngIf="this.inputsShowArrLength - 1 > this.inputIndexShow"
-    >
-      next
-    </button>
-
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      (click)="next()"
-      *ngIf="this.inputsShowArrLength - 1 === this.inputIndexShow"
-    >
-      finish
-    </button> -->
-  <!-- </div> -->
-  <div class="center-components" *ngFor="let i of inputs; let index = index">
-    <div *ngIf="inputsShowArr && inputsShowArr[index]">
-      <app-wizard-page-layout
-        [wizardPage]="i"
-        [index]="index"
-        [isFirstPage]="index === 0"
-        [isLastPage]="index === inputs.length - 1"
-        (onPrevious)="previous($event)"
-        (onFormSubmit)="next($event)"
-      >
-      </app-wizard-page-layout>
+  <div *ngIf="showWizardPages">
+    <div class="center-components" *ngFor="let i of inputs; let index = index">
+      <div *ngIf="inputsShowArr && inputsShowArr[index]">
+        <app-wizard-page-layout
+          [wizardPage]="i"
+          [index]="index"
+          [isFirstPage]="index === 0"
+          [isLastPage]="index === inputs.length - 1"
+          (onPrevious)="previous($event)"
+          (onFormSubmit)="next($event)"
+          (onFormSubmitForMore)="onFormSubmitForMore($event)"
+        >
+        </app-wizard-page-layout>
+      </div>
     </div>
   </div>
 </div>

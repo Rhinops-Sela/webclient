@@ -15,7 +15,6 @@ export class FormInputService implements IFormInputService {
   createInput(userInput: IUserInput): FormControl {
     let validators = [];
     if (userInput.userValueType !== "CHECKBOX") {
-    } else {
       validators.push(Validators.required);
     }
 
@@ -23,14 +22,6 @@ export class FormInputService implements IFormInputService {
       if (userInput.userValueType !== "STRING")
         validators.push(Validators.pattern(userInput.regexValidation));
     }
-
-    // if (userInput.value && userInput.value.length) {
-      // userInput.values = userInput.value;
-    // }
-
-    // if (userInput.userInputs) {
-    //   // userInput.userInputs.forEach((userInput) => this.createInput(userInput));
-    // }
 
     const formControl = new FormControl(
       userInput.value || "",

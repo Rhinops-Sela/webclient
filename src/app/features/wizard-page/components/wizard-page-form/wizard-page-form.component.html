@@ -1,113 +1,3 @@
-<!-- <div *ngIf="enabler" class="custom-control custom-switch">
-  <input
-    type="checkbox"
-    class="custom-control-input"
-    (change)="showForm = $event.target.checked"
-    id="switch1"
-  />
-<label class="custom-control-label" for="switch1"><h6>show form?</h6> </label>
-</div> -->
-
-<!-- <form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
-  <div *ngFor="let key of subGroupEnablerKeys">
-    <div *ngIf="subGroupEnabler[key]" class="custom-control custom-switch">
-      <input
-        type="checkbox"
-        class="custom-control-input"
-        (change)="subGroupEnabler[key] = !$event.target.checked"
-        id="switch1"
-      />
-      <label class="custom-control-label" for="switch1"
-        ><h6>{{ key }}</h6>
-      </label>
-    </div>
-  </div>
-
-  <div class="center-components">
-    <div *ngFor="let input of inputs['PASSWORD']; let i = index">
-      <app-form-password-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        formControlName="PASSWORD{{ i }}"
-        placeholder="{{
-          input.userInput.subGroup + ': ' + input.userInput.displayName
-        }}"
-        label="{{ input.userInput.displayName }}"
-      ></app-form-password-input>
-    </div>
-
-    <div *ngFor="let input of inputs['STRING']; let i = index">
-      <app-form-text-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        class="input"
-        formControlName="STRING{{ i }}"
-        placeholder="{{
-          input.userInput.subGroup + ': ' + input.userInput.displayName
-        }}"
-        label="{{ input.userInput.displayName }}"
-      ></app-form-text-input>
-    </div>
-
-    <div *ngFor="let input of inputs['NUMBER']; let i = index">
-      <app-form-number-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        formControlName="NUMBER{{ i }}"
-        label="{{ input.userInput.displayName }}"
-        placeholder="{{
-          input.userInput.subGroup + ': ' + input.userInput.displayName
-        }}"
-      ></app-form-number-input>
-    </div>
-
-    <div *ngFor="let input of inputs['SELECT']; let i = index">
-      <app-form-select-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        label="{{ input.userInput.displayName }}"
-        formControlName="SELECT{{ i }}"
-        [options]="input.userInput.userValueTypeValues"
-      ></app-form-select-input>
-    </div>
-
-    <div *ngFor="let input of inputs['MULTI_SELECT']; let i = index">
-      <app-form-select-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        label="{{ input.userInput.displayName }}"
-        formControlName="MULTI_SELECT{{ i }}"
-        isMultiple="true"
-        [options]="input.userInput.userValueTypeValues"
-      ></app-form-select-input>
-    </div>
-
-    <div *ngFor="let input of inputs['CHECKBOX']; let i = index">
-      <app-form-checkbox-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        label="{{ input.userInput.displayName }}"
-        formControlName="CHECKBOX{{ i }}"
-      ></app-form-checkbox-input>
-    </div>
-
-    <div *ngFor="let input of inputs['STRING_ARR']; let i = index">
-      <app-form-text-area-input
-        *ngIf="!subGroupEnabler[input.userInput.subGroup]"
-        formControlName="STRING_ARR{{ i }}"
-        placeholder="{{
-          input.userInput.subGroup + ': ' + input.userInput.displayName
-        }}"
-        label="{{ input.userInput.displayName }}"
-      >
-      </app-form-text-area-input>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-success btn-block">
-    submit
-  </button>
-</form> -->
-
-<!-- <alert *ngIf="errors?.length > 0" type="danger">
-  <div *ngFor="let error of errors">
-    <strong>{{ error }}</strong>
-  </div>
-</alert> -->
-
 <form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
   <div *ngFor="let input of wizardPageUserInputs; let i = index">
     <div class="center-components">
@@ -160,7 +50,7 @@
       <app-form-checkbox-input
         label="{{ input.displayName }}"
         formControlName="CHECKBOX{{ i }}"
-        enabler="false"
+        enabler="{{ false }}"
         subGroup="{{ input.subGroup }}"
         (onChecked)="handelCheckbox($event)"
       ></app-form-checkbox-input>
@@ -171,7 +61,7 @@
         label="{{ input.displayName }}"
         formControlName="CHECKBOX{{ i }}"
         subGroup="{{ input.subGroup }}"
-        enabler="true"
+        enabler="{{ true }}"
         (onChecked)="handelCheckbox($event)"
       ></app-form-checkbox-input>
     </div>
@@ -184,12 +74,24 @@
       >
       </app-form-text-area-input>
     </div>
-    <button *ngIf="input.subGroupRepeatable" (click)="onRepeat(input, i)">
-      +
-    </button>
+    <i
+      *ngIf="input.toolTip && input.isVisible"
+      class="fas fa-question-circle"
+      tooltip="{{ input.toolTip }}"
+      [delay]="500"
+      placement="right"
+    ></i>
   </div>
 
   <div class="actions">
+    <button
+      type="button"
+      class="btn btn-info"
+      (click)="onRepeat()"
+      *ngIf="repeatable"
+    >
+      repeat
+    </button>
     <button
       type="button"
       class="btn btn-warning"

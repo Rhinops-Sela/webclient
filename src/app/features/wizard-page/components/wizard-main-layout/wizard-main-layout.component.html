@@ -1,4 +1,20 @@
-<div class="container p-3 my-3 bg-dark text-white" style="margin-top: 20px; margin-left: 600px; ">
+<div *ngIf="!showActions" class="center-components" >
+  <div *ngFor="let i of inputs; let index = index">
+    <app-wizard-page-layout
+      [wizardPage]="i"
+      [index]="index"
+      [isFirstPage]="index === 0"
+      [isLastPage]="index === inputs.length - 1"
+      [isCondition]="true"
+      (onPrevious)="previous($event)"
+      (onFormSubmit)="next($event)"
+      (onFormSubmitCondition)="onFormSubmitCondition($event)"
+    >
+    </app-wizard-page-layout>
+  </div>
+</div>
+
+<div *ngIf="showActions" class="container p-3 my-3 bg-black text-white">
   <button
     type="button"
     (click)="navigate(true)"
@@ -7,7 +23,7 @@
     placement="bottom"
     [delay]="500"
   >
-    import
+    <i class="fas fa-file-upload"></i>
   </button>
 
   <button
@@ -15,19 +31,10 @@
     (click)="navigate(false)"
     class="btn btn-primary"
     style="margin: 5px;"
-    tooltip=" new wizard pages"
+    tooltip="get new wizard pages from api"
     placement="bottom"
     [delay]="500"
   >
     new
   </button>
-
-  <!-- <label class="btn btn-primary">
-    import<input
-      type="file"
-      value="Upload json"
-      accept="json/*"
-      (change)="onSelectFile($event)"
-    />
-  </label> -->
 </div>

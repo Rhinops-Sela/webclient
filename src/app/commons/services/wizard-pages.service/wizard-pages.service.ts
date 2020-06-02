@@ -19,17 +19,31 @@ export class WizardPagesService implements IWizardPagesService {
     this.wizardPages$ = new BehaviorSubject<IWizardPage[]>(null);
   }
 
+  postPages(userInputs: IUserInput[]): Observable<any> {
+    const last = this.wizardPages.length - 1;
+    this.wizardPages[last].userValueType = userInputs;
+    return this.http.post(this.apiLink, this.wizardPages);
+  }
+
+  repeatPage(index: number, userInputs: IUserInput[]) {
+    this.updateWizardPages(index, userInputs);
+    const page = this.wizardPages[index];
+    if (page.repeatable) {
+      const tmp = { ...page };
+      this.wizardPages.splice(index, 0, tmp);
+      this.wizardPages$.next(this.wizardPages);
+    }
+  }
+
   updateWizardPages(index: number, userInputs: IUserInput[]): void {
     if (this.wizardPages[index]) {
       this.wizardPages[index].userValueType = userInputs;
       this.wizardPages$.next(this.wizardPages);
-    } 
-    // this.wizardPages$.next(this.wizardPages);
-    ///return (this.WizardPagesChangedIndexs[index] = true);
+    }
   }
 
-  getPages(): Observable<any> {
-    return this.http.get(this.apiLink).pipe(
+  getConditionsPages(): Observable<any> {
+    return this.http.get(`${this.apiLink}/condition`).pipe(
       map((data: IWizardPage[]) => {
         this.wizardPages = data.map((page: IWizardPage) => {
           return this.wizardPageAdapterPipe(page);
@@ -57,6 +71,19 @@ export class WizardPagesService implements IWizardPagesService {
     });
   }
 
+  getMorePages(): void {
+    this.http
+      .get(`${this.apiLink}/newpages`)
+      .subscribe((res: IWizardPage[]) => {
+        const wizardPages = res.map((page: IWizardPage) => {
+          return this.wizardPageAdapterPipe(page);
+        });
+        this.initializeWizardPagesChangedIndexs(wizardPages.length);
+        this.wizardPages = [...this.wizardPages, ...wizardPages];
+        this.wizardPages$.next(this.wizardPages);
+      });
+  }
+
   dataParser(pages): IWizardPage[] {
     return pages.map((page: IWizardPage) => {
       return this.wizardPageAdapterPipe(page);
@@ -75,7 +102,9 @@ export class WizardPagesService implements IWizardPagesService {
     const temp: IWizardPage = {
       header: page["ui-header"],
       info: page["ui-info"],
+      repeatable: page["ui-page-unrepeatable"] ? false : true,
       image: page["ui-image"],
+      formType: page["ui-form-type"],
       userValueType: page["ui-user-inputs"].map((ui) =>
         this.userInputAdapterPipe(ui)
       ),
@@ -87,7 +116,6 @@ export class WizardPagesService implements IWizardPagesService {
     const temp: IUserInput = {
       subGroup: ui["ui-sub-group"],
       subGroupEnabler: ui["ui-sub-group-enabler"],
-      subGroupRepeatable: ui["ui-sub-group-repeatable"],
       displayName: ui["ui-display-name"],
       userValueType: ui["ui-user-value-type"],
       userValueTypeValues: ui["ui-user-value-type-values"],
@@ -95,11 +123,6 @@ export class WizardPagesService implements IWizardPagesService {
       regexValidation: ui["ui-regex-validation"],
       toolTip: ui["ui-tooltip"],
       value: ui["value"],
-      // userInputs: ui["ui-user-inputs"]
-      //   ? ui["ui-user-inputs"].map(
-      //       (ui) => this.userInputAdapterPipe(ui) //"ui-user-inputs"
-      //     )
-      //   : null,
     };
 
     return temp;
