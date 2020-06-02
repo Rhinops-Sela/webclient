@@ -18,5 +18,19 @@ steps:
 - script: |
     npm install -g @angular/cli
     npm install
-    ng build --prod
+    ng build
   displayName: 'npm install and build'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/dist'
+    artifact: 'dist'
+    publishLocation: 'pipeline'
+  displayName: 'Publish dist'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/node_modules'
+    artifact: 'node_modules'
+    publishLocation: 'pipeline'
+  displayName: 'Publish node_modules'
