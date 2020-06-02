@@ -16,6 +16,8 @@ export interface IUserInput {
   toolTip?: string;
   value?: any;
   isVisible?: boolean;
+  errMsg: string;
+  inputType?: string;
   // values?: any[];
   // userInputs?: IUserInput[];
 }

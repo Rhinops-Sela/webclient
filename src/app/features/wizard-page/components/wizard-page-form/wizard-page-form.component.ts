@@ -55,6 +55,8 @@ export class WizardPageFormComponent implements OnInit {
     this.inputsKeys = Object.keys(this.inputs);
   }
 
+
+
   previous() {
     this.onPrevious.emit(this.index);
   }
@@ -141,12 +143,15 @@ export class WizardPageFormComponent implements OnInit {
       const { formControl } = this.inputs[key];
       const { input } = this.inputs[key];
       if (formControl.errors && input.isVisible) {
-        let err: string = `${input.displayName} `;
-        const errKeys = Object.keys(formControl.errors);
-        errKeys.forEach((errKey) => {
-          err += `${errKey} `;
-        });
-        this.errors.push(err);
+        // console.log(input.errMsg);
+
+        // let err: string = `${input.displayName} `;
+        // const errKeys = Object.keys(formControl.errors);
+        // errKeys.forEach((errKey) => {
+        //   err += `${errKey} `;
+        // });
+        // this.errors.push(err);
+        this.errors.push(input.errMsg);
       } else {
         input.value = formControl.value;
       }

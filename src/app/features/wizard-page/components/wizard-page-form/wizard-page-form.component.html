@@ -101,8 +101,15 @@
       Previous
     </button>
     <button type="submit" class="btn btn-success">
-      {{ isLastPage ? "Finish" : "Next" }}
+      {{
+        isLastPage &&
+        wizardPageUserInputs[wizardPageUserInputs.length - 1].inputType !==
+          "condition"
+          ? "Finish"
+          : "Next"
+      }}
     </button>
+    {{ input.inputType }}
   </div>
 </form>
 

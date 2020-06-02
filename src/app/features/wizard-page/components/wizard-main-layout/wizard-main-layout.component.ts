@@ -13,7 +13,7 @@ import { IUserInput } from "src/app/commons/models/IUserInput";
 })
 export class WizardMainLayoutComponent implements OnInit {
   navigationService: INavigationService;
-  showActions: boolean = false;
+  showActions: boolean = true;
   wizardPagesService: IWizardPagesService;
   inputs: IWizardPage[];
 

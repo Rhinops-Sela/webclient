@@ -30,6 +30,9 @@ export class WizardPagesService implements IWizardPagesService {
     const page = this.wizardPages[index];
     if (page.repeatable) {
       const tmp = { ...page };
+      tmp.userValueType.forEach((input) => {
+        input.value = undefined;
+      });
       this.wizardPages.splice(index, 0, tmp);
       this.wizardPages$.next(this.wizardPages);
     }
@@ -123,7 +126,10 @@ export class WizardPagesService implements IWizardPagesService {
       regexValidation: ui["ui-regex-validation"],
       toolTip: ui["ui-tooltip"],
       value: ui["value"],
+      errMsg: ui["ui-error-message"] || "ggg",
+      inputType: ui["ui-form-type"] || "regular",
     };
+    console.log(temp.inputType);
 
     return temp;
   }
