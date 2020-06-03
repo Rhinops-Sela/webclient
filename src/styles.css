@@ -14,10 +14,11 @@ body{
 .container{
     border: solid 1px lightgrey;
     margin: 15px auto; 
-    background: oldlace;
+    background: #fdf5e6 !important;
     border-radius: 5px;
     padding: 20px;
     max-width: 800px;
+    text-align: left !important;
 }
 
 .input{
@@ -44,7 +45,15 @@ H4{
 H6{
     font-size: 1.2rem !important;
     color: #000 !important;
-    margin: 11px 0 2px 0;
+    margin: 11px 0 10px 0;
+}
+.sub_title{
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.btn-success:focus {
+    box-shadow: 0 0 0 0 !important;
 }
 
 FORM{
@@ -52,7 +61,7 @@ FORM{
     background: #fffaef;
     box-shadow: 0 4px 9px -2px lightgrey;
     border: 0 !important;
-    padding: 0  10px  10px  10px;
+    padding: 1px  10px  10px  10px;
     border-radius: 5px;
 }
 
@@ -91,6 +100,10 @@ input[type=radio] {
     box-shadow: 1px 1px 5px -1px grey;
 }
 
+.div_checkbox{
+    margin: 10px 0 -3px 0;
+}
+
 .actions{
     width: 100%;
     overflow: hidden;
@@ -106,7 +119,7 @@ input[type=radio] {
 }
 
 .f_import{
-    background: oldlace; 
+    background: #fdf5e6; 
     margin: 15px auto; 
     padding: 7px 10px 10px 10px; 
     border: solid 0.5px silver; 
