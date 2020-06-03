@@ -1,9 +1,145 @@
-/* You can add global styles to this file, and also import other style files */
 body{
-    background-color: black;
+    background: #f1f7f1;
+}
+
+.fLeft{
+    float: left;
+}
+
+.fRight{
+    float: right;
+}
+
+
+.container{
+    border: solid 1px lightgrey;
+    margin: 15px auto; 
+    background: oldlace;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 800px;
 }
 
 .input{
     background-color: black;
     color: cadetblue;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #fcc96c;
+    border-color: lightgrey;
+}
+
+.btn-primary:hover {
+    background-color: orange;
+    border-color: lightgrey;
+}
+
+H4{
+    border-bottom: solid 1px lightgrey;
+    padding-bottom: 7px;
+}
+
+H6{
+    font-size: 1.2rem !important;
+    color: #000 !important;
+    margin: 11px 0 2px 0;
+}
+
+FORM{
+    margin-top: 16px 0;
+    background: #fffaef;
+    box-shadow: 0 4px 9px -2px lightgrey;
+    border: 0 !important;
+    padding: 0  10px  10px  10px;
+    border-radius: 5px;
+}
+
+.sept{
+    font-size: 0;
+    border: 0;
+    border-bottom: solid 1px #eeecec;
+    margin: 7px 0 0 0 !important;
+}
+
+input[type=checkbox], 
+input[type=radio] {
+    margin-right: 4px;
+}
+
+.btn_plus{
+    width: 20px;
+    height: 20px;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    font-weight:normal;
+    text-align: center;
+    border: solid 1px lightgrey;
+    border-radius: 3px;
+    background: #fcc96c;
+    margin: 3px 0 0 0px !important;
+    cursor: pointer;
+    box-shadow: 0;
+    transition: all 0.15s;
+}
+.btn_plus:hover{
+    line-height: 1.3rem;
+    font-size: 1.2rem;
+    background: orange;
+    font-weight: bold;
+    box-shadow: 1px 1px 5px -1px grey;
+}
+
+.actions{
+    width: 100%;
+    overflow: hidden;
+    margin-top: 35px;
+}
+
+.ac_1{
+    float: right;
+    margin-right: 20px;
+}
+.ac_2{
+    float: right;
+}
+
+.f_import{
+    background: oldlace; 
+    margin: 15px auto; 
+    padding: 7px 10px 10px 10px; 
+    border: solid 0.5px silver; 
+    box-shadow: 0px 0px 6px 1px lightgrey;
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+.f_import_h{
+    text-align: center; 
+    margin-top: 5px;
+}
+
+.f_import_1{
+    margin-top: 20px; 
+}
+
+
+
+/* ############### RESPONSIVE ############# */
+@media only screen and (max-width: 500px) {
+
+    .container{
+        max-width: 100%;
+    }
+
+    .f_import{
+        max-width: 100%;
+    }
+    
+    .ac_1{
+        float: left;
+        margin-right: 0;
+    }
+    
 }

@@ -2,9 +2,8 @@
   <label
     ><h6>{{ label }}</h6></label
   >
-  <div class="form-group">
     <select
-      class="form-control input"
+      class="form-control"
       (change)="onSelect($event)"
       [multiple]="isMultiple"
     >
@@ -15,5 +14,4 @@
         >{{ i }}</option
       >
     </select>
-  </div>
 </span>

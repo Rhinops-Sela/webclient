@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="center-components">
+  <div>
     <div *ngFor="let input of inputs['PASSWORD']; let i = index">
       <app-form-password-input
         *ngIf="!subGroupEnabler[input.userInput.subGroup]"
@@ -110,7 +110,7 @@
 
 <form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
   <div *ngFor="let input of wizardPageUserInputs; let i = index">
-    <div class="center-components">
+    <div>
       <div *ngIf="allowInputShown('PASSWORD', i, input)">
         <app-form-password-input
           formControlName="PASSWORD{{ i }}"
@@ -184,25 +184,32 @@
       >
       </app-form-text-area-input>
     </div>
-    <button *ngIf="input.subGroupRepeatable" (click)="onRepeat(input, i)">
+    
+    <div class="btn_plus" *ngIf="input.subGroupRepeatable" (click)="onRepeat(input, i)">
       +
-    </button>
+    </div>
+    
+    <div class="sept"></div>
+
   </div>
 
   <div class="actions">
-    <button
-      type="button"
-      class="btn btn-warning"
+    <button type="submit" 
+      class="btn btn-success ac_2">
+      {{ isLastPage ? "Finish" : "Next" }}
+    </button>
+
+    <button 
+      class="btn btn-warning ac_1"
       *ngIf="!isFirstPage"
       (click)="previous()"
     >
       Previous
     </button>
-    <button type="submit" class="btn btn-success">
-      {{ isLastPage ? "Finish" : "Next" }}
-    </button>
   </div>
+
 </form>
+
 
 <alert *ngIf="errors?.length > 0" type="danger">
   <div *ngFor="let error of errors">

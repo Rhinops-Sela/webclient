@@ -1,33 +1,35 @@
-<div class="container p-3 my-3 bg-dark text-white" style="margin-top: 20px; margin-left: 600px; ">
-  <button
-    type="button"
-    (click)="navigate(true)"
-    class="btn btn-primary"
-    tooltip="import some wizardPages.json from local machine"
-    placement="bottom"
-    [delay]="500"
-  >
-    import
-  </button>
+<div class="container my-3 text-white f_1">
+  <div class="f_2">
+    <button
+      type="button"
+      (click)="navigate(true)"
+      class="btn btn-primary fLeft"
+      tooltip="import some wizardPages.json from local machine"
+      placement="bottom"
+      [delay]="500"
+    >
+      IMPORT
+    </button>
 
-  <button
-    type="button"
-    (click)="navigate(false)"
-    class="btn btn-primary"
-    style="margin: 5px;"
-    tooltip=" new wizard pages"
-    placement="bottom"
-    [delay]="500"
-  >
-    new
-  </button>
+    <button
+      type="button"
+      (click)="navigate(false)"
+      class="btn btn-primary fRight"
+      tooltip=" new wizard pages"
+      placement="bottom"
+      [delay]="500"
+    >
+      NEW
+    </button>
 
-  <!-- <label class="btn btn-primary">
-    import<input
-      type="file"
-      value="Upload json"
-      accept="json/*"
-      (change)="onSelectFile($event)"
-    />
-  </label> -->
+    <!-- <label class="btn btn-primary">
+      import<input
+        type="file"
+        value="Upload json"
+        accept="json/*"
+        (change)="onSelectFile($event)"
+      />
+    </label> -->
+  </div>
+  
 </div>

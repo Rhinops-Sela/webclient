@@ -1,3 +1,18 @@
-.container{
-    height: 1500px;
+.f_1{
+    margin: 20px auto;
+}
+.f_2{
+    text-align: center;
+    overflow: hidden;
+}
+
+.f_2 > button{    
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: none;
+    transition: all 0.2s;
+}
+
+.f_2 > button:hover{ 
+    text-shadow: 1px 1px 2px black;
 }

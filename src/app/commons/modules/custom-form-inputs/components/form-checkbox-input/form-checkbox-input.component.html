@@ -1,11 +1,11 @@
 <div>
-  <label
-    ><h6>{{ label }}</h6></label
-  >
   <input
-    class="input"
-    (change)="onChange($event.target.checked)"
-    type="checkbox"
-    [checked]="defaultChecked()"
+  class=""
+  (change)="onChange($event.target.checked)"
+  type="checkbox"
+  [checked]="defaultChecked()"
   />
+
+  <label><h6>{{ label }}</h6></label>
+
 </div>

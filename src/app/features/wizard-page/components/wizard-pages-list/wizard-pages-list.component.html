@@ -1,16 +1,19 @@
-<label *ngIf="!showWizardPages" class="btn btn-primary">
-  upload json:
+<div *ngIf="!showWizardPages" class="f_import">  
+  
+  <h4 class="f_import_h">
+    Please upload JSON file:
+  </h4>
+  
   <input
     type="file"
     value="Upload json"
     accept="json/*"
     (change)="onSelectFile($event)"
   />
-</label>
+</div>
 
 <div
-  class="container"
-  style="margin-top: 20px; background-color: gray;"
+  class="container f_import_1"
   *ngIf="showWizardPages"
 >
   <!-- <div class="row">
@@ -42,7 +45,7 @@
       finish
     </button> -->
   <!-- </div> -->
-  <div class="center-components" *ngFor="let i of inputs; let index = index">
+  <div *ngFor="let i of inputs; let index = index">
     <div *ngIf="inputsShowArr && inputsShowArr[index]">
       <app-wizard-page-layout
         [wizardPage]="i"
