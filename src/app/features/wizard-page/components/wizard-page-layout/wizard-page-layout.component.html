@@ -13,6 +13,11 @@
   [isFirstPage]="isFirstPage"
   [isLastPage]="isLastPage"
   [index]="index"
+  [repeatable]="wizardPage.repeatable"
+  [isCondition]="isCondition"
+  [lastIsCondition]="wizardPage.formType ? true : false"
   (onSubmit)="onSubmit($event)"
   (onPrevious)="previous($event)"
+  (onSubmitCondition)="onSubmitCondition($event)"
+  (onSubmitForMore)="onSubmitForMore($event)"
 ></app-wizard-page-form>

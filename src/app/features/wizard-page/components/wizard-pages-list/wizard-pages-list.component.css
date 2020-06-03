@@ -1,0 +1,6 @@
+.container{
+    align-items: center;
+  /* flex-direction: row; */
+  text-align: center;
+  background-color:gray;
+}

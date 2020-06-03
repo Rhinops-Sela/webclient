@@ -31,7 +31,7 @@ export class FormCheckboxInputComponent
   onModelTouched: Function = () => {};
   @Input() label: string;
   @Input() subGroup: string;
-  @Input() enabler: boolean;
+  @Input() enabler: string;
   @Output() onChecked = new EventEmitter<any>();
   value = false;
   ngControl: NgControl;
@@ -60,7 +60,7 @@ export class FormCheckboxInputComponent
     this.value = value;
     this.onModelChange(this.value);
     this.onChecked.emit({
-      enabler: this.enabler,
+      enabler: this.enabler === "true" ? true : false,
       subGroup: this.subGroup,
       value: this.value,
     });

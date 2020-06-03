@@ -108,6 +108,7 @@
   </div>
 </alert> -->
 
+
 <form [formGroup]="wizardPageForm" (ngSubmit)="submit()">
   <div *ngFor="let input of wizardPageUserInputs; let i = index">
     <div>
@@ -160,7 +161,7 @@
       <app-form-checkbox-input
         label="{{ input.displayName }}"
         formControlName="CHECKBOX{{ i }}"
-        enabler="false"
+        enabler="{{ false }}"
         subGroup="{{ input.subGroup }}"
         (onChecked)="handelCheckbox($event)"
       ></app-form-checkbox-input>
@@ -171,7 +172,7 @@
         label="{{ input.displayName }}"
         formControlName="CHECKBOX{{ i }}"
         subGroup="{{ input.subGroup }}"
-        enabler="true"
+        enabler="{{ true }}"
         (onChecked)="handelCheckbox($event)"
       ></app-form-checkbox-input>
     </div>
@@ -184,7 +185,7 @@
       >
       </app-form-text-area-input>
     </div>
-    
+
     <div class="btn_plus" *ngIf="input.subGroupRepeatable" (click)="onRepeat(input, i)">
       +
     </div>
@@ -206,6 +207,7 @@
     >
       Previous
     </button>
+
   </div>
 
 </form>
