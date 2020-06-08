@@ -52,7 +52,7 @@ export class GlobalProviderService {
 
 
   private loadFromLocalStorage(): boolean {
-    const storedForm = localStorage.getItem('storedForm');
+    const storedForm = this.getLocalStorageForm();
     if (!storedForm) {
       return false;
     }
@@ -77,7 +77,7 @@ export class GlobalProviderService {
   public uploadForm(jsonForm: string) {
     try {
       this.allDomains = JSON.parse(jsonForm);
-      localStorage.setItem('storedForm', jsonForm);
+      this.storeLocalStorage(this.allDomains);
       return { result: true };
     } catch (error) {
       console.log('Failed to upload file: ', error.message);
@@ -85,6 +85,38 @@ export class GlobalProviderService {
     }
   }
 
+  private getLocalStorageForm() {
+    const form = localStorage.getItem('storedForm');
+    return form;
+  }
+  private getLocalStorageDomain() {
+    const domain = localStorage.getItem('activeDomain');
+    return domain;
+  }
+
+  private storeLocalStorage(storedForm?: IDomain[], activeDomain?: IDomain) {
+    let refresh = false;
+    if (storedForm) {
+      localStorage.setItem('storedForm', JSON.stringify(storedForm));
+      refresh = true;
+    }
+    if (activeDomain) {
+      refresh = true;
+      localStorage.setItem('activeDomain', JSON.stringify(activeDomain));
+    }
+
+    this.refreshRequired.next(refresh);
+  }
+
+  private deleteLocalStorage(storedForm = false, activeDomain = false) {
+    if (storedForm) {
+      localStorage.removeItem('storedForm');
+    }
+    if (activeDomain) {
+      localStorage.removeItem('activeDomain');
+    }
+    this.refreshRequired.next(storedForm || activeDomain);
+  }
 
   public savePage(modifiedPage: IPage, form?: FormGroup) {
     const pageToModify = this.activeDomain.pages.find(page => page.id === modifiedPage.id);
@@ -101,8 +133,7 @@ export class GlobalProviderService {
       pageToModify.modified = false;
       this.setDomainIcon(false);
     }
-    localStorage.setItem('storedForm', JSON.stringify(this.allDomains));
-    localStorage.setItem('activeDomain', JSON.stringify(this.activeDomain));
+    this.storeLocalStorage(this.allDomains, this.activeDomain);
   }
 
   public saveDomain(modifiedDomain: IDomain) {
@@ -110,9 +141,7 @@ export class GlobalProviderService {
     for (let i = 0; i < this.allDomains.length; i++) {
       if (this.allDomains[i].id === modifiedDomain.id) {
         this.allDomains[i] = modifiedDomain;
-        localStorage.setItem('activeDomain', JSON.stringify(modifiedDomain));
-        localStorage.setItem('storedForm', JSON.stringify(this.allDomains));
-        this.refreshRequired.next(true);
+        this.storeLocalStorage(this.allDomains);
         return;
       }
     }
@@ -167,14 +196,14 @@ export class GlobalProviderService {
     });
     const index = this.activeDomain.pages.findIndex(page => page.id === pageSource.id);
     this.activeDomain.pages.splice(index + 1, 0, newPage);
-    localStorage.setItem('activeDomain', JSON.stringify(this.activeDomain));
+    this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
   }
 
   public deletePage(pageSource: IPage) {
     const index = this.activeDomain.pages.findIndex(page => page.id === pageSource.id);
     this.activeDomain.pages.splice(index, 1);
-    localStorage.setItem('activeDomain', JSON.stringify(this.activeDomain));
+    this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
   }
 
@@ -201,14 +230,12 @@ export class GlobalProviderService {
 
   public onDomainChange(activeDomain: IDomain) {
     this.activeDomain = activeDomain;
-    localStorage.setItem('activeDomain', JSON.stringify(activeDomain));
+    this.storeLocalStorage(null, activeDomain);
     this.refreshRequired.next(true);
   }
 
   public onPageChange(activePage: IPage) {
     this.activePage = activePage;
-    localStorage.setItem('activePage', JSON.stringify(activePage));
-    this.refreshRequired.next(true);
   }
 
   public getActivePage(): IPage {
@@ -217,14 +244,13 @@ export class GlobalProviderService {
 
 
   public getActiveDomain(): IDomain {
-    const fromStorage = JSON.parse(localStorage.getItem('activeDomain'));
+    const fromStorage = JSON.parse(this.getLocalStorageDomain());
     const result = fromStorage || this.activeDomain;
     return result;
   }
 
   public resetActiveDomainText() {
     this.activeDomain = null;
-    localStorage.removeItem('activeDomain');
-    this.refreshRequired.next(true);
+    this.deleteLocalStorage(false, true);
   }
 }
