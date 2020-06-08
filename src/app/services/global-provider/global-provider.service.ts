@@ -236,6 +236,7 @@ export class GlobalProviderService {
 
   public onPageChange(activePage: IPage) {
     this.activePage = activePage;
+    this.refreshRequired.next(true);
   }
 
   public getActivePage(): IPage {
