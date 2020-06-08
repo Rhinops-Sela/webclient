@@ -233,4 +233,10 @@ export class GlobalProviderService {
     const result = fromStorage || this.activeDomain;
     return result;
   }
+
+  public resetActiveDomainText(){
+    this.activeDomain = null;
+    localStorage.removeItem('activeDomain');
+    this.refreshRequired.next(true);
+  }
 }

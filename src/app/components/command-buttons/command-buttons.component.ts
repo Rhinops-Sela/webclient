@@ -20,6 +20,7 @@ export class CommandButtonsComponent implements OnInit {
 
   home() {
     this.router.navigate(['']);
+    this.globalService.resetActiveDomainText()
   }
 
   deleteAll() {

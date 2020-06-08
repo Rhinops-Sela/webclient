@@ -19,14 +19,14 @@ import { MatListModule } from '@angular/material/list';
 import { InputComponentComponent } from './components/input/input-component.component';
 import { DomainsLayoutComponent } from './components/domains-layout/domains-layout.component';
 import { PageLayoutComponent } from './components/page-layout/page-layout.component';
-import { ToolbarComponentComponent } from './components/toolbar/toolbar-component.component';
+import { ToolbarComponent } from './components/toolbar/toolbar-layout.component';
 import { PagesLayoutComponent } from './components/pages-layout/pages-layout.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { CommandButtonsComponent } from './components/command-buttons/command-buttons.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
-  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponentComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent],
+  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent],
   imports: [
     FontAwesomeModule,
     BrowserModule,
