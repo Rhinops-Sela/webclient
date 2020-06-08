@@ -86,7 +86,7 @@ export class SideNavComponent implements OnInit {
         this.domainService.onDomainChange(domain);
         this.router.navigate(['/pages']);
       }
-    })
+    });
   }
 
   pageSelected(pageDisplayName: string) {
@@ -94,6 +94,7 @@ export class SideNavComponent implements OnInit {
       domain.pages.forEach(page => {
         if (page.displayName === pageDisplayName) {
           this.domainService.onPageChange(page);
+          this.domainService.onDomainChange(domain);
           this.router.navigate(['/page']);
         }
       });
