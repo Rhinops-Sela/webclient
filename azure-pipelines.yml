@@ -40,7 +40,7 @@ jobs:
 
 - job: Publish
   displayName: Publish a new container image
-  condition: and(succeeded(), eq(variables['deploy'], 'true'))
+  condition: and(succeeded(), eq(variables['publish'], 'true'))
   dependsOn: Build
   steps:
     - template: build-and-push.yaml@devops 
