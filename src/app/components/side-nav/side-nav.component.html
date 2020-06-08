@@ -1,13 +1,3 @@
-<!-- <mat-nav-list class="side-bar-list" *ngFor="let domain of domains; let i = index">
-  <div mat-list-item>
-    <button class="sidnav-button" (click)="domainSelected(domain)" mat-button>
-      <mat-icon>{{ domain.icon }}</mat-icon>
-      {{ domain.displayName }}
-    </button>
-  </div>
-</mat-nav-list>
- -->
-
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" #tree>
   <mat-tree-node  matTreeNodePadding matTreeNodePaddingIndent="10" *matTreeNodeDef="let node" matTreeNodePadding>
     <button class="sidnav-button" (click)="pageSelected(node.name)" mat-button>
