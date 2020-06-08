@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { IDomain } from 'src/app/interfaces/IDomain';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -50,7 +50,7 @@ export class SideNavComponent implements OnInit {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
 
-  constructor(private domainService: GlobalProviderService, private router: Router) {
+  constructor(private domainService: GlobalService, private router: Router) {
     this.domainService.refreshRequired.subscribe(() => {
       this.loadTree();
     });

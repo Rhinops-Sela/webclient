@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { IPage } from 'src/app/interfaces/IPage';
-import { FormProviderService } from 'src/app/services/form-provider/form-provider.service';
+import { FormService } from 'src/app/services/form/form.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,8 +16,8 @@ export class PageLayoutComponent implements OnInit {
   page: IPage;
 
   constructor(
-    public formService: FormProviderService,
-    private globalService: GlobalProviderService,
+    public formService: FormService,
+    private globalService: GlobalService,
     private router: Router
   ) {
 

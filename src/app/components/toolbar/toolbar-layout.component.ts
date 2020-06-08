@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 @Component({
   selector: 'app-toolbar-component',
   templateUrl: './toolbar-layout.component.html',
@@ -10,7 +10,7 @@ import { GlobalProviderService } from 'src/app/services/global-provider/global-p
 export class ToolbarComponent implements OnInit {
   faGithub = faGithub;
   displayNameDomain: string;
-  constructor(public globalService: GlobalProviderService) { }
+  constructor(public globalService: GlobalService) { }
 
   ngOnInit(): void {
     this.displayNameDomain = 'Home';

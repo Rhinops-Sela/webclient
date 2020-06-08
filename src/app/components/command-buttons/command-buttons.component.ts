@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-m
 export class CommandButtonsComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   uploader: any;
-  constructor(private globalService: GlobalProviderService, private router: Router, public dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private globalService: GlobalService, private router: Router, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }

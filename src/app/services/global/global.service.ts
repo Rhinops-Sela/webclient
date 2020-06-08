@@ -3,17 +3,17 @@ import { IDomain } from '../../interfaces/IDomain';
 import { IPage } from 'src/app/interfaces/IPage';
 import { IInput } from 'src/app/interfaces/IInput';
 import { of, Subject } from 'rxjs';
-import allDomains from '../../../assets/template.json';
 import { FormGroup } from '@angular/forms';
+import { BackendService } from '../backend/backend.service';
 @Injectable({
   providedIn: 'root',
 })
-export class GlobalProviderService {
+export class GlobalService {
   private activeDomain: IDomain;
   private activePage: IPage;
   public refreshRequired: Subject<boolean> = new Subject<boolean>();
   private allDomains: IDomain[];
-  constructor() {
+  constructor(private backendService: BackendService) {
   }
 
 
@@ -34,21 +34,22 @@ export class GlobalProviderService {
     return this.allDomains;
   }
 
-  private async loadDomains(): Promise<IDomain[]> {
+  private async loadDomains(){
     if (!this.loadFromLocalStorage()) {
-      this.allDomains = allDomains;
+      this.allDomains = await this.backendService.getFormTemplate();
       this.allDomains.forEach(domain => {
-        domain.id = GlobalProviderService.newGuid();
+        domain.id = GlobalService.newGuid();
         domain.pages.forEach(page => {
-          page.id = GlobalProviderService.newGuid();
+          page.id = GlobalService.newGuid();
           page.inputs.forEach(input => {
-            input.id = GlobalProviderService.newGuid();
+            input.id = GlobalService.newGuid();
           });
         });
       });
     }
     return this.allDomains;
   }
+
 
 
   private loadFromLocalStorage(): boolean {
@@ -190,9 +191,9 @@ export class GlobalProviderService {
 
   public clonePage(pageSource: IPage) {
     const newPage = JSON.parse(JSON.stringify(pageSource));
-    newPage.id = GlobalProviderService.newGuid();
+    newPage.id = GlobalService.newGuid();
     newPage.inputs.forEach(input => {
-      input.id = GlobalProviderService.newGuid();
+      input.id = GlobalService.newGuid();
     });
     const index = this.activeDomain.pages.findIndex(page => page.id === pageSource.id);
     this.activeDomain.pages.splice(index + 1, 0, newPage);

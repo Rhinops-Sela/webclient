@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IDomain } from 'src/app/interfaces/IDomain';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 @Component({
   selector: 'app-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
@@ -10,7 +10,7 @@ import { GlobalProviderService } from 'src/app/services/global-provider/global-p
 export class ConfirmationModalComponent implements OnInit {
   domainList: IDomain[];
   panelOpenState = true;
-  constructor(public globalService: GlobalProviderService, public dialogRef: MatDialogRef<ConfirmationModalComponent>
+  constructor(public globalService: GlobalService, public dialogRef: MatDialogRef<ConfirmationModalComponent>
   ) {
     this.domainList = [];
   }

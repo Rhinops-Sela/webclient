@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { IPage } from 'src/app/interfaces/IPage';
 import { IDomain } from 'src/app/interfaces/IDomain';
@@ -11,7 +11,7 @@ import { IDomain } from 'src/app/interfaces/IDomain';
 export class PagesLayoutComponent implements OnInit {
   activeDomain: IDomain;
   page: IPage;
-  constructor(public globalService: GlobalProviderService, private route: ActivatedRoute, private router: Router) {
+  constructor(public globalService: GlobalService, private route: ActivatedRoute, private router: Router) {
 
   }
 

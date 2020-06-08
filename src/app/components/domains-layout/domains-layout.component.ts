@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IDomain } from 'src/app/interfaces/IDomain';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { GlobalProviderService } from 'src/app/services/global-provider/global-provider.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 @Component({
   selector: 'app-domain-layout',
   templateUrl: './domains-layout.component.html',
@@ -13,7 +13,7 @@ export class DomainsLayoutComponent implements OnInit {
   public domains: IDomain[];
   @Input() selectedDomain: IDomain;
   form: FormGroup;
-  constructor(public domainService: GlobalProviderService, private router: Router, private route: ActivatedRoute) { }
+  constructor(public domainService: GlobalService, private router: Router, private route: ActivatedRoute) { }
   ngOnInit() {
     this.domainService.getAllDomains().then(form => {
       this.domains = form;

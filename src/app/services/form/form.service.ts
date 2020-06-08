@@ -5,7 +5,7 @@ import { IInput } from 'src/app/interfaces/IInput';
 @Injectable({
   providedIn: 'root',
 })
-export class FormProviderService {
+export class FormService {
   constructor() { }
   toFormGroup(inputs: IInput[]) {
     const group: any = {};
