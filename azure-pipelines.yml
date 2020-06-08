@@ -18,6 +18,7 @@ pool:
 
 jobs:
 - job: Build
+  displayName: Build webclient
   steps:
   - task: NodeTool@0
     inputs:
@@ -36,3 +37,10 @@ jobs:
       artifact: 'wizard'
       publishLocation: 'pipeline'
     displayName: 'Publish wizard'
+
+- job: Publish
+  displayName: Publish a new container image
+  condition: and(succeeded(), eq(variables['deploy'], 'true'))
+  dependsOn: Build
+  steps:
+    - template: build-and-push.yaml@devops 
