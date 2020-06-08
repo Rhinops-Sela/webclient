@@ -34,3 +34,10 @@ steps:
     artifact: 'node_modules'
     publishLocation: 'pipeline'
   displayName: 'Publish node_modules'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/package.json'
+    artifact: 'node_modules'
+    publishLocation: 'pipeline'
+  displayName: 'Publish package.json'
