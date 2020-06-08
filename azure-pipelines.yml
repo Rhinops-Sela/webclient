@@ -36,5 +36,3 @@ jobs:
       artifact: 'wizard'
       publishLocation: 'pipeline'
     displayName: 'Publish wizard'
-
-  - template: build-and-push.yaml@devops
