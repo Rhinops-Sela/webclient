@@ -3,6 +3,13 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+resources:
+  repositories:
+    - repository: devops
+      type: github
+      name: Rhinops-Sela/devops
+      endpoint: Rhinops-Sela
+
 trigger:
 - master
 
@@ -27,3 +34,7 @@ steps:
     artifact: 'wizard'
     publishLocation: 'pipeline'
   displayName: 'Publish wizard'
+  
+
+- ${{ if eq(parameters.deploy, $true) }}:
+  - template: build-and-push.yml@devops
