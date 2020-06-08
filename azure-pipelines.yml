@@ -38,6 +38,13 @@ steps:
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.SourcesDirectory)/package.json'
-    artifact: 'package.json'
+    artifact: 'package_json'
     publishLocation: 'pipeline'
   displayName: 'Publish package.json'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/lib/init'
+    artifact: 'lib_init'
+    publishLocation: 'pipeline'
+  displayName: 'Publish lib/init'
