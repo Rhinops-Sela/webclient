@@ -90,26 +90,14 @@ export class GlobalProviderService {
     const pageToModify = this.activeDomain.pages.find(page => page.id === modifiedPage.id);
     if (form) {
       pageToModify.inputs.forEach((input) => {
-        try {
-          if (form.controls[input.id]) {
-            input.value = form.controls[input.id].value;
-          }
-        } catch (error) {
-          console.log(error);
+        if (form.controls[input.id]) {
+          input.value = form.controls[input.id].value;
         }
       });
       pageToModify.modified = true;
       this.setDomainIcon(true);
     } else {
-      pageToModify.inputs.forEach((input) => {
-        try {
-          if (form.controls[input.id]) {
-            input.value = modifiedPage.inputs[input.id].value;
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      });
+      pageToModify.inputs = modifiedPage.inputs;
       pageToModify.modified = false;
       this.setDomainIcon(false);
     }
@@ -234,7 +222,7 @@ export class GlobalProviderService {
     return result;
   }
 
-  public resetActiveDomainText(){
+  public resetActiveDomainText() {
     this.activeDomain = null;
     localStorage.removeItem('activeDomain');
     this.refreshRequired.next(true);
