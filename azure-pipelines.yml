@@ -36,8 +36,5 @@ jobs:
       artifact: 'wizard'
       publishLocation: 'pipeline'
     displayName: 'Publish wizard'
-    
-- job: Release
-  condition: and(succeeded(), eq(variables['deploy'], 'true'))
-  steps:
-    - template: build-and-push.yaml@devops
+
+  - template: build-and-push.yaml@devops
