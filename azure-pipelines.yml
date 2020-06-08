@@ -16,25 +16,28 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '12.x'
-  displayName: 'Install Node.js'
+jobs:
+- job: Build
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
 
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
+  - script: |
+      npm install -g @angular/cli
+      npm install
+      ng build --prod
+    displayName: 'npm install and build'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.SourcesDirectory)/dist/wizard'
-    artifact: 'wizard'
-    publishLocation: 'pipeline'
-  displayName: 'Publish wizard'
-  
-
-- ${{ if eq(parameters.deploy, $true) }}:
-  - template: build-and-push.yml@devops
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/dist/wizard'
+      artifact: 'wizard'
+      publishLocation: 'pipeline'
+    displayName: 'Publish wizard'
+    
+- job: Release
+  condition: and(succeeded(), eq(variables['deploy'], 'true'))
+  steps:
+    - template: build-and-push.yaml@devops
