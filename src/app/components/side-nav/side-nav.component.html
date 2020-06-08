@@ -1,0 +1,8 @@
+<mat-nav-list class="side-bar-list" *ngFor="let domain of domains; let i = index">
+  <div mat-list-item>
+    <button class="sidnav-button" (click)="domainSelected(domain)" mat-button>
+      <mat-icon>{{ domain.icon }}</mat-icon>
+      {{ domain.displayName }}
+    </button>
+  </div>
+</mat-nav-list>

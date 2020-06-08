@@ -1,0 +1,37 @@
+<div>
+  <div class="header-row">
+    <mat-toolbar color="primary">Review & Confirm</mat-toolbar>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let domain of domainList">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ domain.displayName}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let page of domain.pages">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ page.displayName}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="fields-container">
+            <mat-form-field class="example-full-width" *ngFor="let input of page.inputs">
+              <mat-label>{{input.displayName}}</mat-label>
+              <input matInput disabled value="{{input.value}}">
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="button-row">
+    <button class="form-button" color="accent" mat-button (click)="complete(true)">
+      Confirm
+    </button>
+    <button class="form-button" color="accent" mat-button (click)="complete(false)">
+      Cancel
+    </button>
+  </div>
+</div>

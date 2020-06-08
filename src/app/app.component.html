@@ -1,0 +1,17 @@
+<ng-container>
+  <app-toolbar-component></app-toolbar-component>
+  <mat-sidenav-container class="layout-container">
+    <mat-sidenav opened mode="side" class="layout-sidenav">
+      <app-side-nav></app-side-nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <mat-toolbar class="layout-footer" color="primary">
+    <span class="toolbar-spacer"></span>
+   <app-command-buttons></app-command-buttons>
+  </mat-toolbar>
+</ng-container>
+
+
