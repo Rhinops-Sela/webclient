@@ -30,13 +30,16 @@ export class ConfirmationModalComponent implements OnInit {
         return page.modified === true;
       });
       domainClone.pages = pages;
-      modifiedList.push(domainClone);
+      if (pages.length > 0) {
+        modifiedList.push(domainClone);
+      }
+
     });
     this.domainList = modifiedList;
   }
 
 
   complete(confirm: boolean) {
-    this.dialogRef.close(confirm);
+    this.dialogRef.close(this.domainList);
   }
 }

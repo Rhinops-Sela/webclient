@@ -5,6 +5,7 @@ import { IInput } from 'src/app/interfaces/IInput';
 import { of, Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { BackendService } from '../backend/backend.service';
+import {  GUID } from 'src/app/helpers/guid';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,16 +18,6 @@ export class GlobalService {
   }
 
 
-  private static newGuid() {
-    // tslint:disable-next-line: only-arrow-functions
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      // tslint:disable-next-line: one-variable-per-declaration
-      var r = Math.random() * 16 | 0,
-        v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-
   public async getAllDomains() {
     if (!this.allDomains) {
       await this.loadDomains();
@@ -38,11 +29,11 @@ export class GlobalService {
     if (!this.loadFromLocalStorage()) {
       this.allDomains = await this.backendService.getFormTemplate();
       this.allDomains.forEach(domain => {
-        domain.id = GlobalService.newGuid();
+        domain.id = GUID();
         domain.pages.forEach(page => {
-          page.id = GlobalService.newGuid();
+          page.id = GUID();
           page.inputs.forEach(input => {
-            input.id = GlobalService.newGuid();
+            input.id = GUID();
           });
         });
       });
@@ -191,9 +182,9 @@ export class GlobalService {
 
   public clonePage(pageSource: IPage) {
     const newPage = JSON.parse(JSON.stringify(pageSource));
-    newPage.id = GlobalService.newGuid();
+    newPage.id = GUID();
     newPage.inputs.forEach(input => {
-      input.id = GlobalService.newGuid();
+      input.id = GUID();
     });
     const index = this.activeDomain.pages.findIndex(page => page.id === pageSource.id);
     this.activeDomain.pages.splice(index + 1, 0, newPage);

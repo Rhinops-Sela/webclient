@@ -8,7 +8,6 @@ import axios from 'axios';
 
 export class BackendService {
   backendUrl = `${config.backendUrl}:${config.backendPort}`;
-
   constructor() { }
 
   async getFormTemplate(): Promise<IDomain[]> {
@@ -23,9 +22,17 @@ export class BackendService {
   async startDeployment(form: IDomain[]) {
     try {
       const result = await axios.post(`http://localhost:3000/deployment/start`, { form });
-      return result.status;
+      const deploymentIdentifier = result.data.deploymentIdentifier;
+      localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
+      return deploymentIdentifier;
     } catch (error) {
       console.log(error);
     }
   }
+
+  get deploymentIdentifier(): string {
+    return localStorage.getItem('deploymentIdentifier');
+  }
+
+
 }

@@ -1,4 +1,5 @@
 {
   "backendUrl": "localhost",
-  "backendPort": "3000"
+  "backendPort": "3000",
+  "socketUrl": "http://localhost:9090"
 }

@@ -30,9 +30,9 @@ export class CommandButtonsComponent implements OnInit {
     this.globalService.clearAll();
     this.router.navigate(['']);
   }
-  async export() {
+  async export(domainsToExport?: IDomain[]) {
     try {
-      this.form = await this.globalService.getAllDomains();
+      this.form = domainsToExport || await this.globalService.getAllDomains();
       const domains = this.form;
       const jsonFormat = JSON.stringify(domains);
       const blob = new Blob([jsonFormat], { type: 'text/plain;charset=utf-8' });
@@ -48,16 +48,9 @@ export class CommandButtonsComponent implements OnInit {
 
   }
 
-  private openProgressDialog() {
-    /* const dialogRef = this.dialog.open(DeploymentProgressModalComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Confirm?: ', result);
-      if (result) {
-      }
-    }); */
-
+  private openProgressDialog(domainsToInstall: IDomain[]) {
     this.dialog.open(DeploymentProgressModalComponent, {
-      data: this.form
+      data: { domains: domainsToInstall }
     });
   }
 
@@ -65,11 +58,11 @@ export class CommandButtonsComponent implements OnInit {
     const notCompleted = this.globalService.verifyMandatory();
     if (notCompleted.length === 0) {
       const dialogRef = this.dialog.open(ConfirmationModalComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('Confirm?: ', result);
-        if (result) {
-          this.export();
-          this.openProgressDialog();
+      dialogRef.afterClosed().subscribe(domainsToInstall => {
+        console.log('Confirm?: ', domainsToInstall);
+        if (domainsToInstall) {
+          this.export(domainsToInstall);
+          this.openProgressDialog(domainsToInstall);
         }
       });
     } else {
