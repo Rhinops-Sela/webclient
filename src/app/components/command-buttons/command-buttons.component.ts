@@ -61,7 +61,7 @@ export class CommandButtonsComponent implements OnInit {
       dialogRef.afterClosed().subscribe(domainsToInstall => {
         console.log('Confirm?: ', domainsToInstall);
         if (domainsToInstall) {
-          this.export(domainsToInstall);
+         //  this.export(domainsToInstall);
           this.openProgressDialog(domainsToInstall);
         }
       });

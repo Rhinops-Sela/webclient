@@ -24,6 +24,7 @@ import { PagesLayoutComponent } from './components/pages-layout/pages-layout.com
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { CommandButtonsComponent } from './components/command-buttons/command-buttons.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DeploymentProgressModalComponent } from './components/deplopyment-progress-modal/deployment-progress-modal.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
@@ -43,7 +44,8 @@ import { DeploymentProgressModalComponent } from './components/deplopyment-progr
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatProgressBarModule
   ],
   providers: [
     {

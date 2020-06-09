@@ -1,1 +1,11 @@
-<p>{{message}}</p>
+<mat-card style="width: 70vw;">
+  <mat-card-content>
+    <h2 class="example-h2">Deploying</h2>
+    <section class="progressbar-section">
+      <mat-progress-bar mode="buffer" [bufferValue]="bufferValue"></mat-progress-bar>
+    </section>
+    <section class="messages-section">
+      <p>{{ message }}</p>
+    </section>
+  </mat-card-content>
+</mat-card>

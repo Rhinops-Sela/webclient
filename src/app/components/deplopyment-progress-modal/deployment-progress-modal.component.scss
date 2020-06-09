@@ -1,0 +1,28 @@
+.deployment-container{
+  width: 60vw;
+}
+
+.progressbar{
+  width: 40;
+}
+example-h2 {
+  margin: 10px;
+}
+
+.progressbar-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+.messages-section {
+  display: flex;
+  align-content: left;
+  align-items: left;
+  flex-direction: column;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
