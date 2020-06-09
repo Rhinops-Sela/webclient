@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/Rhinops-Sela/k8s-bootstrapper/_apis/build/status/Rhinops-Sela.webclient?branchName=master)](https://dev.azure.com/Rhinops-Sela/k8s-bootstrapper/_build/latest?definitionId=1&branchName=master)
+
 # wizard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
