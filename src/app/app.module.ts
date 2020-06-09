@@ -24,9 +24,10 @@ import { PagesLayoutComponent } from './components/pages-layout/pages-layout.com
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { CommandButtonsComponent } from './components/command-buttons/command-buttons.component';
+import { DeploymentProgressModalComponent } from './components/deplopyment-progress-modal/deployment-progress-modal.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
-  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent],
+  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent, DeploymentProgressModalComponent],
   imports: [
     FontAwesomeModule,
     BrowserModule,

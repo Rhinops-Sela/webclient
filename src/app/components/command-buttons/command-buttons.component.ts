@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { DeploymentProgressModalComponent } from '../deplopyment-progress-modal/deployment-progress-modal.component';
+import { IDomain } from 'src/app/interfaces/IDomain';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',
@@ -13,6 +15,7 @@ import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-m
 export class CommandButtonsComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   uploader: any;
+  form: IDomain[];
   constructor(private globalService: GlobalService, private router: Router, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -29,8 +32,8 @@ export class CommandButtonsComponent implements OnInit {
   }
   async export() {
     try {
-      const form = await this.globalService.getAllDomains();
-      const domains = form;
+      this.form = await this.globalService.getAllDomains();
+      const domains = this.form;
       const jsonFormat = JSON.stringify(domains);
       const blob = new Blob([jsonFormat], { type: 'text/plain;charset=utf-8' });
       saveAs.saveAs(blob, `fennec_${new Date().toISOString()}.json`);
@@ -45,7 +48,20 @@ export class CommandButtonsComponent implements OnInit {
 
   }
 
-  public openConfirmationDialog() {
+  private openProgressDialog() {
+    /* const dialogRef = this.dialog.open(DeploymentProgressModalComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Confirm?: ', result);
+      if (result) {
+      }
+    }); */
+
+    this.dialog.open(DeploymentProgressModalComponent, {
+      data: this.form
+    });
+  }
+
+  public async openConfirmationDialog() {
     const notCompleted = this.globalService.verifyMandatory();
     if (notCompleted.length === 0) {
       const dialogRef = this.dialog.open(ConfirmationModalComponent);
@@ -53,6 +69,7 @@ export class CommandButtonsComponent implements OnInit {
         console.log('Confirm?: ', result);
         if (result) {
           this.export();
+          this.openProgressDialog();
         }
       });
     } else {
@@ -69,6 +86,8 @@ export class CommandButtonsComponent implements OnInit {
       duration: 4000,
     });
   }
+
+
 
   onFileChanged(event) {
     const selectedFile = event.target.files[0];

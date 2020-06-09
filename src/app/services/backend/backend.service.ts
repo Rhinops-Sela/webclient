@@ -19,4 +19,13 @@ export class BackendService {
       console.log(error);
     }
   }
+
+  async startDeployment(form: IDomain[]) {
+    try {
+      const result = await axios.post(`http://localhost:3000/deployment/start`, { form });
+      return result.status;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

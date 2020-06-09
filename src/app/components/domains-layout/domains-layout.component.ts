@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { IDomain } from 'src/app/interfaces/IDomain';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GlobalService } from 'src/app/services/global/global.service';
+
 @Component({
   selector: 'app-domain-layout',
   templateUrl: './domains-layout.component.html',
