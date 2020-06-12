@@ -1,9 +1,10 @@
+import { IDploymentProgress } from './IDeplopymentProgress';
+
+
 export interface IDeploymentMessage {
   message: string;
-  totalDomains: number;
-  currentDomain: number;
-  totalPages: number;
-  currentPage: number;
-  stdOut?: string;
+  log?: any;
+  progress?: IDploymentProgress;
   final?: true;
+  error?: boolean;
 }

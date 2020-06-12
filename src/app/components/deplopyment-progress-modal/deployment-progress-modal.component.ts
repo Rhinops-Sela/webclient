@@ -4,6 +4,7 @@ import { DeploymentService } from 'src/app/services/deployment/deployment.servic
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { IDeploymentInfo } from 'src/app/interfaces/IDeploymentInfo';
 import { IDeploymentMessage } from 'src/app/interfaces/IDeploymentMessage';
+import { ILogLine } from 'src/app/interfaces/ILogLine';
 
 @Component({
   selector: 'app-deployment-progress',
@@ -12,6 +13,8 @@ import { IDeploymentMessage } from 'src/app/interfaces/IDeploymentMessage';
 })
 export class DeploymentProgressModalComponent implements OnInit {
   message: string;
+  log: ILogLine[] = [];
+
   bufferValue = 0;
   constructor(private deploymentService: DeploymentService, public dialogRef: MatDialogRef<DeploymentProgressModalComponent>, private backendService: BackendService, @Inject(MAT_DIALOG_DATA) public data: IDeploymentInfo) { }
 
@@ -31,14 +34,35 @@ export class DeploymentProgressModalComponent implements OnInit {
     }
     this.message = 'Warming up...';
     this.deploymentService.progressUpdate.subscribe((message: IDeploymentMessage) => {
+      console.log('message: ', message);
       this.onDeploymentMessage(message);
     });
   }
 
   private onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
     this.message = deploymentMessage.message;
-    this.bufferValue = Math.round((deploymentMessage.currentPage / deploymentMessage.totalPages) * 100);
-    console.log(this.bufferValue);
+    if (deploymentMessage.error) {
+      const line: ILogLine = {
+        color: 'red',
+        time: new Date().toLocaleString(),
+        content: deploymentMessage.log
+      };
+      this.log.push(line);
+    } else {
+      const line: ILogLine = {
+        color: 'white',
+        time: new Date().toLocaleString(),
+        content: deploymentMessage.log
+      };
+      this.log.push(line);
+    }
+    if (deploymentMessage.progress) {
+      this.bufferValue = Math.round((deploymentMessage.progress.curentPage / deploymentMessage.progress.totalPages) * 100);
+    } else {
+      console.log('missing progress info');
+    }
+
+
   }
 
 

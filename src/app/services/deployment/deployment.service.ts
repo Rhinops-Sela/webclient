@@ -14,6 +14,7 @@ export class DeploymentService {
   setupSocketConnection(deploymentIdentifier: string) {
     this.socket = io(config.socketUrl);
     this.socket.on(deploymentIdentifier, (data: string) => {
+      console.log('messeage: ', data);
       this.progressUpdate.next(data);
     });
   }
