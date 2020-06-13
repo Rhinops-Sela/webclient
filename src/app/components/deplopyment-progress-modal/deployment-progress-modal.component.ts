@@ -16,7 +16,6 @@ export class DeploymentProgressModalComponent implements OnInit {
   message: string;
   domainsToInstall: IDomain[];
   activeDomain: IDomain;
-  activeDomainName: string;
   bufferValue = 0;
   constructor(private deploymentService: DeploymentService, public dialogRef: MatDialogRef<DeploymentProgressModalComponent>, private backendService: BackendService, @Inject(MAT_DIALOG_DATA) public data: IDeploymentInfo) { }
 
@@ -24,7 +23,7 @@ export class DeploymentProgressModalComponent implements OnInit {
     try {
       if (this.data) {
         this.domainsToInstall = this.data.domains;
-        this.activeDomainName = this.domainsToInstall[0].name;
+        // this.activeDomainName = this.domainsToInstall[0].name;
 
         this.activeDomain = this.domainsToInstall[0];
         this.activeDomain.logs = [];
@@ -46,23 +45,34 @@ export class DeploymentProgressModalComponent implements OnInit {
     });
   }
 
-  public changeDomain(domainName) {
-    if (this.activeDomainName !== domainName) {
-      this.activeDomainName = domainName;
+  public changeDomain(domainName: string) {
+    if (this.activeDomain.name !== domainName) {
       this.activeDomain = this.domainsToInstall.find((domain) => domain.name === domainName);
     }
 
   }
 
-  private onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
+  async delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
     this.message = deploymentMessage.message;
-    if (this.activeDomainName !== deploymentMessage.domainName) {
+    if (this.activeDomain.name !== deploymentMessage.domainName) {
+      await this.delay(100);
       this.activeDomain = this.domainsToInstall.find((domain) => domain.name === deploymentMessage.domainName);
-      this.activeDomainName = deploymentMessage.domainName;
+      if (deploymentMessage.domainName) {
+        this.activeDomain.name = deploymentMessage.domainName;
+      }
       if (!this.activeDomain.logs) {
         this.activeDomain.logs = [];
       }
     }
+    if (deploymentMessage.error) {
+      this.activeDomain.icon = 'clear';
+    } else if (this.activeDomain.icon !== 'clear' && deploymentMessage.final) {
+      this.activeDomain.icon = 'done';
+    }
+
 
     if (deploymentMessage.error) {
       const line: ILogLine = {
@@ -74,7 +84,7 @@ export class DeploymentProgressModalComponent implements OnInit {
       this.activeDomain.logs.push(line);
     } else {
       const line: ILogLine = {
-        color: 'white',
+        color: '#f2f3f4',
         time: new Date().toLocaleString(),
         content: deploymentMessage.log
       };
