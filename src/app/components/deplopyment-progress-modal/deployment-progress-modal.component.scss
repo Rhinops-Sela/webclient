@@ -34,6 +34,11 @@ example-h2 {
   border: white solid 2px;
 }
 
+.log-container{
+  height: 60vh;
+  overflow-y:auto;
+}
+
 .example-margin {
   margin: 0 10px;
 }

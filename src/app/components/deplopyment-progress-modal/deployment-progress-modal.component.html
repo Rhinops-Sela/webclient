@@ -9,7 +9,7 @@
       <mat-progress-bar mode="buffer" [bufferValue]="bufferValue"></mat-progress-bar>
     </section>
     <section class="log-section">
-      <div>
+      <div class="log-container">
         <p *ngFor="let page of log" [ngStyle]="{'color': page.color}">[{{ page.time }}] - {{ page.content }}
         </p>
       </div>
