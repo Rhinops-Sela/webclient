@@ -1,3 +1,4 @@
+import { ILogLine } from './ILogLine';
 import { IPage } from './IPage';
 
 export interface IDomain {
@@ -9,4 +10,5 @@ export interface IDomain {
   id?: string;
   description: string;
   modified?: boolean;
+  logs?: ILogLine[];
 }

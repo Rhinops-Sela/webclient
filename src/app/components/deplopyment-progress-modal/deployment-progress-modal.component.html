@@ -1,12 +1,44 @@
+<section class="progressbar-section">
+  <mat-progress-bar mode="buffer" [bufferValue]="bufferValue"></mat-progress-bar>
+</section>
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let domain of domainsToInstall" [expanded]="domain.displayName === activeDomain.displayName" (opened)="true">
+  <mat-expansion-panel *ngFor="let domain of domainsToInstall" (click)="changeDomain(domain)" [expanded]="domain.name === activeDomainName">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ domain.displayName}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card style="width: 70vw;">
+      <mat-card-content>
+        <!-- <h2>
+          <section class="messages-section">
+            <p>{{ message }}</p>
+          </section>
+        </h2> -->
+        <section class="log-section">
+          <div class="log-container">
+            <p *ngFor="let logLine of domain.logs" [ngStyle]="{'color': logLine.color}">[{{ logLine.time }}] - {{ logLine.content }}
+            </p>
+          </div>
+        </section>
+      </mat-card-content>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-card-actions class="button-container">
+  <button color="accent" mat-button>Cancel</button>
+</mat-card-actions>
+<!-- <mat-accordion>
+  <mat-expansion-panel *ngFor="let domain of domainsToInstall"
+    [expanded]="domain.displayName === activeDomain.displayName" (opened)="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ domain.displayName}}
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let page of domain.pages" [expanded]="domain.displayName === activeDomain.displayName" (opened)="true">
+      <mat-expansion-panel *ngFor="let page of domain.pages"
+        [expanded]="domain.displayName === activeDomain.displayName" (opened)="true">
         <mat-card style="width: 70vw;">
           <mat-card-content>
             <h2>
@@ -31,4 +63,4 @@
       </mat-expansion-panel>
     </mat-accordion>
   </mat-expansion-panel>
-</mat-accordion>
+</mat-accordion> -->
