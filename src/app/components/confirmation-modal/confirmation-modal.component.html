@@ -27,7 +27,7 @@
     </mat-expansion-panel>
   </mat-accordion>
   <div class="button-row">
-    <button class="form-button" color="accent" mat-button (click)="complete(true)">
+    <button class="form-button" color="accent" [disabled]="domainList.length < 1" mat-button (click)="complete(true)">
       Confirm
     </button>
     <button class="form-button" color="accent" mat-button (click)="complete(false)">
