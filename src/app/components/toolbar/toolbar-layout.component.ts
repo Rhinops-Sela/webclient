@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
 @Component({
   selector: 'app-toolbar-component',
   templateUrl: './toolbar-layout.component.html',
@@ -14,8 +15,8 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.displayNameDomain = 'Home';
-    this.globalService.refreshRequired.subscribe(required => {
-      if (required) {
+    this.globalService.refreshRequired.subscribe((result: IRefreshRequried) => {
+      if (result.domainChanged) {
         const activeDomain = this.globalService.getActiveDomain();
         if (activeDomain) {
           this.displayNameDomain = activeDomain.displayName;

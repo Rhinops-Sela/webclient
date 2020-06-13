@@ -1,31 +1,32 @@
+import { IDomain } from './../../interfaces/IDomain';
 import { Injectable } from '@angular/core';
-import { IDomain } from '../../interfaces/IDomain';
 import { IPage } from 'src/app/interfaces/IPage';
 import { IInput } from 'src/app/interfaces/IInput';
 import { of, Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { BackendService } from '../backend/backend.service';
-import {  GUID } from 'src/app/helpers/guid';
+import { GUID } from 'src/app/helpers/guid';
+import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalService {
   private activeDomain: IDomain;
   private activePage: IPage;
-  public refreshRequired: Subject<boolean> = new Subject<boolean>();
+  public refreshRequired: Subject<IRefreshRequried> = new Subject<IRefreshRequried>();
   private allDomains: IDomain[];
   constructor(private backendService: BackendService) {
   }
 
 
-  public async getAllDomains() {
+  public async getAllDomains(): Promise<IDomain[]> {
     if (!this.allDomains) {
       await this.loadDomains();
     }
     return this.allDomains;
   }
 
-  private async loadDomains(){
+  private async loadDomains() {
     if (!this.loadFromLocalStorage()) {
       this.allDomains = await this.backendService.getFormTemplate();
       this.allDomains.forEach(domain => {
@@ -38,7 +39,6 @@ export class GlobalService {
         });
       });
     }
-    return this.allDomains;
   }
 
 
@@ -61,10 +61,11 @@ export class GlobalService {
     return true;
   }
 
-  public clearAll() {
+  public async clearAll() {
     localStorage.clear();
-    this.loadDomains();
-    this.refreshRequired.next(true);
+    await this.loadDomains();
+    this.refreshRequired.next({ pageChanged: false, domainChanged: true });
+    return true;
   }
   public uploadForm(jsonForm: string) {
     try {
@@ -96,8 +97,6 @@ export class GlobalService {
       refresh = true;
       localStorage.setItem('activeDomain', JSON.stringify(activeDomain));
     }
-
-    this.refreshRequired.next(refresh);
   }
 
   private deleteLocalStorage(storedForm = false, activeDomain = false) {
@@ -107,7 +106,6 @@ export class GlobalService {
     if (activeDomain) {
       localStorage.removeItem('activeDomain');
     }
-    this.refreshRequired.next(storedForm || activeDomain);
   }
 
   public savePage(modifiedPage: IPage, form?: FormGroup) {
@@ -165,7 +163,7 @@ export class GlobalService {
       this.activeDomain.icon = '';
     }
     this.saveDomain(this.activeDomain);
-    this.refreshRequired.next(true);
+    this.refreshRequired.next({ pageChanged: false, domainChanged: true });
   }
 
   public resetPage(page: IPage) {
@@ -177,7 +175,7 @@ export class GlobalService {
       input.value = '';
     });
     this.savePage(page);
-    this.refreshRequired.next(true);
+    this.refreshRequired.next({ pageChanged: true, domainChanged: false });
   }
 
   public clonePage(pageSource: IPage) {
@@ -223,12 +221,16 @@ export class GlobalService {
   public onDomainChange(activeDomain: IDomain) {
     this.activeDomain = activeDomain;
     this.storeLocalStorage(null, activeDomain);
-    this.refreshRequired.next(true);
+    this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 
-  public onPageChange(activePage: IPage) {
+  public onPageChange(activePage: IPage, activeDomain?: IDomain) {
     this.activePage = activePage;
-    this.refreshRequired.next(true);
+    if (activeDomain && activeDomain !== this.activeDomain) {
+      this.onDomainChange(activeDomain);
+    } else {
+      this.refreshRequired.next({ pageChanged: true, domainChanged: false });
+    }
   }
 
   public getActivePage(): IPage {

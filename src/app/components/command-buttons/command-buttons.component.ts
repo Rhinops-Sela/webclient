@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { DeploymentProgressModalComponent } from '../deplopyment-progress-modal/deployment-progress-modal.component';
 import { IDomain } from 'src/app/interfaces/IDomain';
+import { IConfirmationResponse } from 'src/app/interfaces/IConfirmationResponse';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',
@@ -27,8 +28,12 @@ export class CommandButtonsComponent implements OnInit {
   }
 
   deleteAll() {
-    this.globalService.clearAll();
-    this.router.navigate(['']);
+    this.globalService.clearAll().then((result) => {
+      if (result) {
+        this.router.navigate(['']);
+      }
+    });
+
   }
   async export(domainsToExport?: IDomain[]) {
     try {
@@ -58,15 +63,15 @@ export class CommandButtonsComponent implements OnInit {
     const notCompleted = this.globalService.verifyMandatory();
     if (notCompleted.length === 0) {
       const dialogRef = this.dialog.open(ConfirmationModalComponent);
-      dialogRef.afterClosed().subscribe(domainsToInstall => {
-        console.log('Confirm?: ', domainsToInstall);
-        if (domainsToInstall) {
-         //  this.export(domainsToInstall);
-          this.openProgressDialog(domainsToInstall);
+      dialogRef.afterClosed().subscribe((result: IConfirmationResponse) => {
+        console.log('Confirm?: ', result.response);
+        if (result.response && result.domainList.length > 0) {
+          //  this.export(result.domainList);
+          this.openProgressDialog(result.domainList);
         }
       });
     } else {
-      let incompleteStr = 'Please complete the following mandatory components: ';
+      let incompleteStr = 'Please complete the following mandatory components: \n';
       notCompleted.forEach(domain => {
         incompleteStr += domain.displayName + ' ,';
       });
@@ -89,7 +94,7 @@ export class CommandButtonsComponent implements OnInit {
     fileReader.onload = () => {
       const result = this.globalService.uploadForm(fileReader.result.toString());
       this.fileInput.nativeElement.value = '';
-      this.globalService.refreshRequired.next(true);
+      this.globalService.refreshRequired.next({ pageChanged: true, domainChanged: true });
       this.router.navigate(['']);
     };
     fileReader.onerror = (error) => {

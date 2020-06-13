@@ -40,6 +40,6 @@ export class ConfirmationModalComponent implements OnInit {
 
 
   complete(confirm: boolean) {
-    this.dialogRef.close(this.domainList);
+    this.dialogRef.close({ response: confirm, domainList: this.domainList });
   }
 }

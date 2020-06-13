@@ -93,8 +93,7 @@ export class SideNavComponent implements OnInit {
     this.domains.find((domain) => {
       domain.pages.forEach(page => {
         if (page.displayName === pageDisplayName) {
-          this.domainService.onPageChange(page);
-          this.domainService.onDomainChange(domain);
+          this.domainService.onPageChange(page, domain);
           this.router.navigate(['/page']);
         }
       });

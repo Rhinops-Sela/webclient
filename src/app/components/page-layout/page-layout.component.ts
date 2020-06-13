@@ -4,6 +4,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { IPage } from 'src/app/interfaces/IPage';
 import { FormService } from 'src/app/services/form/form.service';
 import { Router } from '@angular/router';
+import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
 
 @Component({
   selector: 'app-page-component',
@@ -25,9 +26,13 @@ export class PageLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.page = this.globalService.getActivePage();
-    this.globalService.refreshRequired.subscribe(required => {
-      if (required) {
-        this.loadPage();
+    if (!this.page || !this.page.inputs) {
+      this.router.navigate(['']);
+    }
+    this.globalService.refreshRequired.subscribe((result: IRefreshRequried) => {
+      if (result.pageChanged) {
+        this.page = this.globalService.getActivePage();
+        this.form = this.formService.toFormGroup(this.page.inputs);
       }
     });
     this.loadPage();

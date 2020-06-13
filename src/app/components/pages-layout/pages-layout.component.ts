@@ -3,6 +3,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { IPage } from 'src/app/interfaces/IPage';
 import { IDomain } from 'src/app/interfaces/IDomain';
+import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
 @Component({
   selector: 'app-page-layout',
   templateUrl: './pages-layout.component.html',
@@ -16,8 +17,8 @@ export class PagesLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globalService.refreshRequired.subscribe(required => {
-      if (required) {
+    this.globalService.refreshRequired.subscribe((result: IRefreshRequried) => {
+      if (result.domainChanged) {
         this.activeDomain = this.globalService.getActiveDomain();
       }
     });
