@@ -1,3 +1,4 @@
+import { IDomain } from './../../interfaces/IDomain';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
@@ -14,13 +15,16 @@ import { ILogLine } from 'src/app/interfaces/ILogLine';
 export class DeploymentProgressModalComponent implements OnInit {
   message: string;
   log: ILogLine[] = [];
-
+  domainsToInstall: IDomain[];
+  activeDomain: IDomain;
   bufferValue = 0;
   constructor(private deploymentService: DeploymentService, public dialogRef: MatDialogRef<DeploymentProgressModalComponent>, private backendService: BackendService, @Inject(MAT_DIALOG_DATA) public data: IDeploymentInfo) { }
 
   ngOnInit(): void {
     try {
       if (this.data) {
+        this.domainsToInstall = this.data.domains;
+        this.activeDomain = this.domainsToInstall[0];
         if (!this.data.deploymentIdentifier) {
           this.backendService.startDeployment(this.data.domains).then((deploymentIdentifier) => {
             this.deploymentService.setupSocketConnection(deploymentIdentifier);

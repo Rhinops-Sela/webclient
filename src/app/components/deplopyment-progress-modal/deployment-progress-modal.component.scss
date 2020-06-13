@@ -5,7 +5,7 @@
 .progressbar{
   width: 40;
 }
-example-h2 {
+.header {
   margin: 10px;
 }
 
@@ -39,6 +39,9 @@ example-h2 {
   overflow-y:auto;
 }
 
-.example-margin {
-  margin: 0 10px;
+
+.button-container{
+  display: flex;
+  align-self: center;
+  justify-content: center;
 }
