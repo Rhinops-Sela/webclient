@@ -6,6 +6,7 @@ import { BackendService } from 'src/app/services/backend/backend.service';
 import { IDeploymentInfo } from 'src/app/interfaces/IDeploymentInfo';
 import { IDeploymentMessage } from 'src/app/interfaces/IDeploymentMessage';
 import { ILogLine } from 'src/app/interfaces/ILogLine';
+import { IPage } from 'src/app/interfaces/IPage';
 
 @Component({
   selector: 'app-deployment-progress',
@@ -14,19 +15,25 @@ import { ILogLine } from 'src/app/interfaces/ILogLine';
 })
 export class DeploymentProgressModalComponent implements OnInit {
   message: string;
-  domainsToInstall: IDomain[];
-  activeDomain: IDomain;
+  pagesToInstall: IPage[];
+  activePage: IPage;
   bufferValue = 0;
   constructor(private deploymentService: DeploymentService, public dialogRef: MatDialogRef<DeploymentProgressModalComponent>, private backendService: BackendService, @Inject(MAT_DIALOG_DATA) public data: IDeploymentInfo) { }
 
   ngOnInit(): void {
     try {
+      this.pagesToInstall = [];
       if (this.data) {
-        this.domainsToInstall = this.data.domains;
+        for (const domain of this.data.domains) {
+          for (const page of domain.pages) {
+            this.pagesToInstall.push(page);
+          }
+
+        }
         // this.activeDomainName = this.domainsToInstall[0].name;
 
-        this.activeDomain = this.domainsToInstall[0];
-        this.activeDomain.logs = [];
+        this.activePage = this.pagesToInstall[0];
+        this.activePage.logs = [];
         if (!this.data.deploymentIdentifier) {
           this.backendService.startDeployment(this.data.domains).then((deploymentIdentifier) => {
             this.deploymentService.setupSocketConnection(deploymentIdentifier);
@@ -45,9 +52,9 @@ export class DeploymentProgressModalComponent implements OnInit {
     });
   }
 
-  public changeDomain(domainName: string) {
-    if (this.activeDomain.name !== domainName) {
-      this.activeDomain = this.domainsToInstall.find((domain) => domain.name === domainName);
+  public changeDomain(pageName: string) {
+    if (this.activePage.name !== pageName) {
+      this.activePage = this.pagesToInstall.find((page) => page.name === pageName);
     }
 
   }
@@ -57,20 +64,20 @@ export class DeploymentProgressModalComponent implements OnInit {
   }
   private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
     this.message = deploymentMessage.message;
-    if (this.activeDomain.name !== deploymentMessage.domainName) {
+    if (this.activePage.name !== deploymentMessage.pageName) {
       await this.delay(100);
-      this.activeDomain = this.domainsToInstall.find((domain) => domain.name === deploymentMessage.domainName);
-      if (deploymentMessage.domainName) {
-        this.activeDomain.name = deploymentMessage.domainName;
+      this.activePage = this.pagesToInstall.find((domain) => domain.name === deploymentMessage.pageName);
+      if (deploymentMessage.pageName) {
+        this.activePage.name = deploymentMessage.pageName;
       }
-      if (!this.activeDomain.logs) {
-        this.activeDomain.logs = [];
+      if (!this.activePage.logs) {
+        this.activePage.logs = [];
       }
     }
     if (deploymentMessage.error) {
-      this.activeDomain.icon = 'clear';
-    } else if (this.activeDomain.icon !== 'clear' && deploymentMessage.final) {
-      this.activeDomain.icon = 'done';
+      this.activePage.icon = 'clear';
+    } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
+      this.activePage.icon = 'done';
     }
 
 
@@ -81,14 +88,14 @@ export class DeploymentProgressModalComponent implements OnInit {
         content: deploymentMessage.log
       };
 
-      this.activeDomain.logs.push(line);
+      this.activePage.logs.push(line);
     } else {
       const line: ILogLine = {
         color: '#f2f3f4',
         time: new Date().toLocaleString(),
         content: deploymentMessage.log
       };
-      this.activeDomain.logs.push(line);
+      this.activePage.logs.push(line);
     }
     if (deploymentMessage.progress) {
       this.bufferValue = Math.round((deploymentMessage.progress.curentPage / deploymentMessage.progress.totalPages) * 100);

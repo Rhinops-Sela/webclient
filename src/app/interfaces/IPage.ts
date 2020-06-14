@@ -1,4 +1,5 @@
 import { IInput } from './IInput';
+import { ILogLine } from './ILogLine';
 
 export interface IPage {
   name: string;
@@ -11,4 +12,6 @@ export interface IPage {
   id?: string;
   modified?: boolean;
   mandatory?: boolean;
+  logs?: ILogLine[];
+  icon?: string;
 }
