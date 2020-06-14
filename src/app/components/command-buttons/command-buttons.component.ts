@@ -8,6 +8,7 @@ import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-m
 import { DeploymentProgressModalComponent } from '../deplopyment-progress-modal/deployment-progress-modal.component';
 import { IDomain } from 'src/app/interfaces/IDomain';
 import { IConfirmationResponse } from 'src/app/interfaces/IConfirmationResponse';
+import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',
@@ -17,7 +18,7 @@ export class CommandButtonsComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   uploader: any;
   form: IDomain[];
-  constructor(private globalService: GlobalService, private router: Router, public dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private deploymentService: DeploymentService, private globalService: GlobalService, private router: Router, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -54,8 +55,13 @@ export class CommandButtonsComponent implements OnInit {
   }
 
   private openProgressDialog(domainsToInstall: IDomain[]) {
-    this.dialog.open(DeploymentProgressModalComponent, {
+    const dialogRef = this.dialog.open(DeploymentProgressModalComponent, {
       data: { domains: domainsToInstall }
+    });
+    const deploymentService = this.deploymentService;
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result);
+      deploymentService.closeSocket();
     });
   }
 

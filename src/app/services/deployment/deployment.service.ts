@@ -18,4 +18,8 @@ export class DeploymentService {
       this.progressUpdate.next(data);
     });
   }
+
+  closeSocket() {
+    this.socket = this.socket.close();
+  }
 }
