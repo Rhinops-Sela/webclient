@@ -17,8 +17,8 @@ export class BrowseStoredFilesComponent implements OnInit {
 
   ngOnInit(): void {
     this.s3Service.setCredentials({
-      accessKeyId: 'AKIAQMTJXUUI5CEWT4E7',
-      secretAccessKey: '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',
+      accessKeyId: '',
+      secretAccessKey: '',
       region: 'eu-west-1',
       bucketName: 'fennec-deployments',
     });
