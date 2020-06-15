@@ -21,7 +21,21 @@ export class BackendService {
 
   async startDeployment(form: IDomain[]) {
     try {
-      const result = await axios.post(`http://localhost:3000/deployment/start`, { form });
+      const result = await axios.post(`http://localhost:3000/deployment`, { form });
+      const deploymentIdentifier = result.data.deploymentIdentifier;
+      localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
+      return deploymentIdentifier;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async deleteDeployment(form: IDomain[]) {
+    try {
+      const result = await axios.delete('http://localhost:3000/deployment', {
+        data: {
+          form
+        }
+      });
       const deploymentIdentifier = result.data.deploymentIdentifier;
       localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
       return deploymentIdentifier;
