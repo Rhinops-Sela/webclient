@@ -37,19 +37,25 @@ export class DeploymentProgressModalComponent implements OnInit {
         if (!this.data.deploymentIdentifier) {
           this.backendService.startDeployment(this.data.domains).then((deploymentIdentifier) => {
             this.deploymentService.setupSocketConnection(deploymentIdentifier);
+            this.message = 'Warming up...';
+            this.deploymentService.progressUpdate.subscribe((message: IDeploymentMessage) => {
+              console.log('message: ', message);
+              this.onDeploymentMessage(message);
+            });
           });
         } else {
           this.deploymentService.setupSocketConnection(this.data.deploymentIdentifier);
+          this.message = 'Warming up...';
+          this.deploymentService.progressUpdate.subscribe((message: IDeploymentMessage) => {
+            console.log('message: ', message);
+            this.onDeploymentMessage(message);
+          });
         }
       }
     } catch (error) {
       console.log(error);
     }
-    this.message = 'Warming up...';
-    this.deploymentService.progressUpdate.subscribe((message: IDeploymentMessage) => {
-      console.log('message: ', message);
-      this.onDeploymentMessage(message);
-    });
+    
   }
 
   public changeDomain(pageName: string) {
