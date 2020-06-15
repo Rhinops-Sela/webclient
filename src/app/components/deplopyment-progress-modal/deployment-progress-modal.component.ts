@@ -39,7 +39,6 @@ export class DeploymentProgressModalComponent implements OnInit {
             this.deploymentService.setupSocketConnection(deploymentIdentifier);
             this.message = 'Warming up...';
             this.deploymentService.progressUpdate.subscribe((message: IDeploymentMessage) => {
-              console.log('message: ', message);
               this.onDeploymentMessage(message);
             });
           });
@@ -47,7 +46,6 @@ export class DeploymentProgressModalComponent implements OnInit {
           this.deploymentService.setupSocketConnection(this.data.deploymentIdentifier);
           this.message = 'Warming up...';
           this.deploymentService.progressUpdate.subscribe((message: IDeploymentMessage) => {
-            console.log('message: ', message);
             this.onDeploymentMessage(message);
           });
         }
@@ -67,6 +65,7 @@ export class DeploymentProgressModalComponent implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
+    console.log('message: ', deploymentMessage);
     this.message = deploymentMessage.message;
     if (this.activePage.name !== deploymentMessage.pageName) {
       await this.delay(100);
