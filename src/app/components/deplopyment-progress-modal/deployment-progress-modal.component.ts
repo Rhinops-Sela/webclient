@@ -55,14 +55,12 @@ export class DeploymentProgressModalComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-    
   }
 
   public changeDomain(pageName: string) {
     if (this.activePage.name !== pageName) {
       this.activePage = this.pagesToInstall.find((page) => page.name === pageName);
     }
-
   }
 
   async delay(ms: number) {

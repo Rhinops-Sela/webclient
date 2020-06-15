@@ -8,6 +8,7 @@ export interface IPage {
   description: string;
   inputs: IInput[];
   repeatable?: boolean;
+  executer: string;
   valid?: boolean;
   id?: string;
   modified?: boolean;
