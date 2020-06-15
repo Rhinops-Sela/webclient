@@ -26,9 +26,10 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
 import { CommandButtonsComponent } from './components/command-buttons/command-buttons.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DeploymentProgressModalComponent } from './components/deplopyment-progress-modal/deployment-progress-modal.component';
+import { BrowseStoredFilesComponent } from './components/browse-stored-files/browse-stored-files.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
-  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent, DeploymentProgressModalComponent],
+  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent, DeploymentProgressModalComponent, BrowseStoredFilesComponent],
   imports: [
     FontAwesomeModule,
     BrowserModule,

@@ -9,6 +9,7 @@ import { DeploymentProgressModalComponent } from '../deplopyment-progress-modal/
 import { IDomain } from 'src/app/interfaces/IDomain';
 import { IConfirmationResponse } from 'src/app/interfaces/IConfirmationResponse';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
+import { BrowseStoredFilesComponent } from '../browse-stored-files/browse-stored-files.component';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',
@@ -36,6 +37,12 @@ export class CommandButtonsComponent implements OnInit {
     });
 
   }
+
+
+  browse() {
+    const dialogRef = this.dialog.open(BrowseStoredFilesComponent);
+  }
+  
   async export(domainsToExport?: IDomain[]) {
     try {
       this.form = domainsToExport || await this.globalService.getAllDomains();

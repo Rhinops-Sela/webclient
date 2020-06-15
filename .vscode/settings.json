@@ -3,5 +3,6 @@
     "mat",
     "mat sidenav",
     "sidenav"
-  ]
+  ],
+  "prettier.printWidth": 120
 }
