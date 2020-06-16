@@ -10,19 +10,26 @@
     </button>
   </div>
   <div class="toolbar-button-container">
-    <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog()" color="accent" matTooltip="Confirm & Submit">
+    <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog()" color="accent"
+      matTooltip="Deploy Environment">
       <mat-icon>check</mat-icon>
+    </button>
+  </div>
+    <div class="toolbar-button-container">
+      <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog()" color="accent"
+        matTooltip="Delete Entire Environment">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  <div class="toolbar-button-container">
+    <button mat-mini-fab md-fab-bottom-right (click)="storeToS3()" color="accent" matTooltip="Upload to S3">
+      <mat-icon class="white-icon">backup</mat-icon>
     </button>
   </div>
   <div class="toolbar-button-container">
     <input type="file" ng2FileSelect hidden #fileInput accept=".json" (change)="onFileChanged($event)" />
     <button mat-mini-fab md-fab-bottom-right (click)="upload()" color="accent" matTooltip="Load">
       <mat-icon>publish</mat-icon>
-    </button>
-  </div>
-  <div class="toolbar-button-container">
-    <button mat-mini-fab md-fab-bottom-right (click)="storeToS3()" color="accent" matTooltip="Upload to S3">
-      <mat-icon class="white-icon">backup</mat-icon>
     </button>
   </div>
   <div class="toolbar-button-container">
