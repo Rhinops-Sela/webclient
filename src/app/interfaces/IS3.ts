@@ -3,4 +3,5 @@ export interface IS3Bucket {
   secretAccessKey: string;
   region: string;
   bucketName: string;
+  storeCredentials: boolean;
 }

@@ -24,12 +24,26 @@ import { PagesLayoutComponent } from './components/pages-layout/pages-layout.com
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { CommandButtonsComponent } from './components/command-buttons/command-buttons.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DeploymentProgressModalComponent } from './components/deplopyment-progress-modal/deployment-progress-modal.component';
 import { BrowseStoredFilesComponent } from './components/browse-stored-files/browse-stored-files.component';
+import { S3LoginComponent } from './components/s3-login/s3-login.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
-  declarations: [AppComponent, DomainsLayoutComponent, SideNavComponent, InputComponentComponent, PageLayoutComponent, ToolbarComponent, PagesLayoutComponent, ConfirmationModalComponent, CommandButtonsComponent, DeploymentProgressModalComponent, BrowseStoredFilesComponent],
+  declarations: [
+    AppComponent,
+    DomainsLayoutComponent,
+    SideNavComponent,
+    InputComponentComponent,
+    PageLayoutComponent,
+    ToolbarComponent,
+    PagesLayoutComponent,
+    ConfirmationModalComponent,
+    CommandButtonsComponent,
+    DeploymentProgressModalComponent,
+    BrowseStoredFilesComponent,
+    S3LoginComponent
+  ],
   imports: [
     FontAwesomeModule,
     BrowserModule,
@@ -46,7 +60,7 @@ import { BrowseStoredFilesComponent } from './components/browse-stored-files/bro
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   providers: [
     {
@@ -56,4 +70,4 @@ import { BrowseStoredFilesComponent } from './components/browse-stored-files/bro
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

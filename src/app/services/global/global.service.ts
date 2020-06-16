@@ -7,17 +7,21 @@ import { FormGroup } from '@angular/forms';
 import { BackendService } from '../backend/backend.service';
 import { GUID } from 'src/app/helpers/guid';
 import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
+import { MessageHandlerService } from '../message-handler/message-handler.service';
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalService {
   private activeDomain: IDomain;
   private activePage: IPage;
-  public refreshRequired: Subject<IRefreshRequried> = new Subject<IRefreshRequried>();
+  public refreshRequired: Subject<IRefreshRequried> = new Subject<
+    IRefreshRequried
+  >();
   private allDomains: IDomain[];
-  constructor(private backendService: BackendService) {
-  }
-
+  constructor(
+    private backendService: BackendService,
+    private errorHandlerService: MessageHandlerService
+  ) {}
 
   public async getAllDomains(): Promise<IDomain[]> {
     if (!this.allDomains) {
@@ -29,11 +33,11 @@ export class GlobalService {
   private async loadDomains() {
     if (!this.loadFromLocalStorage()) {
       this.allDomains = await this.backendService.getFormTemplate();
-      this.allDomains.forEach(domain => {
+      this.allDomains.forEach((domain) => {
         domain.id = GUID();
-        domain.pages.forEach(page => {
+        domain.pages.forEach((page) => {
           page.id = GUID();
-          page.inputs.forEach(input => {
+          page.inputs.forEach((input) => {
             input.id = GUID();
           });
         });
@@ -41,17 +45,15 @@ export class GlobalService {
     }
   }
 
-
-
   private loadFromLocalStorage(): boolean {
     const storedForm = this.getLocalStorageForm();
     if (!storedForm) {
       return false;
     }
     this.allDomains = JSON.parse(storedForm);
-    this.allDomains.forEach(domain => {
+    this.allDomains.forEach((domain) => {
       let icon = '';
-      domain.pages.forEach(page => {
+      domain.pages.forEach((page) => {
         if (page.valid && page.inputs[0].value) {
           icon = 'done';
         }
@@ -73,10 +75,14 @@ export class GlobalService {
       this.storeLocalStorage(this.allDomains);
       return { result: true };
     } catch (error) {
-      console.log('Failed to upload file: ', error.message);
-      return { result: false, message: error.message };
+      this.errorHandlerService.onErrorOccured.next(
+        `Failed to upload file: ${error.message}`
+      );
+      return false;
     }
   }
+
+
 
   private getLocalStorageForm() {
     const form = localStorage.getItem('storedForm');
@@ -109,7 +115,9 @@ export class GlobalService {
   }
 
   public savePage(modifiedPage: IPage, form?: FormGroup) {
-    const pageToModify = this.activeDomain.pages.find(page => page.id === modifiedPage.id);
+    const pageToModify = this.activeDomain.pages.find(
+      (page) => page.id === modifiedPage.id
+    );
     if (form) {
       pageToModify.inputs.forEach((input) => {
         if (form.controls[input.id]) {
@@ -139,8 +147,8 @@ export class GlobalService {
 
   public verifyMandatory(): IPage[] {
     const notValidMandatory: IPage[] = [];
-    this.allDomains.forEach(domain => {
-      domain.pages.forEach(page => {
+    this.allDomains.forEach((domain) => {
+      domain.pages.forEach((page) => {
         if (page.mandatory && !page.modified) {
           notValidMandatory.push(page);
         }
@@ -153,7 +161,7 @@ export class GlobalService {
   public setDomainIcon(valid: boolean) {
     if (valid) {
       this.activeDomain.icon = 'done';
-      this.activeDomain.pages.forEach(page => {
+      this.activeDomain.pages.forEach((page) => {
         if (!page.valid) {
           this.activeDomain.icon = '';
           return;
@@ -171,7 +179,7 @@ export class GlobalService {
     this.activeDomain.modified = false;
     this.saveDomain(this.activeDomain);
     page.modified = false;
-    page.inputs.forEach(input => {
+    page.inputs.forEach((input) => {
       input.value = '';
     });
     this.savePage(page);
@@ -181,17 +189,21 @@ export class GlobalService {
   public clonePage(pageSource: IPage) {
     const newPage = JSON.parse(JSON.stringify(pageSource));
     newPage.id = GUID();
-    newPage.inputs.forEach(input => {
+    newPage.inputs.forEach((input) => {
       input.id = GUID();
     });
-    const index = this.activeDomain.pages.findIndex(page => page.id === pageSource.id);
+    const index = this.activeDomain.pages.findIndex(
+      (page) => page.id === pageSource.id
+    );
     this.activeDomain.pages.splice(index + 1, 0, newPage);
     this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
   }
 
   public deletePage(pageSource: IPage) {
-    const index = this.activeDomain.pages.findIndex(page => page.id === pageSource.id);
+    const index = this.activeDomain.pages.findIndex(
+      (page) => page.id === pageSource.id
+    );
     this.activeDomain.pages.splice(index, 1);
     this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
@@ -199,14 +211,18 @@ export class GlobalService {
 
   public canDelete(pageToCheck: IPage): boolean {
     if (!this.activeDomain) {
-      this.allDomains.forEach(domain => {
-        const workingPage = domain.pages.find(page => page.displayName === pageToCheck.displayName);
+      this.allDomains.forEach((domain) => {
+        const workingPage = domain.pages.find(
+          (page) => page.displayName === pageToCheck.displayName
+        );
         if (workingPage) {
           this.activeDomain = domain;
         }
       });
     }
-    const domainPages = this.activeDomain.pages.filter(page => page.displayName === pageToCheck.displayName);
+    const domainPages = this.activeDomain.pages.filter(
+      (page) => page.displayName === pageToCheck.displayName
+    );
     return domainPages.length > 1;
   }
 
@@ -236,7 +252,6 @@ export class GlobalService {
   public getActivePage(): IPage {
     return this.activePage;
   }
-
 
   public getActiveDomain(): IDomain {
     const fromStorage = JSON.parse(this.getLocalStorageDomain());

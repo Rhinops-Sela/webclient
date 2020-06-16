@@ -1,22 +1,7 @@
-<!-- <div *ngIf="!credentials" class="credentials-container">
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    <div *ngFor="let input of page.inputs" class="form-row">
-      <app-input-component [input]="input" [form]="form"></app-input-component>
-    </div>
-    <div class="button-row">
-      <div>
-        <button class="form-button" submit color="primary" [disabled]="!form.valid" mat-stroked-button disabled>
-          Save
-        </button>
-      </div>
-      <div>
-        <button class="form-button" color="primary" (click)="onReset()" mat-stroked-button>
-          Reset
-        </button>
-      </div>
-    </div>
-  </form>
-</div> -->
-<div *ngIf="credentials" class="files-list-container">
-  <p *ngFor="let file of fileList" (click)="load(file)">{{ file }}</p>
-</div>
+<mat-list *ngIf="fileList" class="files-list-container">
+  <div mat-subheader>Files</div>
+  <mat-list-item *ngFor="let file of fileList" (click)="load(file)" class="file-list-item">
+    <mat-icon mat-list-icon>text_snippet</mat-icon>
+    <div mat-line>{{file}}</div>
+  </mat-list-item>
+</mat-list>
