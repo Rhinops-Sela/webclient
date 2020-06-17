@@ -1,10 +1,8 @@
 <div mat-button class="main-div">
-  <mat-card *ngIf="page" class="inputs-card" >
+  <mat-card *ngIf="page" class="inputs-card">
     <mat-card-header>
       <mat-card-title>{{ page.displayName }}</mat-card-title>
-      <mat-card-subtitle>
-        <img mat-card-avatar class="component-logo" mat-card-avatar src="{{ page.image }}" />
-      </mat-card-subtitle>
+      <img mat-card-avatar class="component-logo" mat-card-avatar src="{{ page.image }}" />
     </mat-card-header>
     <mat-card-content>
       <form (ngSubmit)="onSubmit()" [formGroup]="form">

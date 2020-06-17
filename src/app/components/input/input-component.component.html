@@ -7,6 +7,13 @@
       <mat-error *ngIf="!isValid()">
         {{ input.errorMessage || "Value is invalid!" }}</mat-error>
     </mat-form-field>
+    <mat-form-field appearance="legacy" *ngSwitchCase="'text-password'">
+      <mat-label>{{ input.displayName }}</mat-label>
+      <input class="input-component" matInput [formControlName]="input.id" type="password"/>
+      <mat-hint>{{ input.tooltip }}</mat-hint>
+      <mat-error *ngIf="!isValid()">
+        {{ input.errorMessage || "Value is invalid!" }}</mat-error>
+    </mat-form-field>
     <mat-form-field appearance="legacy" *ngSwitchCase="'textarea'">
       <mat-label>{{ input.displayName }}</mat-label>
       <textarea matInput [formControlName]="input.id"></textarea>
@@ -17,6 +24,16 @@
     <mat-form-field appearance="legacy" *ngSwitchCase="'select'">
       <mat-label>{{ input.displayName }}</mat-label>
       <mat-select class="input-component" [formControlName]="input.id">
+        <mat-option>-- </mat-option>
+        <mat-option *ngFor="let option of input.options" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+      <mat-hint>{{ input.tooltip }}</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" *ngSwitchCase="'multi-select'">
+      <mat-label>{{ input.displayName }}</mat-label>
+      <mat-select class="input-component" [formControlName]="input.id" multiple>
         <mat-option>-- </mat-option>
         <mat-option *ngFor="let option of input.options" [value]="option">
           {{ option }}
