@@ -6,21 +6,21 @@
   <div class="form-row">
     <mat-form-field appearance="legacy">
       <mat-label>Access Key ID</mat-label>
-      <input class="input-component" matInput formControlName="accessKeyId" />
+      <input class="input-component" matInput formControlName="accessKeyId" required/>
       <mat-hint>"AWS credentials to store informaiton to s3 bucket"</mat-hint>
     </mat-form-field>
   </div>
   <div class="form-row">
     <mat-form-field appearance="legacy">
       <mat-label>Secret Access Key</mat-label>
-      <input class="input-component" matInput formControlName="secretAccessKey" />
+      <input class="input-component" matInput formControlName="secretAccessKey" required />
       <mat-hint>"AWS credentials to store informaiton to s3 bucket"</mat-hint>
     </mat-form-field>
   </div>
   <div class="form-row">
     <mat-form-field appearance="legacy">
       <mat-label>AWS Bucket Region</mat-label>
-      <input class="input-component" matInput formControlName="region" />
+      <input class="input-component" matInput formControlName="region" required />
       <mat-hint>"AWS credentials to store informaiton to s3 bucket"</mat-hint>
     </mat-form-field>
   </div>
