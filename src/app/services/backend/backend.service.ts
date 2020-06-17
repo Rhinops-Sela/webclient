@@ -7,6 +7,8 @@ import axios, { AxiosResponse } from 'axios';
 })
 export class BackendService {
   backendUrl = `${config.backendUrl}:${config.backendPort}`;
+  workingFolders: string[];
+  deploymentIdentifier: string;
   constructor() {}
 
   async getFormTemplate(): Promise<IDomain[]> {
@@ -25,22 +27,33 @@ export class BackendService {
         result = await axios.delete(`${this.backendUrl}/deployment`, {
           data: {
             form,
+            workingFolders: this.workingFolders,
+            deploymentIdentifier: this.deploymentIdentifier,
           },
         });
       } else {
         result = await axios.post(`${this.backendUrl}/deployment`, {
           form,
+          workingFolders: this.workingFolders,
+          deploymentIdentifier: this.deploymentIdentifier,
         });
       }
-      const deploymentIdentifier = result.data.deploymentIdentifier;
-      localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
-      return deploymentIdentifier;
     } catch (error) {
       throw error;
     }
   }
 
-  get deploymentIdentifier(): string {
-    return localStorage.getItem('deploymentIdentifier');
+  async prepareDeployment(form: IDomain[]) {
+    try {
+      let result: AxiosResponse<any>;
+      result = await axios.post(`${this.backendUrl}/deployment/prepare`, {
+        form,
+      });
+      this.workingFolders = result.data.workingFolders;
+      this.deploymentIdentifier = result.data.deploymentIdentifier;
+      return this.deploymentIdentifier;
+    } catch (error) {
+      throw error;
+    }
   }
 }

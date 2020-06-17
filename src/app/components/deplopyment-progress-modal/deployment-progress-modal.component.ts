@@ -41,19 +41,26 @@ export class DeploymentProgressModalComponent implements OnInit {
         }
         this.activePage = this.pagesToInstall[0];
         this.activePage.logs = [];
-        if (!this.data.deploymentIdentifier) {
-          this.backendService
-            .startDeployment(this.data.domains, this.data.deleteMode)
-            .then((deploymentIdentifier) => {
-              this.setupScoket(deploymentIdentifier);
-            })
-            .catch((error) => {
-              this.errorHandler.onErrorOccured.next(error.response.data.error);
-              this.close();
-            });
-        } else {
-          this.setupScoket(this.data.deploymentIdentifier);
-        }
+        this.backendService
+          .prepareDeployment(this.data.domains)
+          .then((deploymentIdentifier) => {
+            this.setupScoket(deploymentIdentifier);
+            this.backendService
+              .startDeployment(this.data.domains, this.data.deleteMode)
+              .then()
+              .catch((error) => {
+                this.errorHandler.onErrorOccured.next(
+                  error.response.data.error
+                );
+                this.close();
+              });
+          })
+          .catch((error) => {
+            this.errorHandler.onErrorOccured.next(
+              error.response.data.error || error.response.statusText
+            );
+            this.close();
+          });
       }
     } catch (error) {
       this.errorHandler.onErrorOccured.next(error.message);
@@ -79,14 +86,9 @@ export class DeploymentProgressModalComponent implements OnInit {
     }
   }
 
-  async delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
   private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
-    console.log('message: ', deploymentMessage);
     this.message = deploymentMessage.message;
     if (this.activePage.name !== deploymentMessage.pageName) {
-      await this.delay(100);
       this.activePage = this.pagesToInstall.find(
         (domain) => domain.name === deploymentMessage.pageName
       );
@@ -97,23 +99,20 @@ export class DeploymentProgressModalComponent implements OnInit {
         this.activePage.logs = [];
       }
     }
+    let line: ILogLine;
+    line = {
+      color: '#f2f3f4',
+      time: new Date().toLocaleString(),
+      content: deploymentMessage.log,
+    };
     if (deploymentMessage.error) {
       this.activePage.icon = 'clear';
-      const line: ILogLine = {
-        color: 'red',
-        time: new Date().toLocaleString(),
-        content: deploymentMessage.log,
-      };
-      this.activePage.logs.push(line);
+      line.color = 'red';
     } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
       this.activePage.icon = 'done';
-      const line: ILogLine = {
-        color: '#f2f3f4',
-        time: new Date().toLocaleString(),
-        content: deploymentMessage.log,
-      };
-      this.activePage.logs.push(line);
     }
+
+    this.activePage.logs.push(line);
     if (deploymentMessage.progress) {
       this.bufferValue = Math.round(
         (deploymentMessage.progress.curentPage /
