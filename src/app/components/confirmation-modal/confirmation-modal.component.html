@@ -1,6 +1,6 @@
 <div>
   <div class="header-row">
-    <mat-toolbar color="primary">Review & Confirm</mat-toolbar>
+    <mat-toolbar color="primary">{{ header}}</mat-toolbar>
   </div>
   <mat-accordion>
     <mat-expansion-panel *ngFor="let domain of domainList">
@@ -28,7 +28,7 @@
   </mat-accordion>
   <div class="button-row">
     <button class="form-button" color="accent" [disabled]="domainList.length < 1" mat-button (click)="complete(true)">
-      Confirm
+      {{buttonLabel}}
     </button>
     <button class="form-button" color="accent" mat-button (click)="complete(false)">
       Cancel

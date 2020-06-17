@@ -83,8 +83,7 @@ export class CommandButtonsComponent implements OnInit {
         dialogRef.afterClosed().subscribe((valid: any) => {
           if (valid.response) {
             this.openS3Browser();
-          }
-          else {
+          } else {
             this.progressHandlerService.onActionCompleted.next(true);
           }
         });
@@ -109,9 +108,9 @@ export class CommandButtonsComponent implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
-  private openProgressDialog(domainsToInstall: IDomain[]) {
+  private openProgressDialog(domainsToInstall: IDomain[], deleteMode: boolean) {
     const dialogRef = this.dialog.open(DeploymentProgressModalComponent, {
-      data: { domains: domainsToInstall },
+      data: { domains: domainsToInstall, deleteMode: deleteMode },
       disableClose: true,
     });
     const deploymentService = this.deploymentService;
@@ -179,19 +178,26 @@ export class CommandButtonsComponent implements OnInit {
     return modifiedList;
   }
 
-  public async openConfirmationDialog() {
+  public async openConfirmationDialog(deleteMode: boolean) {
     const notCompleted = this.globalService.verifyMandatory();
     const modifiedDomainList = await this.getModifiedList();
     if (notCompleted.length === 0 && modifiedDomainList.length > 0) {
-      await this.storeToS3();
+      if (!deleteMode) {
+        await this.storeToS3();
+      }
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-        data: modifiedDomainList,
+        data: {
+          modifiedDomainList: modifiedDomainList,
+          deleteMode: deleteMode,
+        },
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result: IConfirmationResponse) => {
         if (result && result.response && result.domainList.length > 0) {
-          this.export();
-          this.openProgressDialog(result.domainList);
+          if (!deleteMode) {
+            this.export();
+          }
+          this.openProgressDialog(result.domainList, deleteMode);
         }
       });
     } else {

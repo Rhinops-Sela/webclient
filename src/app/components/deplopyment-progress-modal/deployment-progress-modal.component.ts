@@ -27,6 +27,9 @@ export class DeploymentProgressModalComponent implements OnInit {
 
   ngOnInit(): void {
     try {
+      if (this.data.deleteMode) {
+        this.data.domains = this.data.domains.reverse();
+      }
       this.pagesToInstall = [];
       if (this.data) {
         for (const domain of this.data.domains) {
@@ -38,7 +41,7 @@ export class DeploymentProgressModalComponent implements OnInit {
         this.activePage.logs = [];
         if (!this.data.deploymentIdentifier) {
           this.backendService
-            .startDeployment(this.data.domains)
+            .startDeployment(this.data.domains, this.data.deleteMode)
             .then((deploymentIdentifier) => {
               this.setupScovket(deploymentIdentifier);
             });

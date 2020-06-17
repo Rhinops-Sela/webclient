@@ -9,13 +9,19 @@ import { GlobalService } from 'src/app/services/global/global.service';
 })
 export class ConfirmationModalComponent implements OnInit {
   panelOpenState = true;
+  buttonLabel = 'Confirm';
+  header = 'Review & Confirm Deployment';
   domainList: IDomain[];
   constructor(
     public globalService: GlobalService,
     public dialogRef: MatDialogRef<ConfirmationModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public modifiedDomainList: IDomain[]
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.domainList = modifiedDomainList;
+    this.domainList = this.data.modifiedDomainList;
+    if (this.data.deleteMode) {
+      this.buttonLabel = 'Delete';
+      this.header = 'Review & Confirm Before Deleting';
+    }
   }
 
   ngOnInit(): void {}

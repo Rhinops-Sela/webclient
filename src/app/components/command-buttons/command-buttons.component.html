@@ -10,13 +10,13 @@
     </button>
   </div>
   <div class="toolbar-button-container">
-    <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog()" color="accent"
+    <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog(false)" color="accent"
       matTooltip="Deploy Environment">
       <mat-icon>check</mat-icon>
     </button>
   </div>
     <div class="toolbar-button-container">
-      <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog()" color="accent"
+      <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog(true)" color="accent"
         matTooltip="Delete Entire Environment">
         <mat-icon>clear</mat-icon>
       </button>

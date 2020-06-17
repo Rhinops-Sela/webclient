@@ -1,41 +1,37 @@
 import { Injectable } from '@angular/core';
 import config from '../../../assets/config.json';
 import { IDomain } from 'src/app/interfaces/IDomain';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class BackendService {
   backendUrl = `${config.backendUrl}:${config.backendPort}`;
-  constructor() { }
+  constructor() {}
 
   async getFormTemplate(): Promise<IDomain[]> {
     try {
-      const form = await axios.get(`http://localhost:3000/deployment/form`);
+      const form = await axios.get(`${this.backendUrl}/deployment/form`);
       return form.data;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async startDeployment(form: IDomain[]) {
+  async startDeployment(form: IDomain[], deleteMode: boolean = false) {
     try {
-      const result = await axios.post(`http://localhost:3000/deployment`, { form });
-      const deploymentIdentifier = result.data.deploymentIdentifier;
-      localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
-      return deploymentIdentifier;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async deleteDeployment(form: IDomain[]) {
-    try {
-      const result = await axios.delete('http://localhost:3000/deployment', {
-        data: {
-          form
-        }
-      });
+      let result: AxiosResponse<any>;
+      if (deleteMode) {
+        result = await axios.delete(`${this.backendUrl}/deployment`, {
+          data: {
+            form,
+          },
+        });
+      } else {
+        result = await axios.post(`${this.backendUrl}/deployment`, {
+          form,
+        });
+      }
       const deploymentIdentifier = result.data.deploymentIdentifier;
       localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
       return deploymentIdentifier;
@@ -47,6 +43,4 @@ export class BackendService {
   get deploymentIdentifier(): string {
     return localStorage.getItem('deploymentIdentifier');
   }
-
-
 }
