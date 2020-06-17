@@ -36,7 +36,7 @@ export class BackendService {
       localStorage.setItem('deploymentIdentifier', deploymentIdentifier);
       return deploymentIdentifier;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

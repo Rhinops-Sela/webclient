@@ -6,6 +6,7 @@ import { IDeploymentInfo } from 'src/app/interfaces/IDeploymentInfo';
 import { IDeploymentMessage } from 'src/app/interfaces/IDeploymentMessage';
 import { ILogLine } from 'src/app/interfaces/ILogLine';
 import { IPage } from 'src/app/interfaces/IPage';
+import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
 
 @Component({
   selector: 'app-deployment-progress',
@@ -22,6 +23,7 @@ export class DeploymentProgressModalComponent implements OnInit {
     private deploymentService: DeploymentService,
     public dialogRef: MatDialogRef<DeploymentProgressModalComponent>,
     private backendService: BackendService,
+    private errorHandler: MessageHandlerService,
     @Inject(MAT_DIALOG_DATA) public data: IDeploymentInfo
   ) {}
 
@@ -43,18 +45,23 @@ export class DeploymentProgressModalComponent implements OnInit {
           this.backendService
             .startDeployment(this.data.domains, this.data.deleteMode)
             .then((deploymentIdentifier) => {
-              this.setupScovket(deploymentIdentifier);
+              this.setupScoket(deploymentIdentifier);
+            })
+            .catch((error) => {
+              this.errorHandler.onErrorOccured.next(error.response.data.error);
+              this.close();
             });
         } else {
-          this.setupScovket(this.data.deploymentIdentifier);
+          this.setupScoket(this.data.deploymentIdentifier);
         }
       }
     } catch (error) {
-      console.log(error);
+      this.errorHandler.onErrorOccured.next(error.message);
+      this.close();
     }
   }
 
-  private setupScovket(deploymentIdentifier: string) {
+  private setupScoket(deploymentIdentifier: string) {
     this.deploymentService.setupSocketConnection(deploymentIdentifier);
     this.message = 'Warming up...';
     this.deploymentService.progressUpdate.subscribe(
