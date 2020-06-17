@@ -14,6 +14,7 @@ import { IPage } from 'src/app/interfaces/IPage';
 })
 export class DeploymentProgressModalComponent implements OnInit {
   message: string;
+  deploymentCompleted = false;
   pagesToInstall: IPage[];
   activePage: IPage;
   bufferValue = 0;
@@ -33,39 +34,31 @@ export class DeploymentProgressModalComponent implements OnInit {
             this.pagesToInstall.push(page);
           }
         }
-        // this.activeDomainName = this.domainsToInstall[0].name;
-
         this.activePage = this.pagesToInstall[0];
         this.activePage.logs = [];
         if (!this.data.deploymentIdentifier) {
           this.backendService
             .startDeployment(this.data.domains)
             .then((deploymentIdentifier) => {
-              this.deploymentService.setupSocketConnection(
-                deploymentIdentifier
-              );
-              this.message = 'Warming up...';
-              this.deploymentService.progressUpdate.subscribe(
-                (message: IDeploymentMessage) => {
-                  this.onDeploymentMessage(message);
-                }
-              );
+              this.setupScovket(deploymentIdentifier);
             });
         } else {
-          this.deploymentService.setupSocketConnection(
-            this.data.deploymentIdentifier
-          );
-          this.message = 'Warming up...';
-          this.deploymentService.progressUpdate.subscribe(
-            (message: IDeploymentMessage) => {
-              this.onDeploymentMessage(message);
-            }
-          );
+          this.setupScovket(this.data.deploymentIdentifier);
         }
       }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  private setupScovket(deploymentIdentifier: string) {
+    this.deploymentService.setupSocketConnection(deploymentIdentifier);
+    this.message = 'Warming up...';
+    this.deploymentService.progressUpdate.subscribe(
+      (message: IDeploymentMessage) => {
+        this.onDeploymentMessage(message);
+      }
+    );
   }
 
   public changeDomain(pageName: string) {
@@ -96,19 +89,14 @@ export class DeploymentProgressModalComponent implements OnInit {
     }
     if (deploymentMessage.error) {
       this.activePage.icon = 'clear';
-    } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
-      this.activePage.icon = 'done';
-    }
-
-    if (deploymentMessage.error) {
       const line: ILogLine = {
         color: 'red',
         time: new Date().toLocaleString(),
         content: deploymentMessage.log,
       };
-
       this.activePage.logs.push(line);
-    } else {
+    } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
+      this.activePage.icon = 'done';
       const line: ILogLine = {
         color: '#f2f3f4',
         time: new Date().toLocaleString(),
@@ -125,5 +113,13 @@ export class DeploymentProgressModalComponent implements OnInit {
     } else {
       console.log('missing progress info');
     }
+
+    if (this.activePage.icon && this.bufferValue === 100) {
+      this.deploymentCompleted = true;
+    }
+  }
+
+  public close() {
+    this.dialogRef.close();
   }
 }
