@@ -1,9 +1,11 @@
 import { S3Service } from './../../services/s3/s3.service';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { IS3Bucket } from 'src/app/interfaces/IS3';
 import { FormBuilder } from '@angular/forms';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
+import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
+import { ProgressHandlerService } from 'src/app/services/progress-handler/progress-handler.service';
 
 @Component({
   selector: 'app-s3-login',
@@ -13,11 +15,14 @@ import { MessageHandlerService } from 'src/app/services/message-handler/message-
 export class S3LoginComponent implements OnInit {
   credentialsValid: boolean;
   credentialsForm;
+  cancel = false;
   constructor(
     private s3Service: S3Service,
     public dialogRef: MatDialogRef<S3LoginComponent>,
     private formBuilder: FormBuilder,
-    private errorHandler: MessageHandlerService
+    private errorHandler: MessageHandlerService,
+    public dialog: MatDialog,
+    private progressHandlerService: ProgressHandlerService
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +36,7 @@ export class S3LoginComponent implements OnInit {
   }
 
   public verifyCredentials() {
-    if (!this.credentialsForm.valid) {
+    if (!this.credentialsForm.valid || this.cancel) {
       return;
     }
     const bucketInfo: IS3Bucket = {
@@ -41,16 +46,24 @@ export class S3LoginComponent implements OnInit {
       bucketName: this.credentialsForm.controls.bucketName.value,
       storeCredentials: this.credentialsForm.controls.storeCredentials.value,
     };
+    this.dialog.open(ProgressSpinnerComponent, {
+      data: {
+        header: 'Verifing S3 Credentials',
+        subheader: 'Checking S3 Connection Status...',
+      },
+      disableClose: true,
+    });
     this.s3Service.setCredentials(bucketInfo).then((response) => {
       if (!response) {
-        this.errorHandler.onErrorOccured.next("Invalid S3 Credentials")
-        return;
+        this.errorHandler.onErrorOccured.next('Invalid S3 Credentials');
       }
       this.dialogRef.close({ response: response });
     });
+    this.progressHandlerService.onActionCompleted.next(true);
   }
 
   public onCancel() {
+    this.cancel = true;
     this.dialogRef.close({ response: false });
   }
 }

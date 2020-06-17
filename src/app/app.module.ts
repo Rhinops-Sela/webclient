@@ -28,6 +28,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DeploymentProgressModalComponent } from './components/deplopyment-progress-modal/deployment-progress-modal.component';
 import { BrowseStoredFilesComponent } from './components/browse-stored-files/browse-stored-files.component';
 import { S3LoginComponent } from './components/s3-login/s3-login.component';
+import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { S3LoginComponent } from './components/s3-login/s3-login.component';
     CommandButtonsComponent,
     DeploymentProgressModalComponent,
     BrowseStoredFilesComponent,
-    S3LoginComponent
+    S3LoginComponent,
+    ProgressSpinnerComponent
   ],
   imports: [
     FontAwesomeModule,

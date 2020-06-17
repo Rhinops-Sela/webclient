@@ -7,19 +7,21 @@ import { Subject } from 'rxjs';
 })
 export class MessageHandlerService {
   public onErrorOccured: Subject<string> = new Subject<string>();
-  public onActionCompleted: Subject<string> = new Subject<string>();
+  public onUserMessage: Subject<string> = new Subject<string>();
   constructor(private snackBar: MatSnackBar) {
     this.onErrorOccured.subscribe((errorMessage: string) => {
-      this.openSnackBar(errorMessage);
+      this.openSnackBar(errorMessage, 'error-scnackbar', 5000);
     });
-    this.onActionCompleted.subscribe((message: string) => {
-      this.openSnackBar(message);
+    this.onUserMessage.subscribe((message: string) => {
+      this.openSnackBar(message, 'info-scnackbar', 2000);
     });
   }
 
-  private openSnackBar(message: string) {
+  private openSnackBar(message: string, snackbarClass: string, duration: number) {
     this.snackBar.open(message, 'dissmis', {
-      duration: 5000,
+      duration: duration,
+      panelClass: [snackbarClass],
     });
   }
+
 }

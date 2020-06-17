@@ -1,26 +1,39 @@
 import { S3Service } from './../../services/s3/s3.service';
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
+import { ProgressHandlerService } from 'src/app/services/progress-handler/progress-handler.service';
+import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
 @Component({
   selector: 'app-browse-stored-files',
   templateUrl: './browse-stored-files.component.html',
   styleUrls: ['./browse-stored-files.component.scss'],
 })
 export class BrowseStoredFilesComponent implements OnInit {
-  fileList: string[] = [];
+  loaded = false;
   constructor(
     private s3Service: S3Service,
-    public dialogRef: MatDialogRef<BrowseStoredFilesComponent>
+    public dialogRef: MatDialogRef<BrowseStoredFilesComponent>,
+    @Inject(MAT_DIALOG_DATA) public fileList: string[],
+    public dialog: MatDialog,
+    private progressHandlerService: ProgressHandlerService
   ) {}
 
-  ngOnInit(): void {
-    this.s3Service.listDeploymentFiles().then((fileList) => {
-      this.fileList = fileList;
-    });
-  }
+  ngOnInit(): void {}
 
   async load(file: string) {
+    this.dialog.open(ProgressSpinnerComponent, {
+      data: {
+        header: 'Downlading File',
+        subheader: 'Downlaoding & loading selected file',
+      },
+      disableClose: true,
+    });
     const result = await this.s3Service.loadDeploymentFile(file);
+    this.progressHandlerService.onActionCompleted.next(true);
     this.dialogRef.close({ loaded: true, loadedForm: result });
   }
 }

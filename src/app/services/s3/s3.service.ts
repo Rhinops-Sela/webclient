@@ -89,6 +89,7 @@ export class S3Service {
   }
 
   public async loadDeploymentFile(fileNmae: string): Promise<IDomain[]> {
+    
     const response = await this.bucket
       .getObject({
         Bucket: this.credentials.bucketName,

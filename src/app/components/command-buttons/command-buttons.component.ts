@@ -1,3 +1,4 @@
+import { ProgressHandlerService } from './../../services/progress-handler/progress-handler.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { saveAs } from 'file-saver';
@@ -12,6 +13,7 @@ import { BrowseStoredFilesComponent } from '../browse-stored-files/browse-stored
 import { S3Service } from 'src/app/services/s3/s3.service';
 import { S3LoginComponent } from '../s3-login/s3-login.component';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
+import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',
@@ -27,8 +29,9 @@ export class CommandButtonsComponent implements OnInit {
     private deploymentService: DeploymentService,
     private globalService: GlobalService,
     private router: Router,
+    private messageHandlerService: MessageHandlerService,
     public dialog: MatDialog,
-    private messageHandlerService: MessageHandlerService
+    private progressHandlerService: ProgressHandlerService
   ) {}
 
   ngOnInit(): void {}
@@ -47,26 +50,42 @@ export class CommandButtonsComponent implements OnInit {
   }
 
   openS3Browser() {
-    const dialogRef = this.dialog.open(BrowseStoredFilesComponent);
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result.loaded) {
-        this.globalService.uploadForm(JSON.stringify(result.loadedForm));
-        this.messageHandlerService.onActionCompleted.next(
-          'Loaded Successfuly!'
-        );
-      }
+    this.s3Service.listDeploymentFiles().then((fileList) => {
+      this.progressHandlerService.onActionCompleted.next(true);
+      const dialogRef = this.dialog.open(BrowseStoredFilesComponent, {
+        data: fileList,
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result.loaded) {
+          this.globalService.uploadForm(JSON.stringify(result.loadedForm));
+          this.messageHandlerService.onUserMessage.next('Loaded Successfuly!');
+          this.router.navigate(['']);
+        }
+      });
     });
   }
 
   browse() {
+    this.dialog.open(ProgressSpinnerComponent, {
+      data: {
+        header: 'Loading Files From S3 Bucket',
+        subheader: 'Searching for files on S3 bucket...',
+      },
+      disableClose: true,
+    });
     this.s3Service.isCredentialsLoaded().then((valid) => {
       if (valid) {
         this.openS3Browser();
       } else {
-        const dialogRef = this.dialog.open(S3LoginComponent);
+        const dialogRef = this.dialog.open(S3LoginComponent, {
+          disableClose: true,
+        });
         dialogRef.afterClosed().subscribe((valid: any) => {
           if (valid.response) {
             this.openS3Browser();
+          }
+          else {
+            this.progressHandlerService.onActionCompleted.next(true);
           }
         });
       }
@@ -93,6 +112,7 @@ export class CommandButtonsComponent implements OnInit {
   private openProgressDialog(domainsToInstall: IDomain[]) {
     const dialogRef = this.dialog.open(DeploymentProgressModalComponent, {
       data: { domains: domainsToInstall },
+      disableClose: true,
     });
     const deploymentService = this.deploymentService;
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -102,10 +122,20 @@ export class CommandButtonsComponent implements OnInit {
   }
 
   public async storeToS3() {
+    this.dialog.open(ProgressSpinnerComponent, {
+      data: {
+        header: 'Uploading Files To S3 Bucket',
+        subheader: 'Storing files on S3 bucket',
+      },
+      disableClose: true,
+    });
     let upload = false;
     const loadedCredentials = await this.s3Service.isCredentialsLoaded();
+
     if (!loadedCredentials) {
-      const dialogRef = this.dialog.open(S3LoginComponent);
+      const dialogRef = this.dialog.open(S3LoginComponent, {
+        disableClose: true,
+      });
       const dialogResult = await dialogRef.afterClosed().toPromise();
       if (dialogResult?.response) {
         upload = true;
@@ -116,13 +146,16 @@ export class CommandButtonsComponent implements OnInit {
     if (upload) {
       try {
         await this.uploadBeforeDeployment();
-        this.messageHandlerService.onActionCompleted.next("File Was Successfuly Uploaded");
+        this.messageHandlerService.onUserMessage.next(
+          'File Was Successfuly Uploaded'
+        );
       } catch (error) {
         this.messageHandlerService.onErrorOccured.next(
           `Failed to save to S3 bucket: ${error.message}`
         );
       }
     }
+    this.progressHandlerService.onActionCompleted.next(true);
   }
 
   private async uploadBeforeDeployment() {
@@ -130,11 +163,31 @@ export class CommandButtonsComponent implements OnInit {
     await this.s3Service.uploadForm(JSON.stringify(allDomains), this.fileName);
   }
 
+  private async getModifiedList(): Promise<IDomain[]> {
+    const modifiedList: IDomain[] = [];
+    const domainList: IDomain[] = await this.globalService.getAllDomains();
+    for (const domain of domainList) {
+      const domainClone = JSON.parse(JSON.stringify(domain)) as IDomain;
+      const pages = domainClone.pages.filter((page) => {
+        return page.modified === true;
+      });
+      domainClone.pages = pages;
+      if (pages.length > 0) {
+        modifiedList.push(domainClone);
+      }
+    }
+    return modifiedList;
+  }
+
   public async openConfirmationDialog() {
     const notCompleted = this.globalService.verifyMandatory();
-    if (notCompleted.length === 0) {
+    const modifiedDomainList = await this.getModifiedList();
+    if (notCompleted.length === 0 && modifiedDomainList.length > 0) {
       await this.storeToS3();
-      const dialogRef = this.dialog.open(ConfirmationModalComponent);
+      const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+        data: modifiedDomainList,
+        disableClose: true,
+      });
       dialogRef.afterClosed().subscribe((result: IConfirmationResponse) => {
         if (result && result.response && result.domainList.length > 0) {
           this.export();
@@ -142,14 +195,18 @@ export class CommandButtonsComponent implements OnInit {
         }
       });
     } else {
-      let incompleteStr =
-        'Please complete the following mandatory components: \n';
-      notCompleted.forEach((domain) => {
-        incompleteStr += domain.displayName + ' ,';
-      });
-      this.messageHandlerService.onErrorOccured.next(
-        `${incompleteStr.substring(0, incompleteStr.length - 1)}`
-      );
+      if (modifiedDomainList.length === 0) {
+        this.messageHandlerService.onErrorOccured.next(`No pages with data`);
+      } else {
+        let incompleteStr =
+          'Please complete the following mandatory components: \n';
+        notCompleted.forEach((domain) => {
+          incompleteStr += domain.displayName + ' ,';
+        });
+        this.messageHandlerService.onErrorOccured.next(
+          `${incompleteStr.substring(0, incompleteStr.length - 1)}`
+        );
+      }
     }
   }
 

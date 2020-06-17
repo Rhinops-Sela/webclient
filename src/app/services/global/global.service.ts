@@ -112,6 +112,8 @@ export class GlobalService {
     if (activeDomain) {
       localStorage.removeItem('activeDomain');
     }
+    this.activeDomain = null;
+    this.activePage = null;
   }
 
   public savePage(modifiedPage: IPage, form?: FormGroup) {
