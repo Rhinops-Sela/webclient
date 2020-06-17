@@ -1,37 +1,30 @@
-<div>
-  <div class="header-row">
-    <mat-toolbar color="primary">{{ header}}</mat-toolbar>
-  </div>
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let domain of domainList">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ domain.displayName}}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let page of domain.pages">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{ page.displayName}}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="fields-container">
-            <mat-form-field class="example-full-width" *ngFor="let input of page.inputs">
+<div >
+  <mat-card>
+    <mat-card-title>
+      {{header}}
+    </mat-card-title>
+    <mat-card-content class="container">
+      <div *ngFor="let domain of domainList">
+        <mat-card class="page-card" *ngFor="let page of domain.pages">
+          <mat-card-subtitle>
+            {{page.displayName}}
+          </mat-card-subtitle>
+          <mat-card-content>
+            <mat-form-field *ngFor="let input of page.inputs">
               <mat-label>{{input.displayName}}</mat-label>
               <input matInput disabled value="{{input.value}}">
             </mat-form-field>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-expansion-panel>
-  </mat-accordion>
-  <div class="button-row">
-    <button class="form-button" color="accent" [disabled]="domainList.length < 1" mat-button (click)="complete(true)">
-      {{buttonLabel}}
-    </button>
-    <button class="form-button" color="accent" mat-button (click)="complete(false)">
-      Cancel
-    </button>
-  </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="button-row">
+      <button class="form-button" color="accent" [disabled]="domainList.length < 1" mat-button (click)="complete(true)">
+        {{buttonLabel}}
+      </button>
+      <button class="form-button" color="accent" mat-button (click)="complete(false)">
+        Cancel
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>
