@@ -82,8 +82,6 @@ export class GlobalService {
     }
   }
 
-
-
   private getLocalStorageForm() {
     const form = localStorage.getItem('storedForm');
     return form;
@@ -200,6 +198,7 @@ export class GlobalService {
     this.activeDomain.pages.splice(index + 1, 0, newPage);
     this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
+    this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 
   public deletePage(pageSource: IPage) {
@@ -209,6 +208,7 @@ export class GlobalService {
     this.activeDomain.pages.splice(index, 1);
     this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
+    this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 
   public canDelete(pageToCheck: IPage): boolean {
