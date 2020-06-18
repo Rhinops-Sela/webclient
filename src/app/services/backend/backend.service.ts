@@ -41,6 +41,7 @@ export class BackendService {
           deploymentIdentifier: this.deploymentIdentifier,
         });
       }
+      return true;
     } catch (error) {
       throw error;
     }

@@ -24,5 +24,6 @@
   </div>
 </div>
 <mat-card-actions class="button-container">
+  <button [disabled]="deploymentCompleted" color="accent" (click)="initDeployment()" mat-button>Start</button>
   <button [disabled]="!deploymentCompleted" color="accent" (click)="close()" mat-button>Close</button>
 </mat-card-actions>

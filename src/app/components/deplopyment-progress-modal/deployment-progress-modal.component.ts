@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { BackendService } from 'src/app/services/backend/backend.service';
@@ -13,7 +13,7 @@ import { MessageHandlerService } from 'src/app/services/message-handler/message-
   templateUrl: './deployment-progress-modal.component.html',
   styleUrls: ['./deployment-progress-modal.component.scss'],
 })
-export class DeploymentProgressModalComponent implements OnInit {
+export class DeploymentProgressModalComponent implements OnInit{
   message: string;
   deploymentCompleted = false;
   pagesToInstall: IPage[];
@@ -41,31 +41,32 @@ export class DeploymentProgressModalComponent implements OnInit {
         }
         this.activePage = this.pagesToInstall[0];
         this.activePage.logs = [];
-        this.backendService
-          .prepareDeployment(this.data.domains)
-          .then((deploymentIdentifier) => {
-            this.setupScoket(deploymentIdentifier);
-            this.backendService
-              .startDeployment(this.data.domains, this.data.deleteMode)
-              .then()
-              .catch((error) => {
-                this.errorHandler.onErrorOccured.next(
-                  error.response.data.error
-                );
-                this.close();
-              });
-          })
-          .catch((error) => {
-            this.errorHandler.onErrorOccured.next(
-              error.response.data.error || error.response.statusText
-            );
-            this.close();
-          });
       }
     } catch (error) {
       this.errorHandler.onErrorOccured.next(error.message);
       this.close();
     }
+  }
+
+  initDeployment() {
+    this.backendService
+      .prepareDeployment(this.data.domains)
+      .then((deploymentIdentifier) => {
+        this.setupScoket(deploymentIdentifier);
+        this.backendService
+          .startDeployment(this.data.domains, this.data.deleteMode)
+          .then()
+          .catch((error) => {
+            this.errorHandler.onErrorOccured.next(error.response.data.error);
+            this.close();
+          });
+      })
+      .catch((error) => {
+        this.errorHandler.onErrorOccured.next(
+          error.response.data.error || error.response.statusText
+        );
+        this.close();
+      });
   }
 
   private setupScoket(deploymentIdentifier: string) {
