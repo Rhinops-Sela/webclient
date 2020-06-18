@@ -33,16 +33,20 @@ export class GlobalService {
   private async loadDomains() {
     if (!this.loadFromLocalStorage()) {
       this.allDomains = await this.backendService.getFormTemplate();
-      this.allDomains.forEach((domain) => {
-        domain.id = GUID();
-        domain.pages.forEach((page) => {
-          page.id = GUID();
-          page.inputs.forEach((input) => {
-            input.id = GUID();
-          });
+      this.setGuids();
+    }
+  }
+
+  private setGuids() {
+    this.allDomains.forEach((domain) => {
+      domain.id = GUID();
+      domain.pages.forEach((page) => {
+        page.id = GUID();
+        page.inputs.forEach((input) => {
+          input.id = GUID();
         });
       });
-    }
+    });
   }
 
   private loadFromLocalStorage(): boolean {
@@ -72,6 +76,7 @@ export class GlobalService {
   public uploadForm(jsonForm: string) {
     try {
       this.allDomains = JSON.parse(jsonForm);
+      this.setGuids();
       this.storeLocalStorage(this.allDomains);
       return { result: true };
     } catch (error) {

@@ -14,13 +14,16 @@ export class BackendService {
   async getFormTemplate(): Promise<IDomain[]> {
     try {
       const form = await axios.get(`${this.backendUrl}/deployment/form`);
-      return form.data;
+      return form.data.form;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async startDeployment(form: IDomain[], deleteMode: boolean = false) {
+  async startDeployment(
+    form: IDomain[],
+    deleteMode: boolean = false
+  ) {
     try {
       let result: AxiosResponse<any>;
       if (deleteMode) {
@@ -28,7 +31,7 @@ export class BackendService {
           data: {
             form,
             workingFolders: this.workingFolders,
-            deploymentIdentifier: this.deploymentIdentifier,
+            deploymentIdentifier: this.deploymentIdentifier
           },
         });
       } else {
@@ -56,4 +59,6 @@ export class BackendService {
       throw error;
     }
   }
+
+
 }
