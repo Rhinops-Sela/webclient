@@ -197,6 +197,7 @@ export class GlobalService {
     newPage.inputs.forEach((input) => {
       input.id = GUID();
     });
+    this.setClonedName(newPage);
     const index = this.activeDomain.pages.findIndex(
       (page) => page.id === pageSource.id
     );
@@ -204,6 +205,17 @@ export class GlobalService {
     this.storeLocalStorage(null, this.activeDomain);
     this.saveDomain(this.activeDomain);
     this.refreshRequired.next({ pageChanged: true, domainChanged: true });
+  }
+
+  private setClonedName(newPage: IPage) {
+    let suffix = `fenneccloned${GUID()}`;
+    const split = newPage.name.split('_');
+    const splitLast = split[split.length - 1];
+    if (splitLast.indexOf('fenneccloned') > -1) {
+      newPage.name = newPage.name.replace(splitLast, suffix);;
+    } else {
+      newPage.name += `_${suffix}`;
+    }
   }
 
   public deletePage(pageSource: IPage) {
