@@ -1,8 +1,8 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" #tree>
   <mat-tree-node  matTreeNodePadding matTreeNodePaddingIndent="10" *matTreeNodeDef="let node" matTreeNodePadding>
-    <button class="sidnav-button" (click)="pageSelected(node.name)" mat-button>
+    <button class="sidnav-button" (click)="pageSelected(node)"  mat-button>
       <mat-icon>{{ node.icon }}</mat-icon>
-      {{node.name}}
+      {{getPageName(node)}}
     </button>
   </mat-tree-node>
   <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>

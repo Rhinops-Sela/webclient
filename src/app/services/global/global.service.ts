@@ -192,7 +192,7 @@ export class GlobalService {
   }
 
   public clonePage(pageSource: IPage) {
-    const newPage = JSON.parse(JSON.stringify(pageSource));
+    const newPage = JSON.parse(JSON.stringify(pageSource)) as IPage;
     newPage.id = GUID();
     newPage.inputs.forEach((input) => {
       input.id = GUID();
