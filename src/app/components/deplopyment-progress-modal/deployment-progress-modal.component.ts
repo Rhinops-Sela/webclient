@@ -86,6 +86,13 @@ export class DeploymentProgressModalComponent implements OnInit {
     }
   }
 
+  getPageDisplayName(page: IPage) {
+    if (page.repeatable && page.inputs[0].value) {
+      return `${page.displayName}-${page.inputs[0].value}`;
+    }
+    return page.displayName;
+  }
+
   private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
     this.message = deploymentMessage.message;
     if (this.activePage.name !== deploymentMessage.pageName) {

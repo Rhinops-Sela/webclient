@@ -6,15 +6,15 @@
     <mat-list>
       <div mat-subheader>Folders</div>
       <mat-list-item *ngFor="let page of pagesToInstall; let index" (click)="changeDomain(page.name)">
-        <mat-spinner diameter="20" class="deployement-spinner" *ngIf="!page.icon"></mat-spinner>
+        <mat-spinner diameter="20" class="deployement-spinner" *ngIf="!page.icon && page === activePage"></mat-spinner>
         <mat-icon>{{page.icon}}</mat-icon>
-        <div mat-line>{{ page.displayName}}</div>
+        <div mat-line>{{getPageDisplayName(page)}}</div>
       </mat-list-item>
     </mat-list>
   </div>
 
   <div class="log-container">
-    <h2>{{activePage.displayName}}</h2>
+    <h2>{{getPageDisplayName(activePage)}}</h2>
     <div class="line-container">
       <p *ngFor="let logLine of activePage.logs" [ngStyle]="{'color': logLine.color}">[{{ logLine.time }}] -
         {{ logLine.content }}
