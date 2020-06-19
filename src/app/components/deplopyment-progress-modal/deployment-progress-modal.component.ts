@@ -127,8 +127,9 @@ export class DeploymentProgressModalComponent implements OnInit {
     } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
       this.activePage.icon = 'done';
     }
-
-    this.activePage.logs.push(line);
+    if (line.content) {
+      this.activePage.logs.push(line);
+    }
     if (deploymentMessage.progress) {
       this.bufferValue = Math.round(
         (deploymentMessage.progress.currentPage /
