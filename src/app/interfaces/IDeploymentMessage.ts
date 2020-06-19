@@ -3,8 +3,7 @@ import { ILogLine } from './ILogLine';
 
 
 export interface IDeploymentMessage {
-  message: string;
-  log?: any;
+  log: any;
   progress?: IDploymentProgress;
   final?: true;
   error?: boolean;

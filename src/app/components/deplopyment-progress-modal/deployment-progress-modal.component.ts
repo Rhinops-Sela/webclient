@@ -14,7 +14,7 @@ import { MessageHandlerService } from 'src/app/services/message-handler/message-
   styleUrls: ['./deployment-progress-modal.component.scss'],
 })
 export class DeploymentProgressModalComponent implements OnInit {
-  message: string;
+  log: string;
   deploymentCompleted = false;
   cancelPressed = false;
   deploymentStarted = false;
@@ -55,31 +55,21 @@ export class DeploymentProgressModalComponent implements OnInit {
   }
   initDeployment() {
     this.backendService
-      .prepareDeployment(this.data.domains)
+      .startDeployment(this.data.domains, this.data.deleteMode)
       .then((deploymentIdentifier) => {
         this.setupScoket(deploymentIdentifier);
-        this.backendService
-          .startDeployment(this.data.domains, this.data.deleteMode)
-          .then(() => {
-            this.deploymentStarted = true;
-            this.deploymentCompleted = false;
-          })
-          .catch((error) => {
-            this.errorHandler.onErrorOccured.next(error.response.data.error);
-            this.close();
-          });
+        this.deploymentStarted = true;
+        this.deploymentCompleted = false;
       })
       .catch((error) => {
-        this.errorHandler.onErrorOccured.next(
-          error.response.data.error || error.response.statusText
-        );
+        this.errorHandler.onErrorOccured.next(error.response.data.error);
         this.close();
       });
   }
 
   private setupScoket(deploymentIdentifier: string) {
     this.deploymentService.setupSocketConnection(deploymentIdentifier);
-    this.message = 'Warming up...';
+    this.log = 'Warming up...';
     this.deploymentService.progressUpdate.subscribe(
       (message: IDeploymentMessage) => {
         this.onDeploymentMessage(message);
@@ -103,7 +93,7 @@ export class DeploymentProgressModalComponent implements OnInit {
   }
 
   private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
-    this.message = deploymentMessage.message;
+    this.log = deploymentMessage.log;
     if (this.activePage.name !== deploymentMessage.pageName) {
       this.activePage = this.pagesToInstall.find(
         (domain) => domain.name === deploymentMessage.pageName
@@ -127,7 +117,8 @@ export class DeploymentProgressModalComponent implements OnInit {
     } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
       this.activePage.icon = 'done';
     }
-    if (line.content) {
+
+    if (line.content.length > 0 || line.content.trim().length > 0) {
       this.activePage.logs.push(line);
     }
     if (deploymentMessage.progress) {

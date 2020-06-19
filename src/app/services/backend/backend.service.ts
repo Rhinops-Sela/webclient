@@ -30,36 +30,18 @@ export class BackendService {
         result = await axios.delete(`${this.backendUrl}/deployment`, {
           data: {
             form,
-            workingFolders: this.workingFolders,
-            deploymentIdentifier: this.deploymentIdentifier
+            deleteMode,
           },
         });
       } else {
         result = await axios.post(`${this.backendUrl}/deployment`, {
           form,
-          workingFolders: this.workingFolders,
-          deploymentIdentifier: this.deploymentIdentifier,
+          deleteMode,
         });
       }
-      return true;
+      return result.data;
     } catch (error) {
       throw error;
     }
   }
-
-  async prepareDeployment(form: IDomain[]) {
-    try {
-      let result: AxiosResponse<any>;
-      result = await axios.post(`${this.backendUrl}/deployment/prepare`, {
-        form,
-      });
-      this.workingFolders = result.data.workingFolders;
-      this.deploymentIdentifier = result.data.deploymentIdentifier;
-      return this.deploymentIdentifier;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-
 }
