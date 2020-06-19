@@ -13,9 +13,11 @@ import { MessageHandlerService } from 'src/app/services/message-handler/message-
   templateUrl: './deployment-progress-modal.component.html',
   styleUrls: ['./deployment-progress-modal.component.scss'],
 })
-export class DeploymentProgressModalComponent implements OnInit{
+export class DeploymentProgressModalComponent implements OnInit {
   message: string;
   deploymentCompleted = false;
+  cancelPressed = false;
+  deploymentStarted = false;
   pagesToInstall: IPage[];
   activePage: IPage;
   bufferValue = 0;
@@ -47,7 +49,10 @@ export class DeploymentProgressModalComponent implements OnInit{
       this.close();
     }
   }
-
+  cancelDeployment() {
+    this.deploymentService.sendKillMessage();
+    this.cancelPressed = true;
+  }
   initDeployment() {
     this.backendService
       .prepareDeployment(this.data.domains)
@@ -55,7 +60,10 @@ export class DeploymentProgressModalComponent implements OnInit{
         this.setupScoket(deploymentIdentifier);
         this.backendService
           .startDeployment(this.data.domains, this.data.deleteMode)
-          .then()
+          .then(() => {
+            this.deploymentStarted = true;
+            this.deploymentCompleted = false;
+          })
           .catch((error) => {
             this.errorHandler.onErrorOccured.next(error.response.data.error);
             this.close();
@@ -123,7 +131,7 @@ export class DeploymentProgressModalComponent implements OnInit{
     this.activePage.logs.push(line);
     if (deploymentMessage.progress) {
       this.bufferValue = Math.round(
-        (deploymentMessage.progress.curentPage /
+        (deploymentMessage.progress.currentPage /
           deploymentMessage.progress.totalPages) *
           100
       );
