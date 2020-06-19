@@ -40,11 +40,12 @@ mat-list-item{
 
 .button-container{
   display: flex;
-  align-self: center;
-  justify-content: center;
+  align-self: left;
+  justify-content: left;
 }
 
 .deployement-spinner{
   width: 1vw;
   height: 1vw;
+  margin-left: 10px;
 }

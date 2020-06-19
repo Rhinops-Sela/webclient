@@ -1,12 +1,12 @@
 <section class="progressbar-section">
-  <mat-progress-bar mode="buffer" [bufferValue]="bufferValue"></mat-progress-bar>
+  <mat-progress-bar *ngIf="deploymentStarted && !deploymentCompleted && !cancelPressed" mode="buffer" [bufferValue]="bufferValue"></mat-progress-bar>
 </section>
 <div class="main-container" *ngIf="pagesToInstall">
   <div class="list-container">
     <mat-list>
       <div mat-subheader>Folders</div>
       <mat-list-item *ngFor="let page of pagesToInstall; let index" (click)="changeDomain(page.name)">
-        <mat-spinner diameter="20" class="deployement-spinner" *ngIf="!page.icon && page === activePage"></mat-spinner>
+        <mat-spinner *ngIf="(deploymentStarted && !deploymentCompleted && !cancelPressed) && (!page.icon && page === activePage)" diameter="20" class="deployement-spinner" ></mat-spinner>
         <mat-icon>{{page.icon}}</mat-icon>
         <div mat-line>{{getPageDisplayName(page)}}</div>
       </mat-list-item>
