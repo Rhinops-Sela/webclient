@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './modules/app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DemoMaterialModule } from './modules/material.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,6 +29,7 @@ import { DeploymentProgressModalComponent } from './components/deplopyment-progr
 import { BrowseStoredFilesComponent } from './components/browse-stored-files/browse-stored-files.component';
 import { S3LoginComponent } from './components/s3-login/s3-login.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
+import { FileSelectionDialogComponent } from './components/file-selection-dialog/file-selection-dialog.component';
 // import { FileSelectDirective } from 'ng2-file-upload';
 @NgModule({
   declarations: [
@@ -44,10 +45,12 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
     DeploymentProgressModalComponent,
     BrowseStoredFilesComponent,
     S3LoginComponent,
-    ProgressSpinnerComponent
+    ProgressSpinnerComponent,
+    FileSelectionDialogComponent
   ],
   imports: [
     FontAwesomeModule,
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -1,3 +1,4 @@
+import { FileSelectionDialogComponent } from './../file-selection-dialog/file-selection-dialog.component';
 import { ProgressHandlerService } from './../../services/progress-handler/progress-handler.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -92,12 +93,20 @@ export class CommandButtonsComponent implements OnInit {
   }
 
   async export(domainsToExport?: IDomain[]) {
+    const dialogRef = this.dialog.open(FileSelectionDialogComponent);
+
+    const filename = await dialogRef.afterClosed().toPromise();
     try {
+      if (!filename) {
+        return;
+      }
       this.form = domainsToExport || (await this.globalService.getAllDomains());
       const domains = this.form;
       const jsonFormat = JSON.stringify(domains);
-      const blob = new Blob([jsonFormat], { type: 'text/plain;charset=utf-8' });
-      saveAs.saveAs(blob, this.fileName);
+      const blob = new Blob([jsonFormat], {
+        type: 'text/plain;charset=utf-8',
+      });
+      saveAs.saveAs(blob, filename + '.json');
     } catch (error) {
       this.messageHandlerService.onErrorOccured.next(
         `Export failed: ${error.message}`
@@ -192,14 +201,16 @@ export class CommandButtonsComponent implements OnInit {
         },
         disableClose: true,
       });
-      dialogRef.afterClosed().subscribe((result: IConfirmationResponse) => {
-        if (result && result.response && result.domainList.length > 0) {
-          if (!deleteMode) {
-            this.export();
+      dialogRef
+        .afterClosed()
+        .subscribe(async (result: IConfirmationResponse) => {
+          if (result && result.response && result.domainList.length > 0) {
+            if (!deleteMode) {
+              await this.export();
+            }
+            this.openProgressDialog(result.domainList, deleteMode);
           }
-          this.openProgressDialog(result.domainList, deleteMode);
-        }
-      });
+        });
     } else {
       if (modifiedDomainList.length === 0) {
         this.messageHandlerService.onErrorOccured.next(`No pages with data`);
