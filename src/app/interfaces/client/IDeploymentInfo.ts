@@ -1,4 +1,4 @@
-import { IDomain } from './IDomain';
+import { IDomain } from '../common/IDomain';
 
 export interface IDeploymentInfo {
   domains: IDomain[];

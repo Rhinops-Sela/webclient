@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IDomain } from 'src/app/interfaces/common/IDomain';
-import { IConfirmationResponse } from 'src/app/interfaces/common/IConfirmationResponse';
+import { IConfirmationResponse } from 'src/app/interfaces/client/IConfirmationResponse';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { S3Service } from 'src/app/services/s3/s3.service';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';

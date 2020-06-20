@@ -1,5 +1,5 @@
 import { IInput } from './IInput';
-import { ILogLine } from './ILogLine';
+import { ILogLine } from '../client/ILogLine';
 
 export interface IPage {
   name: string;

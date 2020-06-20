@@ -1,5 +1,5 @@
 import { IDploymentProgress } from './IDeplopymentProgress';
-import { ILogLine } from './ILogLine';
+import { ILogLine } from '../client/ILogLine';
 
 
 export interface IDeploymentMessage {
