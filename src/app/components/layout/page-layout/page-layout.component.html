@@ -5,9 +5,11 @@
       <img mat-card-avatar class="component-logo" mat-card-avatar src="{{ page.image }}" />
     </mat-card-header>
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()" [formGroup]="form">
-        <div *ngFor="let input of page.inputs" class="form-row">
-          <app-input-component [input]="input" [form]="form"></app-input-component>
+      <form (ngSubmit)="onSubmit()" [formGroup]="form" >
+        <div class="form-container">
+          <div *ngFor="let input of page.inputs" class="form-row">
+            <app-input-component [input]="input" [form]="form"></app-input-component>
+          </div>
         </div>
         <div class="button-row">
           <div class="row-spacer"></div>
