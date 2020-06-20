@@ -12,7 +12,8 @@
           <mat-card-content>
             <mat-form-field *ngFor="let input of page.inputs">
               <mat-label>{{input.displayName}}</mat-label>
-              <input matInput disabled value="{{input.value}}">
+              <input matInput disabled *ngIf="input.controlType === 'text-password'" type="password" value="{{input.value}}">
+              <input matInput disabled *ngIf="input.controlType !== 'text-password'" value="{{input.value}}">
             </mat-form-field>
           </mat-card-content>
         </mat-card>
