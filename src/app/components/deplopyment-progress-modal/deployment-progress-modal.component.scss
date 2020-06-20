@@ -11,14 +11,11 @@
   background-color: black;
   padding-top: 10px;
   padding-left: 10px;
+  overflow-y: auto;
 }
 .log-container{
-  overflow-y:auto;
   width: 65vw;
-
 }
-
-
 mat-list-item{
   cursor: pointer !important;
 }
