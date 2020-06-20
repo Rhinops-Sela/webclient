@@ -13,7 +13,7 @@
   width: 200px;
 }
 
-.toolbar-spacer {
+.row-spacer {
   flex: 1 1 auto;
 }
 
@@ -30,9 +30,7 @@
   margin: 0;
   padding: 0;
   text-align: left;
-
 }
-
 
 mat-card {
   flex: 0 0 20%;
@@ -43,7 +41,6 @@ mat-card {
   align-items: center;
   flex-direction: column;
   margin: 15px;
-
 }
 
 .wizard-card {
