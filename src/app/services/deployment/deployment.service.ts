@@ -20,7 +20,7 @@ export class DeploymentService {
   }
 
   sendKillMessage() {
-    this.socket.emit("kill", 'Kill');
+    this.socket.emit('kill', this.deploymentIdentifier);
   }
 
   closeSocket() {

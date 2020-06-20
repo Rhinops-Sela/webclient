@@ -258,6 +258,7 @@ export class GlobalService {
   public onDomainChange(activeDomain: IDomain) {
     this.activeDomain = activeDomain;
     this.storeLocalStorage(null, activeDomain);
+    this.activePage = activeDomain.pages[0];
     this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 

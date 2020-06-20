@@ -6,8 +6,8 @@
     <mat-list>
       <div mat-subheader>Folders</div>
       <mat-list-item *ngFor="let page of pagesToInstall; let index" (click)="changeDomain(page.name)">
-        <mat-spinner *ngIf="(deploymentStarted && !deploymentCompleted && !cancelPressed) && (!page.icon && page === activePage)" diameter="20" class="deployement-spinner" ></mat-spinner>
-        <mat-icon>{{page.icon}}</mat-icon>
+        <mat-spinner *ngIf="(deploymentStarted && !deploymentCompleted && !cancelPressed) && (!page.deploymentIcon && page === activePage)" diameter="20" class="deployement-spinner" ></mat-spinner>
+        <mat-icon>{{page.deploymentIcon}}</mat-icon>
         <div mat-line>{{getPageDisplayName(page)}}</div>
       </mat-list-item>
     </mat-list>

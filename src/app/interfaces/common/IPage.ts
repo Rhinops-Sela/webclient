@@ -15,5 +15,6 @@ export interface IPage {
   mandatory?: boolean;
   logs?: ILogLine[];
   icon?: string;
+  deploymentIcon?: string;
   stderrFail?: boolean;
 }

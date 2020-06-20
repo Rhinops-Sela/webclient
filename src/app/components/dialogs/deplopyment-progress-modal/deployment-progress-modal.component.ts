@@ -60,6 +60,7 @@ export class DeploymentProgressModalComponent implements OnInit {
         this.setupScoket(deploymentIdentifier);
         this.deploymentStarted = true;
         this.deploymentCompleted = false;
+        this.cancelPressed = false;
       })
       .catch((error) => {
         this.errorHandler.onErrorOccured.next(error.response.data.error);
@@ -112,10 +113,13 @@ export class DeploymentProgressModalComponent implements OnInit {
       content: deploymentMessage.log,
     };
     if (deploymentMessage.error) {
-      this.activePage.icon = 'clear';
+      this.activePage.deploymentIcon = 'clear';
       line.color = 'red';
-    } else if (this.activePage.icon !== 'clear' && deploymentMessage.final) {
-      this.activePage.icon = 'done';
+    } else if (
+      this.activePage.deploymentIcon !== 'clear' &&
+      deploymentMessage.final
+    ) {
+      this.activePage.deploymentIcon = 'done';
     }
 
     if (line.content.length > 0 || line.content.trim().length > 0) {
@@ -131,7 +135,7 @@ export class DeploymentProgressModalComponent implements OnInit {
       console.log('missing progress info');
     }
 
-    if (this.activePage.icon && this.bufferValue === 100) {
+    if (this.activePage.deploymentIcon && this.bufferValue === 100) {
       this.deploymentCompleted = true;
     }
   }
