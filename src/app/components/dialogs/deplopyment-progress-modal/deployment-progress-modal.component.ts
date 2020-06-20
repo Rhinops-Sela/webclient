@@ -20,6 +20,7 @@ export class DeploymentProgressModalComponent implements OnInit {
   deploymentStarted = false;
   pagesToInstall: IPage[];
   activePage: IPage;
+  displayPage: IPage;
   bufferValue = 0;
   constructor(
     private deploymentService: DeploymentService,
@@ -42,6 +43,7 @@ export class DeploymentProgressModalComponent implements OnInit {
           }
         }
         this.activePage = this.pagesToInstall[0];
+        this.displayPage = this.activePage;
         this.activePage.logs = [];
       }
     } catch (error) {
@@ -78,9 +80,9 @@ export class DeploymentProgressModalComponent implements OnInit {
     );
   }
 
-  public changeDomain(pageName: string) {
-    if (this.activePage.name !== pageName) {
-      this.activePage = this.pagesToInstall.find(
+  public changeDisplayDomain(pageName: string) {
+    if (this.displayPage.name !== pageName) {
+      this.displayPage = this.pagesToInstall.find(
         (page) => page.name === pageName
       );
     }
@@ -99,6 +101,7 @@ export class DeploymentProgressModalComponent implements OnInit {
       this.activePage = this.pagesToInstall.find(
         (domain) => domain.name === deploymentMessage.pageName
       );
+      this.displayPage = this.activePage;
       if (deploymentMessage.pageName) {
         this.activePage.name = deploymentMessage.pageName;
       }
@@ -120,6 +123,9 @@ export class DeploymentProgressModalComponent implements OnInit {
       deploymentMessage.final
     ) {
       this.activePage.deploymentIcon = 'done';
+      /* this.activePage = this.pagesToInstall.find(
+        (domain) => domain.name === deploymentMessage.pageName
+      ); */
     }
 
     if (line.content.length > 0 || line.content.trim().length > 0) {

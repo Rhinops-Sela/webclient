@@ -14,14 +14,14 @@
   overflow-y: auto;
 }
 .log-container{
-  width: 65vw;
+  width: 60vw;
 }
 mat-list-item{
   cursor: pointer !important;
 }
 
 .list-container{
-  width: 10vw;
+  width: 15vw;
 
 }
 
@@ -42,7 +42,13 @@ mat-list-item{
 }
 
 .deployement-spinner{
-  width: 1vw;
-  height: 1vw;
-  margin-left: 10px;
+  margin-left: 2.8vw;
+}
+
+.deployed-page-name{
+  font-size: smaller;
+}
+
+.mat-list-item-content{
+  padding: 0 !important;
 }

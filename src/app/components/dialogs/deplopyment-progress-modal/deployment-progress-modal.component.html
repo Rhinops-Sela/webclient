@@ -1,22 +1,27 @@
 <section class="progressbar-section">
-  <mat-progress-bar *ngIf="deploymentStarted && !deploymentCompleted && !cancelPressed" mode="buffer" [bufferValue]="bufferValue"></mat-progress-bar>
+  <mat-progress-bar *ngIf="deploymentStarted && !deploymentCompleted && !cancelPressed" mode="buffer"
+    [bufferValue]="bufferValue"></mat-progress-bar>
 </section>
 <div class="main-container" *ngIf="pagesToInstall">
   <div class="list-container">
     <mat-list>
       <div mat-subheader>Folders</div>
-      <mat-list-item *ngFor="let page of pagesToInstall; let index" (click)="changeDomain(page.name)">
-        <mat-spinner *ngIf="(deploymentStarted && !deploymentCompleted && !cancelPressed) && (!page.deploymentIcon && page === activePage)" diameter="20" class="deployement-spinner" ></mat-spinner>
+      <mat-list-item *ngFor="let page of pagesToInstall; let index" (click)="changeDisplayDomain(page.name)">
+        <mat-spinner
+          *ngIf="(deploymentStarted && !deploymentCompleted && !cancelPressed) && (!page.deploymentIcon && page === activePage)"
+          diameter="18" class="deployement-spinner"></mat-spinner>
         <mat-icon>{{page.deploymentIcon}}</mat-icon>
-        <div mat-line>{{getPageDisplayName(page)}}</div>
+        <div mat-line>
+          <p class="deployed-page-name" style="font-size:smaller">{{getPageDisplayName(page)}}</p>
+        </div>
       </mat-list-item>
     </mat-list>
   </div>
 
   <div class="log-container">
-    <h2>{{getPageDisplayName(activePage)}}</h2>
+    <h2>{{getPageDisplayName(displayPage)}}</h2>
     <div class="line-container">
-      <p *ngFor="let logLine of activePage.logs" [ngStyle]="{'color': logLine.color}">[{{ logLine.time }}] -
+      <p *ngFor="let logLine of displayPage.logs" [ngStyle]="{'color': logLine.color}">[{{ logLine.time }}] -
         {{ logLine.content }}
       </p>
     </div>
@@ -25,6 +30,8 @@
 </div>
 <mat-card-actions class="button-container">
   <button [disabled]="deploymentStarted" color="accent" (click)="initDeployment()" mat-button>Start</button>
-  <button [disabled]="!deploymentStarted || deploymentCompleted || cancelPressed" color="accent" (click)="cancelDeployment()" mat-button>Cancel</button>
-  <button [disabled]="deploymentStarted && !deploymentCompleted && !cancelPressed" color="accent" (click)="close()" mat-button>Close</button>
+  <button [disabled]="!deploymentStarted || deploymentCompleted || cancelPressed" color="accent"
+    (click)="cancelDeployment()" mat-button>Cancel</button>
+  <button [disabled]="deploymentStarted && !deploymentCompleted && !cancelPressed" color="accent" (click)="close()"
+    mat-button>Close</button>
 </mat-card-actions>
