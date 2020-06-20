@@ -24,6 +24,9 @@ export class DeploymentService {
   }
 
   closeSocket() {
+    if (!this.socket) {
+      return;
+    }
     this.socket = this.socket.close();
   }
 }
