@@ -124,6 +124,7 @@ export class CommandButtonsComponent implements OnInit {
     });
     const deploymentService = this.deploymentService;
     dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result);
       deploymentService.closeSocket();
     });
   }
