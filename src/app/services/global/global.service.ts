@@ -130,13 +130,20 @@ export class GlobalService {
         }
       });
       pageToModify.modified = true;
-      this.setDomainIcon(true);
+      pageToModify.icon = 'check_box'
+     // this.setPageIcon(true);
     } else {
       pageToModify.inputs = modifiedPage.inputs;
       pageToModify.modified = false;
-      this.setDomainIcon(false);
+      if (pageToModify.mandatory) {
+         pageToModify.icon = 'priority_high';
+      } else {
+         pageToModify.icon = 'check_box_outline_blank';
+      }
+     // this.setPageIcon(false);
     }
     this.storeLocalStorage(this.allDomains, this.activeDomain);
+    this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 
   public saveDomain(modifiedDomain: IDomain) {
@@ -163,20 +170,15 @@ export class GlobalService {
     return notValidMandatory;
   }
 
-  public setDomainIcon(valid: boolean) {
+  public setPageIcon(valid: boolean) {
     if (valid) {
-      this.activeDomain.icon = 'done';
-      this.activeDomain.pages.forEach((page) => {
-        if (!page.valid) {
-          this.activeDomain.icon = '';
-          return;
-        }
-      });
+      this.activePage.icon = 'done';
     } else {
-      this.activeDomain.icon = '';
+      this.activePage.icon = '';
     }
-    this.saveDomain(this.activeDomain);
-    this.refreshRequired.next({ pageChanged: false, domainChanged: true });
+    // this.saveDomain(this.activeDomain);
+    this.savePage(this.activePage);
+    //this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 
   public resetPage(page: IPage) {

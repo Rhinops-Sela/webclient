@@ -47,7 +47,7 @@ export class PageLayoutComponent implements OnInit {
   }
   onSubmit() {
     this.globalService.savePage(this.page, this.form);
-    this.globalService.setDomainIcon(true);
+    // this.globalService.setPageIcon(true);
     this.router.navigate(['pages']);
   }
 

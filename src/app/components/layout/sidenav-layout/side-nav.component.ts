@@ -23,6 +23,7 @@ interface DomainNode {
   children?: DomainNode[];
   repeatable: boolean;
   firstInputValue: string;
+  icon?: string;
 }
 
 interface FlatNode {
@@ -53,6 +54,7 @@ export class SideNavComponent implements OnInit {
       level,
       repeatable: node.repeatable,
       firstInputValue: node.firstInputValue,
+      icon: node.icon,
     };
   };
 
@@ -87,11 +89,19 @@ export class SideNavComponent implements OnInit {
         this.domains.forEach((domain) => {
           const pageLeafs: DomainNode[] = [];
           domain.pages.forEach((page) => {
+            if (!page.icon) {
+              if (page.mandatory) {
+                page.icon = 'priority_high';
+              } else {
+                page.icon = 'check_box_outline_blank';
+              }
+            }
             pageLeafs.push({
               displayName: page.displayName,
               id: page.id,
               repeatable: page.repeatable || false,
               firstInputValue: page.inputs[0].value,
+              icon: page.icon,
             });
           });
           domainsTree.push({
@@ -133,15 +143,15 @@ export class SideNavComponent implements OnInit {
       domain.pages.forEach((page: IPage) => {
         if (
           page.repeatable &&
-          `${page.displayName}${page.inputs[0].value}` === `${pageNode.name}${pageNode.firstInputValue}`
+          `${page.displayName}${page.inputs[0].value}` ===
+            `${pageNode.name}${pageNode.firstInputValue}`
         ) {
           this.domainService.onPageChange(page, domain);
           this.router.navigate(['/page']);
-
         } else if (page.displayName === pageNode.name) {
-                 this.domainService.onPageChange(page, domain);
-                 this.router.navigate(['/page']);
-               }
+          this.domainService.onPageChange(page, domain);
+          this.router.navigate(['/page']);
+        }
       });
     });
   }
