@@ -1,20 +1,20 @@
-import { FileSelectionDialogComponent } from './../file-selection-dialog/file-selection-dialog.component';
-import { ProgressHandlerService } from './../../services/progress-handler/progress-handler.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
-import { DeploymentProgressModalComponent } from '../deplopyment-progress-modal/deployment-progress-modal.component';
-import { IDomain } from 'src/app/interfaces/IDomain';
-import { IConfirmationResponse } from 'src/app/interfaces/IConfirmationResponse';
+import { IDomain } from 'src/app/interfaces/common/IDomain';
+import { IConfirmationResponse } from 'src/app/interfaces/common/IConfirmationResponse';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
-import { BrowseStoredFilesComponent } from '../browse-stored-files/browse-stored-files.component';
 import { S3Service } from 'src/app/services/s3/s3.service';
-import { S3LoginComponent } from '../s3-login/s3-login.component';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
-import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
+import { ProgressHandlerService } from 'src/app/services/progress-handler/progress-handler.service';
+import { BrowseStoredFilesComponent } from '../../dialogs/browse-stored-files-dialog/browse-stored-files.component';
+import { ProgressSpinnerComponent } from '../../progress-spinner/progress-spinner.component';
+import { S3LoginComponent } from '../../dialogs/s3-login-dialog/s3-login.component';
+import { FileSelectionDialogComponent } from '../../dialogs/file-selection-dialog/file-selection-dialog.component';
+import { DeploymentProgressModalComponent } from '../../dialogs/deplopyment-progress-modal/deployment-progress-modal.component';
+import { ConfirmationModalComponent } from '../../dialogs/deployment-confirmation-dialog/confirmation-modal.component';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',

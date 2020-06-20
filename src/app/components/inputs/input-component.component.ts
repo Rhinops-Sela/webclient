@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IInput } from 'src/app/interfaces/IInput';
+import { IInput } from 'src/app/interfaces/common/IInput';
 
 @Component({
   selector: 'app-input-component',

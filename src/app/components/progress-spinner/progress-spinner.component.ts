@@ -1,7 +1,7 @@
 import { ProgressHandlerService } from './../../services/progress-handler/progress-handler.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ISpinnerInfo } from 'src/app/interfaces/ISpinnerInfo';
+import { ISpinnerInfo } from 'src/app/interfaces/client/ISpinnerInfo';
 
 @Component({
   selector: 'app-progress-spinner',

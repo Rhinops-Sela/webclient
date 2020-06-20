@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { GlobalService } from 'src/app/services/global/global.service';
-import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
+import { IRefreshRequried } from 'src/app/interfaces/client/IRefreshRequried';
 @Component({
   selector: 'app-toolbar-component',
   templateUrl: './toolbar-layout.component.html',
@@ -23,7 +23,6 @@ export class ToolbarComponent implements OnInit {
         } else {
           this.displayNameDomain = 'Home';
         }
-
       }
     });
   }

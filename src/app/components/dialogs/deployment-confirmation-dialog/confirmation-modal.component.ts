@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IDomain } from 'src/app/interfaces/IDomain';
+import { IDomain } from 'src/app/interfaces/common/IDomain';
 import { GlobalService } from 'src/app/services/global/global.service';
 @Component({
   selector: 'app-confirmation-modal',

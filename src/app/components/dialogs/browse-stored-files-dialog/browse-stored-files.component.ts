@@ -1,4 +1,3 @@
-import { S3Service } from './../../services/s3/s3.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import {
   MatDialogRef,
@@ -6,7 +5,8 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { ProgressHandlerService } from 'src/app/services/progress-handler/progress-handler.service';
-import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
+import { S3Service } from 'src/app/services/s3/s3.service';
+import { ProgressSpinnerComponent } from '../../progress-spinner/progress-spinner.component';
 @Component({
   selector: 'app-browse-stored-files',
   templateUrl: './browse-stored-files.component.html',

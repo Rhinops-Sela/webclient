@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PagesLayoutComponent } from '../components/pages-layout/pages-layout.component';
-import { DomainsLayoutComponent } from '../components/domains-layout/domains-layout.component';
-import { PageLayoutComponent } from '../components/page-layout/page-layout.component';
+import { DomainsLayoutComponent } from '../components/layout/domains-layout/domains-layout.component';
+import { PagesLayoutComponent } from '../components/layout/pages-layout/pages-layout.component';
+import { PageLayoutComponent } from '../components/layout/page-layout/page-layout.component';
+
 
 
 const routes: Routes = [

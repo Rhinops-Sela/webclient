@@ -1,9 +1,9 @@
 import { MessageHandlerService } from '../message-handler/message-handler.service';
-import { IS3Bucket } from '../../interfaces/IS3';
+import { IS3Bucket } from '../../interfaces/client/IS3';
 import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk/global';
 import S3 from 'aws-sdk/clients/s3';
-import { IDomain } from '../../interfaces/IDomain';
+import { IDomain } from '../../interfaces/common/IDomain';
 @Injectable({
   providedIn: 'root',
 })

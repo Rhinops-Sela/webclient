@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IDomain } from 'src/app/interfaces/IDomain';
+import { IDomain } from 'src/app/interfaces/common/IDomain';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GlobalService } from 'src/app/services/global/global.service';
 

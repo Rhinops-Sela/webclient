@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { GlobalService } from 'src/app/services/global/global.service';
-import { IDomain } from 'src/app/interfaces/IDomain';
+import { IDomain } from 'src/app/interfaces/common/IDomain';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import {
@@ -15,7 +15,7 @@ import {
   MatTreeFlattener,
 } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { IPage } from 'src/app/interfaces/IPage';
+import { IPage } from 'src/app/interfaces/common/IPage';
 
 interface DomainNode {
   displayName: string;

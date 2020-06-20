@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import config from '../../../assets/config.json';
-import { IDomain } from 'src/app/interfaces/IDomain';
+import { IDomain } from 'src/app/interfaces/common/IDomain';
 import axios, { AxiosResponse } from 'axios';
 @Injectable({
   providedIn: 'root',

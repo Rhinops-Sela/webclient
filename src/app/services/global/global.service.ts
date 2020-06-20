@@ -1,12 +1,12 @@
-import { IDomain } from './../../interfaces/IDomain';
+import { IDomain } from '../../interfaces/common/IDomain';
 import { Injectable } from '@angular/core';
-import { IPage } from 'src/app/interfaces/IPage';
-import { IInput } from 'src/app/interfaces/IInput';
+import { IPage } from 'src/app/interfaces/common/IPage';
+import { IInput } from 'src/app/interfaces/common/IInput';
 import { of, Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { BackendService } from '../backend/backend.service';
 import { GUID } from 'src/app/helpers/guid';
-import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
+import { IRefreshRequried } from 'src/app/interfaces/client/IRefreshRequried';
 import { MessageHandlerService } from '../message-handler/message-handler.service';
 @Injectable({
   providedIn: 'root',

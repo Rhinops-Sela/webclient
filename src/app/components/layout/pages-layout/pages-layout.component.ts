@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { IPage } from 'src/app/interfaces/IPage';
-import { IDomain } from 'src/app/interfaces/IDomain';
-import { IRefreshRequried } from 'src/app/interfaces/IRefreshRequried';
+import { IPage } from 'src/app/interfaces/common/IPage';
+import { IDomain } from 'src/app/interfaces/common/IDomain';
+import { IRefreshRequried } from 'src/app/interfaces/client/IRefreshRequried';
 @Component({
   selector: 'app-page-layout',
   templateUrl: './pages-layout.component.html',

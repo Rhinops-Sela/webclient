@@ -1,11 +1,11 @@
-import { S3Service } from './../../services/s3/s3.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { IS3Bucket } from 'src/app/interfaces/IS3';
+import { IS3Bucket } from 'src/app/interfaces/client/IS3';
 import { FormBuilder } from '@angular/forms';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
-import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
 import { ProgressHandlerService } from 'src/app/services/progress-handler/progress-handler.service';
+import { S3Service } from 'src/app/services/s3/s3.service';
+import { ProgressSpinnerComponent } from '../../progress-spinner/progress-spinner.component';
 
 @Component({
   selector: 'app-s3-login',

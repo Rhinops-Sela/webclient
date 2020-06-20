@@ -2,10 +2,10 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { BackendService } from 'src/app/services/backend/backend.service';
-import { IDeploymentInfo } from 'src/app/interfaces/IDeploymentInfo';
-import { IDeploymentMessage } from 'src/app/interfaces/IDeploymentMessage';
-import { ILogLine } from 'src/app/interfaces/ILogLine';
-import { IPage } from 'src/app/interfaces/IPage';
+import { IDeploymentInfo } from 'src/app/interfaces/common/IDeploymentInfo';
+import { IDeploymentMessage } from 'src/app/interfaces/common/IDeploymentMessage';
+import { ILogLine } from 'src/app/interfaces/common/ILogLine';
+import { IPage } from 'src/app/interfaces/common/IPage';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
 
 @Component({
