@@ -15,6 +15,7 @@ import { S3LoginComponent } from '../../dialogs/s3-login-dialog/s3-login.compone
 import { FileSelectionDialogComponent } from '../../dialogs/file-selection-dialog/file-selection-dialog.component';
 import { DeploymentProgressModalComponent } from '../../dialogs/deplopyment-progress-modal/deployment-progress-modal.component';
 import { ConfirmationModalComponent } from '../../dialogs/deployment-confirmation-dialog/confirmation-modal.component';
+import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-command-buttons',
   templateUrl: './command-buttons.component.html',
@@ -43,9 +44,20 @@ export class CommandButtonsComponent implements OnInit {
   }
 
   deleteAll() {
-    this.globalService.clearAll().then((result) => {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        header: 'Reset All Data?',
+        content: 'Are you sure you wish to reset ALL data?',
+        confrimButtonText: 'Reset',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.router.navigate(['']);
+        this.globalService.clearAll().then((result) => {
+          if (result) {
+            this.router.navigate(['']);
+          }
+        });
       }
     });
   }
