@@ -1,9 +1,9 @@
 import { IDploymentProgress } from './IDeplopymentProgress';
-import { ILogLine } from '../client/ILogLine';
+import { ILogLine } from './ILogLine';
 
 
 export interface IDeploymentMessage {
-  log: any;
+  logs: ILogLine[];
   progress?: IDploymentProgress;
   final?: true;
   error?: boolean;

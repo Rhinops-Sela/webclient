@@ -20,25 +20,13 @@ export class BackendService {
     }
   }
 
-  async startDeployment(
-    form: IDomain[],
-    deleteMode: boolean = false
-  ) {
+  async startDeployment(form: IDomain[], deleteMode: boolean = false) {
     try {
       let result: AxiosResponse<any>;
-      if (deleteMode) {
-        result = await axios.delete(`${this.backendUrl}/deployment`, {
-          data: {
-            form,
-            deleteMode,
-          },
-        });
-      } else {
-        result = await axios.post(`${this.backendUrl}/deployment`, {
-          form,
-          deleteMode,
-        });
-      }
+      result = await axios.post(`${this.backendUrl}/deployment`, {
+        form,
+        deleteMode,
+      });
       return result.data;
     } catch (error) {
       throw error;

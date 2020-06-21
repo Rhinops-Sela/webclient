@@ -4,7 +4,7 @@ import { DeploymentService } from 'src/app/services/deployment/deployment.servic
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { IDeploymentInfo } from 'src/app/interfaces/client/IDeploymentInfo';
 import { IDeploymentMessage } from 'src/app/interfaces/common/IDeploymentMessage';
-import { ILogLine } from 'src/app/interfaces/client/ILogLine';
+import { ILogLine } from 'src/app/interfaces/common/ILogLine';
 import { IPage } from 'src/app/interfaces/common/IPage';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
 
@@ -14,7 +14,7 @@ import { MessageHandlerService } from 'src/app/services/message-handler/message-
   styleUrls: ['./deployment-progress-modal.component.scss'],
 })
 export class DeploymentProgressModalComponent implements OnInit {
-  log: string;
+  //log: string;
   deploymentCompleted = false;
   cancelPressed = false;
   deploymentStarted = false;
@@ -65,14 +65,15 @@ export class DeploymentProgressModalComponent implements OnInit {
         this.cancelPressed = false;
       })
       .catch((error) => {
-        this.errorHandler.onErrorOccured.next(error.response.data.error);
+        this.errorHandler.onErrorOccured.next(
+          `${error.response.status} - ${error.response.statusText}`
+        );
         this.close();
       });
   }
 
   private setupScoket(deploymentIdentifier: string) {
     this.deploymentService.setupSocketConnection(deploymentIdentifier);
-    this.log = 'Warming up...';
     this.deploymentService.progressUpdate.subscribe(
       (message: IDeploymentMessage) => {
         this.onDeploymentMessage(message);
@@ -96,7 +97,7 @@ export class DeploymentProgressModalComponent implements OnInit {
   }
 
   private async onDeploymentMessage(deploymentMessage: IDeploymentMessage) {
-    this.log = deploymentMessage.log;
+    // this.log = deploymentMessage.log;
     if (this.activePage.name !== deploymentMessage.pageName) {
       this.activePage = this.pagesToInstall.find(
         (domain) => domain.name === deploymentMessage.pageName
@@ -109,28 +110,18 @@ export class DeploymentProgressModalComponent implements OnInit {
         this.activePage.logs = [];
       }
     }
-    let line: ILogLine;
-    line = {
-      color: '#f2f3f4',
-      time: new Date().toLocaleString(),
-      content: deploymentMessage.log,
-    };
+
     if (deploymentMessage.error) {
       this.activePage.deploymentIcon = 'clear';
-      line.color = 'red';
     } else if (
       this.activePage.deploymentIcon !== 'clear' &&
       deploymentMessage.final
     ) {
       this.activePage.deploymentIcon = 'done';
-      /* this.activePage = this.pagesToInstall.find(
-        (domain) => domain.name === deploymentMessage.pageName
-      ); */
     }
+    this.activePage.logs = deploymentMessage.logs;
+    this.displayPage.logs = deploymentMessage.logs;
 
-    if (line.content.length > 0 || line.content.trim().length > 0) {
-      this.activePage.logs.push(line);
-    }
     if (deploymentMessage.progress) {
       this.bufferValue = Math.round(
         (deploymentMessage.progress.currentPage /
