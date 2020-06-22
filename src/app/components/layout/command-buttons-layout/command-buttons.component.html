@@ -5,24 +5,24 @@
     </button>
   </div>
   <div class="toolbar-button-container">
-    <button mat-mini-fab md-fab-bottom-right (click)="browse()" color="accent" matTooltip="Browse Stored Files">
-      <mat-icon>folder</mat-icon>
-    </button>
-  </div>
-  <div class="toolbar-button-container">
     <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog(false)" color="accent"
       matTooltip="Deploy Environment">
       <mat-icon>check</mat-icon>
     </button>
   </div>
-    <div class="toolbar-button-container">
-      <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog(true)" color="accent"
-        matTooltip="Delete Entire Environment">
-        <mat-icon>clear</mat-icon>
-      </button>
-    </div>
   <div class="toolbar-button-container">
-    <button mat-mini-fab md-fab-bottom-right (click)="storeToS3()" color="accent" matTooltip="Upload to S3">
+    <button mat-mini-fab md-fab-bottom-right (click)="openConfirmationDialog(true)" color="accent"
+      matTooltip="Delete Entire Environment">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+  <div class="toolbar-button-container">
+    <button mat-mini-fab md-fab-bottom-right (click)="browse()" color="accent" matTooltip="Downlod From S3 Bucket">
+      <mat-icon>cloud_download</mat-icon>
+    </button>
+  </div>
+  <div class="toolbar-button-container">
+    <button mat-mini-fab md-fab-bottom-right (click)="storeToS3()" color="accent" matTooltip="Upload to S3 Bucjet">
       <mat-icon class="white-icon">backup</mat-icon>
     </button>
   </div>
