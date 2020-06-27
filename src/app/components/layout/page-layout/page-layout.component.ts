@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { IPage } from 'src/app/interfaces/common/IPage';
 import { FormService } from 'src/app/services/form/form.service';
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { IRefreshRequried } from 'src/app/interfaces/client/IRefreshRequried';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { IInput } from 'src/app/interfaces/common/IInput';
+import { group } from 'console';
 @Component({
   selector: 'app-page-component',
   templateUrl: './page-layout.component.html',
@@ -31,7 +33,11 @@ export class PageLayoutComponent implements OnInit {
     this.globalService.refreshRequired.subscribe((result: IRefreshRequried) => {
       if (result.pageChanged) {
         this.page = this.globalService.getActivePage();
-        this.form = this.formService.toFormGroup(this.page.inputs);
+        this.form = new FormGroup({});
+        this.form = this.formService.appendToFormGroup(
+          this.page.inputs,
+          this.form
+        );
       }
     });
     this.loadPage();
@@ -42,7 +48,10 @@ export class PageLayoutComponent implements OnInit {
     if (!this.page || !this.page.inputs) {
       this.router.navigate(['']);
     } else {
-      this.form = this.formService.toFormGroup(this.page.inputs);
+      this.form = this.formService.appendToFormGroup(
+        this.page.inputs,
+        this.form
+      );
     }
   }
   onSubmit() {
@@ -69,5 +78,30 @@ export class PageLayoutComponent implements OnInit {
         this.globalService.resetPage(this.page);
       }
     });
+  }
+  enablerClicked(control: IInput) {
+    if (control.value) {
+      control.value = false;
+    } else {
+      control.value = true;
+    }
+    this.form = this.formService.appendToFormGroup(this.page.inputs, this.form);
+  }
+
+  getGroupEnablers() {
+    const enablers = this.page.inputs.find(
+      (input) => input.group_enabler_master
+    );
+    return enablers;
+  }
+
+  checkIfEnabled(input: IInput) {
+    if (input.group_enabler_master || !this.getGroupEnablers()) {
+      return true;
+    }
+    if (this.form.controls[input.id]) {
+      return true;
+    }
+    // this.form = this.formService.appendToFormGroup(this.page.inputs, this.form);
   }
 }

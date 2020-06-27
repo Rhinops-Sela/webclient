@@ -127,6 +127,10 @@ export class GlobalService {
       pageToModify.inputs.forEach((input) => {
         if (form.controls[input.id]) {
           input.value = form.controls[input.id].value;
+        } else {
+          if (input.controlType == "checkbox") {
+            input.value = false;
+          }
         }
       });
       pageToModify.modified = true;
@@ -255,17 +259,17 @@ export class GlobalService {
     return of(pageInputs);
   }
 
-  public onDomainChange(activeDomain: IDomain) {
+  public onDomainChange(activeDomain: IDomain, selectedPage?: IPage) {
     this.activeDomain = activeDomain;
     this.storeLocalStorage(null, activeDomain);
-    this.activePage = activeDomain.pages[0];
+    this.activePage = selectedPage || activeDomain.pages[0];
     this.refreshRequired.next({ pageChanged: true, domainChanged: true });
   }
 
   public onPageChange(activePage: IPage, activeDomain?: IDomain) {
     this.activePage = activePage;
     if (activeDomain && activeDomain !== this.activeDomain) {
-      this.onDomainChange(activeDomain);
+      this.onDomainChange(activeDomain, activePage);
     } else {
       this.refreshRequired.next({ pageChanged: true, domainChanged: false });
     }

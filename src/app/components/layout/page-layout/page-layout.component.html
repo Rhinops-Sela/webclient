@@ -5,10 +5,13 @@
       <img mat-card-avatar class="component-logo" mat-card-avatar src="{{ page.image }}" />
     </mat-card-header>
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()" [formGroup]="form" >
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <div class="form-container">
-          <div *ngFor="let input of page.inputs" class="form-row">
-            <app-input-component [input]="input" [form]="form"></app-input-component>
+          <div *ngFor="let input of page.inputs">
+            <app-input-component class="form-row" *ngIf="input.group_enabler_master" (click)="enablerClicked(input)"
+              [input]="input" [form]="form"></app-input-component>
+            <app-input-component class="form-row" *ngIf="!input.group_enabler_master && checkIfEnabled(input)"
+              [input]="input" [form]="form"></app-input-component>
           </div>
         </div>
         <div class="button-row">
