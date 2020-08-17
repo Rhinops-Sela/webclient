@@ -24,7 +24,6 @@ import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dia
 export class CommandButtonsComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   uploader: any;
-  private fileName = `fennec_${new Date().toISOString()}.json`;
   form: IDomain[];
   constructor(
     private s3Service: S3Service,
@@ -72,6 +71,10 @@ export class CommandButtonsComponent implements OnInit {
         if (result.loaded) {
           this.globalService.uploadForm(JSON.stringify(result.loadedForm));
           this.messageHandlerService.onUserMessage.next('Loaded Successfuly!');
+          this.globalService.refreshRequired.next({
+            pageChanged: true,
+            domainChanged: true,
+          });
           this.router.navigate(['']);
         }
       });
@@ -104,10 +107,26 @@ export class CommandButtonsComponent implements OnInit {
     });
   }
 
-  async export(domainsToExport?: IDomain[]) {
-    const dialogRef = this.dialog.open(FileSelectionDialogComponent);
-
-    const filename = await dialogRef.afterClosed().toPromise();
+  async export(domainsToExport?: IDomain[], s3: boolean = true) {
+    const dialogRef = this.dialog.open(FileSelectionDialogComponent, {
+      data: {
+        s3: s3,
+      },
+    });
+    const dialogResult = await dialogRef.afterClosed().toPromise();
+    if (!dialogResult || !dialogResult.filename) {
+      return;
+    }
+    let filename = dialogResult.filename;
+    if (filename.indexOf('.json') == -1) {
+      filename += '.json';
+    }
+    if (dialogResult.exportDesitination == 'local') {
+      await this.exportLocal(filename, domainsToExport);
+    } else {
+      this.storeToS3(filename);
+    }
+    /*     const filename = await dialogRef.afterClosed().toPromise();
     try {
       if (!filename) {
         return;
@@ -123,8 +142,25 @@ export class CommandButtonsComponent implements OnInit {
       this.messageHandlerService.onErrorOccured.next(
         `Export failed: ${error.message}`
       );
+    } */
+  }
+
+  async exportLocal(filename: string, domainsToExport?: IDomain[]) {
+    try {
+      this.form = domainsToExport || (await this.globalService.getAllDomains());
+      const domains = this.form;
+      const jsonFormat = JSON.stringify(domains);
+      const blob = new Blob([jsonFormat], {
+        type: 'text/plain;charset=utf-8',
+      });
+      saveAs.saveAs(blob, filename);
+    } catch (error) {
+      this.messageHandlerService.onErrorOccured.next(
+        `Export failed: ${error.message}`
+      );
     }
   }
+
   upload() {
     this.fileInput.nativeElement.click();
   }
@@ -141,7 +177,7 @@ export class CommandButtonsComponent implements OnInit {
     });
   }
 
-  public async storeToS3() {
+  public async storeToS3(filename?: string) {
     this.dialog.open(ProgressSpinnerComponent, {
       data: {
         header: 'Uploading Files To S3 Bucket',
@@ -165,7 +201,7 @@ export class CommandButtonsComponent implements OnInit {
     }
     if (upload) {
       try {
-        await this.uploadBeforeDeployment();
+        await this.uploadBeforeDeployment(filename);
         this.messageHandlerService.onUserMessage.next(
           'File Was Successfuly Uploaded'
         );
@@ -178,9 +214,9 @@ export class CommandButtonsComponent implements OnInit {
     this.progressHandlerService.onActionCompleted.next(true);
   }
 
-  private async uploadBeforeDeployment() {
+  private async uploadBeforeDeployment(filename: string) {
     const allDomains = await this.globalService.getAllDomains();
-    await this.s3Service.uploadForm(JSON.stringify(allDomains), this.fileName);
+    await this.s3Service.uploadForm(JSON.stringify(allDomains), filename);
   }
 
   private async getModifiedList(): Promise<IDomain[]> {
@@ -204,7 +240,8 @@ export class CommandButtonsComponent implements OnInit {
     const modifiedDomainList = await this.getModifiedList();
     if (notCompleted.length === 0 && modifiedDomainList.length > 0) {
       if (!deleteMode) {
-        await this.storeToS3();
+        // await this.storeToS3();
+        await this.export();
       }
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
         data: {
@@ -217,9 +254,9 @@ export class CommandButtonsComponent implements OnInit {
         .afterClosed()
         .subscribe(async (result: IConfirmationResponse) => {
           if (result && result.response && result.domainList.length > 0) {
-            if (!deleteMode) {
+            /* if (!deleteMode) {
               await this.export();
-            }
+            } */
             this.openProgressDialog(result.domainList, deleteMode);
           }
         });

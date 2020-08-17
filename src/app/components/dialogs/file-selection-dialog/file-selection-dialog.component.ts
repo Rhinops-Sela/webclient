@@ -12,11 +12,23 @@ import {
 })
 export class FileSelectionDialogComponent implements OnInit {
   selectedFileName: string;
-  constructor(
-    public dialogRef: MatDialogRef<FileSelectionDialogComponent>
-  ) {}
+  exportDesitination: string;
+  s3: boolean;
+  constructor(public dialogRef: MatDialogRef<FileSelectionDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.s3 = data.s3;
+    if(!this.s3) {
+      this.exportDesitination= "local"
+    }
+  }
 
   ngOnInit(): void {}
+
+  confirm() {
+    this.dialogRef.close({
+      filename: this.selectedFileName,
+      exportDesitination: this.exportDesitination,
+    });
+  }
 
   cancel(): void {
     this.dialogRef.close();
