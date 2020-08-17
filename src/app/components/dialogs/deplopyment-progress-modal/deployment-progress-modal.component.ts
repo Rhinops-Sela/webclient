@@ -4,7 +4,6 @@ import { DeploymentService } from 'src/app/services/deployment/deployment.servic
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { IDeploymentInfo } from 'src/app/interfaces/client/IDeploymentInfo';
 import { IDeploymentMessage } from 'src/app/interfaces/common/IDeploymentMessage';
-import { ILogLine } from 'src/app/interfaces/common/ILogLine';
 import { IPage } from 'src/app/interfaces/common/IPage';
 import { MessageHandlerService } from 'src/app/services/message-handler/message-handler.service';
 
@@ -100,7 +99,7 @@ export class DeploymentProgressModalComponent implements OnInit {
     // this.log = deploymentMessage.log;
     if (this.activePage.name !== deploymentMessage.pageName) {
       this.activePage = this.pagesToInstall.find(
-        (domain) => domain.name === deploymentMessage.pageName
+        (page) => page.name === deploymentMessage.pageName
       );
       this.displayPage = this.activePage;
       if (deploymentMessage.pageName) {
@@ -120,7 +119,7 @@ export class DeploymentProgressModalComponent implements OnInit {
       this.activePage.deploymentIcon = 'done';
     }
     this.activePage.logs = deploymentMessage.logs;
-    this.displayPage.logs = deploymentMessage.logs;
+    // this.displayPage.logs = deploymentMessage.logs;
 
     if (deploymentMessage.progress) {
       this.bufferValue = Math.round(
