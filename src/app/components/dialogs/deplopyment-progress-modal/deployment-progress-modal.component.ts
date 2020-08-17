@@ -1,4 +1,14 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+  ViewChildren,
+  QueryList,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { BackendService } from 'src/app/services/backend/backend.service';
@@ -12,8 +22,10 @@ import { MessageHandlerService } from 'src/app/services/message-handler/message-
   templateUrl: './deployment-progress-modal.component.html',
   styleUrls: ['./deployment-progress-modal.component.scss'],
 })
-export class DeploymentProgressModalComponent implements OnInit {
-  //log: string;
+export class DeploymentProgressModalComponent implements OnInit, AfterViewInit {
+  @ViewChild('scrollfcontainer', { static: false }) scrollFrame: ElementRef;
+  @ViewChildren('item') itemElements: QueryList<any>;
+  private scrollContainer: any;
   deploymentCompleted = false;
   cancelPressed = false;
   deploymentStarted = false;
@@ -50,6 +62,21 @@ export class DeploymentProgressModalComponent implements OnInit {
       this.close();
     }
   }
+
+  ngAfterViewInit() {
+    this.scrollContainer = this.scrollFrame.nativeElement;  
+    this.itemElements.changes.subscribe(_ => this.onItemElementsChanged());    
+  }
+
+  private onItemElementsChanged(): void {
+    this.scrollContainer.scroll({
+      top: this.scrollContainer.scrollHeight,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+
+
   cancelDeployment() {
     this.deploymentService.sendKillMessage();
     this.cancelPressed = true;
