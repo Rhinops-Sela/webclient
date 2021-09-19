@@ -148,24 +148,25 @@ export class DeploymentProgressModalComponent implements OnInit, AfterViewInit {
     // this.displayPage.logs = deploymentMessage.logs;
 
     if (deploymentMessage.progress) {
-      this.bufferValue = Math.round(
-        (deploymentMessage.progress.currentPage /
+      let newBufferValue = Math.round(
+        ((deploymentMessage.progress.currentPage-1) /
           deploymentMessage.progress.totalPages) *
           100
       );
+      this.bufferValue = newBufferValue;
     } else {
       console.log('missing progress info');
     }
-
-    if (this.activePage.deploymentIcon && this.bufferValue === 100) {
+    if (deploymentMessage.final && deploymentMessage.progress.currentPage == deploymentMessage.progress.totalPages) {
+      this.bufferValue = 100;
+      this.backendService.downloadOutputsFolder(
+        this.deploymentService.deploymentIdentifier
+      );
       this.deploymentCompleted = true;
     }
   }
 
   public close() {
-    this.backendService.downloadOutputsFolder(
-      this.deploymentService.deploymentIdentifier
-    );
     this.dialogRef.close();
   }
 }
