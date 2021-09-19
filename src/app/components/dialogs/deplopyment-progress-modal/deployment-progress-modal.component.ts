@@ -64,18 +64,17 @@ export class DeploymentProgressModalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.scrollContainer = this.scrollFrame.nativeElement;  
-    this.itemElements.changes.subscribe(_ => this.onItemElementsChanged());    
+    this.scrollContainer = this.scrollFrame.nativeElement;
+    this.itemElements.changes.subscribe((_) => this.onItemElementsChanged());
   }
 
   private onItemElementsChanged(): void {
     this.scrollContainer.scroll({
       top: this.scrollContainer.scrollHeight,
       left: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   }
-
 
   cancelDeployment() {
     this.deploymentService.sendKillMessage();
@@ -164,6 +163,9 @@ export class DeploymentProgressModalComponent implements OnInit, AfterViewInit {
   }
 
   public close() {
+    this.backendService.downloadOutputsFolder(
+      this.deploymentService.deploymentIdentifier
+    );
     this.dialogRef.close();
   }
 }

@@ -40,15 +40,13 @@ export class FormService {
         try {
           if (!form.controls[input.id]) {
             const formControl = input.regexValidation
-            ? new FormControl(input.value || '', [
-                Validators.pattern(input.regexValidation),
-                Validators.required,
-              ])
+              ? new FormControl(input.value || '', [
+                  Validators.pattern(input.regexValidation),
+                  Validators.required,
+                ])
               : new FormControl(input.value || '');
             form.addControl(input.id, formControl);
           }
-
-
         } catch (error) {
           console.log(error);
         }
