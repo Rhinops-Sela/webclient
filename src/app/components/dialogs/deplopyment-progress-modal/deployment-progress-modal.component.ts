@@ -157,7 +157,7 @@ export class DeploymentProgressModalComponent implements OnInit, AfterViewInit {
     } else {
       console.log('missing progress info');
     }
-    if (deploymentMessage.final && deploymentMessage.progress.currentPage == deploymentMessage.progress.totalPages) {
+    if (this.deploymentCompleted == false && deploymentMessage.final && deploymentMessage.progress.currentPage == deploymentMessage.progress.totalPages) {
       this.bufferValue = 100;
       this.backendService.downloadOutputsFolder(
         this.deploymentService.deploymentIdentifier

@@ -32,6 +32,7 @@ export class BackendService {
       .toPromise()
       .then((blob) => {
         saveAs(blob, 'deployment_outpus.zip');
+        axios.post(`${this.backendUrl}/deployment/deleteoutput`, {identifier: identifier})
       })
       .catch((err) => console.error('download error = ', err));
   }
