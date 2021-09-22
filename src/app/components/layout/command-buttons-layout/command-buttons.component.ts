@@ -137,7 +137,7 @@ export class CommandButtonsComponent implements OnInit {
       const blob = new Blob([jsonFormat], {
         type: 'text/plain;charset=utf-8',
       });
-      saveAs.saveAs(blob, filename + '.json');
+      saveAs(blob, filename + '.json');
     } catch (error) {
       this.messageHandlerService.onErrorOccured.next(
         `Export failed: ${error.message}`
@@ -153,7 +153,7 @@ export class CommandButtonsComponent implements OnInit {
       const blob = new Blob([jsonFormat], {
         type: 'text/plain;charset=utf-8',
       });
-      saveAs.saveAs(blob, filename);
+      saveAs(blob, filename);
     } catch (error) {
       this.messageHandlerService.onErrorOccured.next(
         `Export failed: ${error.message}`
