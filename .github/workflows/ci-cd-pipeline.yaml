@@ -13,14 +13,18 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2 
+      
+      - name: Install Node.js & npm install & build
+        uses: actions/setup-node@v2 
         with:
           node-version: '12.x'
-      - run: npm install
-      - run: npm install -g @angular/cli
-      - run: ng build --prod
-      - name: Install Node.js & npm install & build
-
+          
+      - name: npm install & build
+        run: |
+          npm install
+          npm install -g @angular/cli
+          ng build --prod
+      
       #Publish artifacts-webclient
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
